@@ -7,7 +7,7 @@ function App() {
             <h1>Red Tetris (Client)</h1>
             {/*Logique du jeu*/}
         </div>
-    )
+    );
 }
 
 export default App;

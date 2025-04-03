@@ -1,0 +1,19 @@
+# .eslintignore et .prettierignore
+
+# Dépendances
+node_modules
+
+# Fichiers de build et de sortie
+dist
+build
+coverage
+
+# Fichiers spécifiques
+package-lock.json
+README.md
+yarn.lock
+.prettierrc.json
+
+# Variables d'environnement
+.env*
+!.env.example

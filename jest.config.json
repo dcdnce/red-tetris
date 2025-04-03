@@ -1,0 +1,46 @@
+{
+	"testEnvironment": "jest-environment-jsdom",
+	"testMatch": [
+	  "<rootDir>/**/*.test.[jt]s?(x)",
+	  "<rootDir>/**/*.spec.[jt]s?(x)"
+	],
+	"testPathIgnorePatterns": ["/node_modules/", "/dist/", "/build/"],
+	"modulePathIgnorePatterns": ["/dist/", "/build/"],
+	"collectCoverage": true,
+	"coverageDirectory": "coverage",
+	"coverageProvider": "v8",
+	"collectCoverageFrom": [
+	  "client/src/**/*.{js,jsx}",
+	  "server/**/*.{js}",
+	  "!client/src/main.jsx",
+	  "!server/index.js",
+	  "!**/*.config.{js,json}",
+	  "!**/.eslintrc.js",
+	  "!**/node_modules/**",
+	  "!**/dist/**",
+	  "!**/build/**",
+	  "!**/coverage/**",
+	  "!**/*.test.{js,jsx}",
+	  "!**/*.spec.{js,jsx}"
+	],
+	"coverageThreshold": {
+	  "global": {
+		"statements": 70,
+		"branches": 50,
+		"functions": 70,
+		"lines": 70
+	  }
+	},
+	"transform": {
+	  "^.+\\.[tj]sx?$": ["babel-jest", { "configFile": "./babel.config.json" }]
+	},
+	"transformIgnorePatterns": [
+	  "/node_modules/"
+	],
+	"moduleNameMapper": {
+	  "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+	  "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js"
+	},
+	"setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+	"verbose": true
+  }
