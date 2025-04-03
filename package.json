@@ -1,111 +1,125 @@
 {
-    "name": "red-tetris",
-    "version": "1.0.0",
-    "type": "module",
-    "description": "",
-    "main": "server/index.js",
-    "scripts": {
-        "dev:server": "nodemon server/index.js",
-        "dev:client": "vite client --config client/vite.config.js dev",
-        "dev": "concurrently --kill-others-on-fail \"npm:dev:server\" \"npm:dev:client\"",
-        "build:client": "vite build --config client/vite.config.js",
-        "build": "npm run build:client",
-        "start": "NODE_ENV=production node server/index.js",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "test:cov": "jest --coverage",
-        "format:check": "prettier --check \"**/*.{js,jsx,json,css,md}\"",
-        "format:write": "prettier --write \"**/*.{js,jsx,json,css,md}\"",
-        "preview": "vite preview --config client/vite.config.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/dcdnce/red-tetris.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/dcdnce/red-tetris/issues"
-    },
-    "homepage": "https://github.com/dcdnce/red-tetris#readme",
-    "dependencies": {
-        "@reduxjs/toolkit": "^2.6.1",
-        "dotenv": "^16.4.7",
-        "express": "^5.1.0",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "react-redux": "^9.2.0",
-        "socket.io": "^4.8.1",
-        "socket.io-client": "^4.8.1"
-    },
-    "devDependencies": {
-        "@babel/preset-env": "^7.26.9",
-        "@babel/preset-react": "^7.26.3",
-        "@testing-library/jest-dom": "^6.6.3",
-        "@testing-library/react": "^16.2.0",
-        "@vitejs/plugin-react": "^4.3.4",
-        "babel-jest": "^29.7.0",
-        "concurrently": "^9.1.2",
-        "identity-obj-proxy": "^3.0.0",
-        "jest": "^29.7.0",
-        "jest-environment-jsdom": "^29.7.0",
-        "nodemon": "^3.1.9",
-        "prettier": "^3.5.3",
-        "vite": "^6.2.4"
-    },
-    "prettier": {
-        "semi": true, 
-        "trailingComma": "es5",
-        "tabWidth": 3,
-        "printWidth": 79,
-        "arrowParens": "always",
-        "jsxSingleQuote": false
-    },
-    "jest": {
-        "testEnvironment": "jest-environment-jsdom",
-        "testMatch": [
-        "<rootDir>/**/*.test.[jt]s?(x)",
-        "<rootDir>/**/*.spec.[jt]s?(x)"
-        ],
-        "testPathIgnorePatterns": ["/node_modules/", "/dist/", "/build/"],
-        "modulePathIgnorePatterns": ["/dist/", "/build/"],
-        "collectCoverage": true,
-        "coverageDirectory": "coverage",
-        "coverageProvider": "v8",
-        "collectCoverageFrom": [
-        "client/src/**/*.{js,jsx}",
-        "server/**/*.{js}",
-        "!client/src/main.jsx",
-        "!server/index.js",
-        "!**/*.config.{js,json}",
-        "!**/.eslintrc.js",
-        "!**/node_modules/**",
-        "!**/dist/**",
-        "!**/build/**",
-        "!**/coverage/**",
-        "!**/*.test.{js,jsx}",
-        "!**/*.spec.{js,jsx}"
-        ],
-        "coverageThreshold": {
-        "global": {
+   "name": "red-tetris",
+   "version": "1.0.0",
+   "type": "module",
+   "description": "",
+   "main": "server/index.js",
+   "scripts": {
+      "dev:server": "nodemon server/index.js",
+      "dev:client": "vite client --config client/vite.config.js dev",
+      "dev": "concurrently --kill-others-on-fail \"npm:dev:server\" \"npm:dev:client\"",
+      "build:client": "vite build --config client/vite.config.js",
+      "build": "npm run build:client",
+      "start": "NODE_ENV=production node server/index.js",
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "test:cov": "jest --coverage",
+      "format:check": "prettier --check \"**/*.{js,jsx,json,css,md}\"",
+      "format:write": "prettier --write \"**/*.{js,jsx,json,css,md}\"",
+      "preview": "vite preview --config client/vite.config.js"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/dcdnce/red-tetris.git"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/dcdnce/red-tetris/issues"
+   },
+   "homepage": "https://github.com/dcdnce/red-tetris#readme",
+   "dependencies": {
+      "@reduxjs/toolkit": "^2.6.1",
+      "dotenv": "^16.4.7",
+      "express": "^5.1.0",
+      "react": "^19.1.0",
+      "react-dom": "^19.1.0",
+      "react-redux": "^9.2.0",
+      "socket.io": "^4.8.1",
+      "socket.io-client": "^4.8.1"
+   },
+   "devDependencies": {
+      "@babel/preset-env": "^7.26.9",
+      "@babel/preset-react": "^7.26.3",
+      "@testing-library/jest-dom": "^6.6.3",
+      "@testing-library/react": "^16.2.0",
+      "@vitejs/plugin-react": "^4.3.4",
+      "babel-jest": "^29.7.0",
+      "concurrently": "^9.1.2",
+      "identity-obj-proxy": "^3.0.0",
+      "jest": "^29.7.0",
+      "jest-environment-jsdom": "^29.7.0",
+      "nodemon": "^3.1.9",
+      "prettier": "^3.5.3",
+      "vite": "^6.2.4"
+   },
+   "prettier": {
+      "semi": true,
+      "trailingComma": "es5",
+      "tabWidth": 3,
+      "printWidth": 79,
+      "arrowParens": "always",
+      "jsxSingleQuote": false
+   },
+   "jest": {
+      "testEnvironment": "jest-environment-jsdom",
+      "testMatch": [
+         "<rootDir>/**/*.test.[jt]s?(x)",
+         "<rootDir>/**/*.spec.[jt]s?(x)"
+      ],
+      "testPathIgnorePatterns": [
+         "/node_modules/",
+         "/dist/",
+         "/build/"
+      ],
+      "modulePathIgnorePatterns": [
+         "/dist/",
+         "/build/"
+      ],
+      "collectCoverage": true,
+      "coverageDirectory": "coverage",
+      "coverageProvider": "v8",
+      "collectCoverageFrom": [
+         "client/src/**/*.{js,jsx}",
+         "server/**/*.{js}",
+         "!client/src/main.jsx",
+         "!server/index.js",
+         "!**/*.config.{js,json}",
+         "!**/.eslintrc.js",
+         "!**/node_modules/**",
+         "!**/dist/**",
+         "!**/build/**",
+         "!**/coverage/**",
+         "!**/*.test.{js,jsx}",
+         "!**/*.spec.{js,jsx}"
+      ],
+      "coverageThreshold": {
+         "global": {
             "statements": 70,
             "branches": 50,
             "functions": 70,
             "lines": 70
-        }
-        },
-        "transform": {
-        "^.+\\.[tj]sx?$": ["babel-jest", { "configFile": "./babel.config.json" }]
-        },
-        "transformIgnorePatterns": [
-        "/node_modules/"
-        ],
-        "moduleNameMapper": {
-        "\\.(css|less|scss|sass)$": "identity-obj-proxy",
-        "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js"
-        },
-        "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
-        "verbose": true
-    }
+         }
+      },
+      "transform": {
+         "^.+\\.[tj]sx?$": [
+            "babel-jest",
+            {
+               "configFile": "./babel.config.json"
+            }
+         ]
+      },
+      "transformIgnorePatterns": [
+         "/node_modules/"
+      ],
+      "moduleNameMapper": {
+         "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+         "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js"
+      },
+      "setupFilesAfterEnv": [
+         "<rootDir>/jest.setup.js"
+      ],
+      "verbose": true
+   }
 }

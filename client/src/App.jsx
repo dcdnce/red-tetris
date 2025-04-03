@@ -1,15 +1,43 @@
-// Le composant racine React (placeholder).
-import React from "react";
-import Header from "./components/Header";
-import './styles/global.css';
+// Le composant racine React
+
+import React, { useState, useEffect } from "react";
+import Header from "./components/ui/Header";
+import "./styles/global.css";
+import { socket } from "./socket";
+import ConnectionState from "./components/sockets/ConnectionState";
+import ConnectionManager from "./components/sockets/ConnectionManager";
 
 function App() {
+   // State -> component will refresh every time socket.connected changes
+   const [isConnected, setIsConnected] = useState(socket.connected);
+
+   useEffect(() => {
+      function onConnect() {
+         setIsConnected(true);
+      }
+
+      function onDisconnect() {
+         setIsConnected(false);
+      }
+
+      socket.on("connect", onConnect);
+      socket.on("disconnect", onDisconnect);
+
+      // Executed on exit
+      return () => {
+         socket.off("connect", onConnect);
+         socket.off("disconnect", onDisconnect);
+      };
+   }, []);
+
    return (
       <>
-      <Header />
-      <main>
-         <h1>Red Tetris (Client)</h1>
-      </main>
+         <Header />
+         <main>
+            <h1>Red Tetris</h1>
+            <ConnectionState isConnected={isConnected} />
+            <ConnectionManager />
+         </main>
       </>
    );
 }

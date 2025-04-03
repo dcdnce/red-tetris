@@ -1,0 +1,33 @@
+.header {
+   background-color: #edf2f4; /* Bleu foncé/gris */
+   padding: 1rem;
+   border-radius: 5px;
+   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+.container {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   min-height: 50px;
+   font-weight: bold;
+}
+
+.logoSpan {
+   background-color: red;
+   border-radius: 0.2rem;
+   width: 2rem;
+   height: 2rem;
+}
+
+.nav ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   display: flex;
+}
+
+.nav li {
+   margin-left: 1.5rem;
+   cursor: pointer;
+}

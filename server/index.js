@@ -20,7 +20,7 @@ const httpServer = createServer(appExpress);
 const io = new SocketIOServer(httpServer, {
    // Options Socket.IO si nécessaire (ex: CORS pour dev sans proxy)
    cors: {
-      origin: "*", // A affiner en production !
+      origin: "*", // To change
       // origin: ["http://localhost:5173"], // Autorise seulement Vite en dev
       methods: ["GET", "POST"],
    },
