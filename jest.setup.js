@@ -2,7 +2,7 @@
 
 // Importe les matchers étendus de jest-dom (ex: .toBeInTheDocument())
 // pour qu'ils soient disponibles dans tous les tests
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Ajoutez ici d'autres configurations globales pour vos tests si nécessaire
 // Par exemple, mocker des API globales comme fetch, localStorage, etc.

@@ -10,13 +10,13 @@ import App from "/.App";
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
-    ReactDOM.createRoot(rootElement).render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <App />
-            </Provider>
-        </React.StrictMode>
-    );
+   ReactDOM.createRoot(rootElement).render(
+      <React.StrictMode>
+         <Provider store={store}>
+            <App />
+         </Provider>
+      </React.StrictMode>
+   );
 } else {
-    console.error("Failed to find root element");
+   console.error("Failed to find root element");
 }

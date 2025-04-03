@@ -18,12 +18,12 @@ const ROOT_DIR = path.resolve(__dirname, "..");
 const appExpress = express();
 const httpServer = createServer(appExpress);
 const io = new SocketIOServer(httpServer, {
-    // Options Socket.IO si nécessaire (ex: CORS pour dev sans proxy)
-    cors: {
-        origin: "*", // A affiner en production !
-        // origin: ["http://localhost:5173"], // Autorise seulement Vite en dev
-        methods: ["GET", "POST"],
-    },
+   // Options Socket.IO si nécessaire (ex: CORS pour dev sans proxy)
+   cors: {
+      origin: "*", // A affiner en production !
+      // origin: ["http://localhost:5173"], // Autorise seulement Vite en dev
+      methods: ["GET", "POST"],
+   },
 });
 
 /* --- Middlewares Express --- */
@@ -34,43 +34,43 @@ console.log(`Serving static files from: ${clientBuildPath}`);
 
 /* --- Socket.IO --- */
 io.on("connection", (socket) => {
-    console.log(`Client connected: ${socket.id}`);
+   console.log(`Client connected: ${socket.id}`);
 
-    // Repondre au ping
-    socket.on("ping", (callback) => {
-        console.log(`Received ping from ${socket.id}`);
-        if (typeof callback === "function") {
-            callback("pong");
-        }
-    });
+   // Repondre au ping
+   socket.on("ping", (callback) => {
+      console.log(`Received ping from ${socket.id}`);
+      if (typeof callback === "function") {
+         callback("pong");
+      }
+   });
 
-    // Deconnexion
-    socket.on("disconnect", (reason) => {
-        console.log(`Client disconnected: ${socket.id}. Reason: ${reason}`);
-    });
+   // Deconnexion
+   socket.on("disconnect", (reason) => {
+      console.log(`Client disconnected: ${socket.id}. Reason: ${reason}`);
+   });
 });
 
 /* --- Route Catch All --- */
 appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
-    // Regex pour capturer tout sauf /api et /socket.io
-    const indexPath = path.join(clientBuildPath, "index.html");
-    console.log(`Serving index.html for route: ${req.path} from ${indexPath}`); // Debug
-    res.sendFile(indexPath, (err) => {
-        if (err) {
-            console.error("Error sending index.html:", err);
-            res.status(500).send(err);
-        }
-    });
+   // Regex pour capturer tout sauf /api et /socket.io
+   const indexPath = path.join(clientBuildPath, "index.html");
+   console.log(`Serving index.html for route: ${req.path} from ${indexPath}`); // Debug
+   res.sendFile(indexPath, (err) => {
+      if (err) {
+         console.error("Error sending index.html:", err);
+         res.status(500).send(err);
+      }
+   });
 });
 
 /* --- Demarrage serveur --- */
 httpServer.listen(PORT, () => {
-    console.log(`--- Server listening on http://localhost:${PORT} ---`);
-    console.log(
-        `--- Client dev server should run on http://localhost:5173 ---`
-    );
-    console.log(`--- Access the app in dev at http://localhost:5173 ---`);
-    console.log(
-        `--- Access the app in production (after build) at http://localhost:${PORT} ---`
-    );
+   console.log(`--- Server listening on http://localhost:${PORT} ---`);
+   console.log(
+      `--- Client dev server should run on http://localhost:5173 ---`
+   );
+   console.log(`--- Access the app in dev at http://localhost:5173 ---`);
+   console.log(
+      `--- Access the app in production (after build) at http://localhost:${PORT} ---`
+   );
 });
