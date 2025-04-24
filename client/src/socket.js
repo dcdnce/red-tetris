@@ -6,5 +6,5 @@ const URL =
       : undefined;
 
 export const socket = io(URL, {
-   autoConnect: false,
+   autoConnect: true,
 });

@@ -1,0 +1,46 @@
+.modal {
+    display: grid;
+    justify-content:center;
+    align-items: center;
+    width: 25%;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #edf2f4;
+    padding: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position:fixed;
+    
+}
+
+.modalTitle {
+    padding: 10px;
+}
+
+.modalInput {
+    height: 150%;
+    border: solid 2px #064d69;
+    border-radius: 25px;
+}
+
+.modalInput[type='text'] {
+    text-align: center;
+}
+
+/* 
+.modalInput:active {
+    height: 150%;
+    border: solid 2px #064d69;
+    border-radius: 25px;
+} */
+
+.modalButton {
+    cursor: pointer;
+    margin: 10% 10% 0 10%;
+    padding: 5%;
+    background-color: #064d69;
+    border: solid 0;
+    border-radius: 50px;
+    color: white;
+}

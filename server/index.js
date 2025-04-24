@@ -44,6 +44,10 @@ io.on("connection", (socket) => {
       }
    });
 
+   socket.on("register", (username) => {
+      console.log(`Register reçu de ${socket.id} : ${username}`);
+   })
+
    // Deconnexion
    socket.on("disconnect", (reason) => {
       console.log(`Client disconnected: ${socket.id}. Reason: ${reason}`);

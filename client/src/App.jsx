@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Header from "./components/ui/Header";
+import Home from "./components/home/Home";
+import Register from "./components/home/Register";
 import "./styles/global.css";
 import { socket } from "./socket";
 import ConnectionState from "./components/sockets/ConnectionState";
@@ -33,12 +35,10 @@ function App() {
    return (
       <>
          <Header />
+         <Register />
          <main>
-            <h1>Red Tetris</h1>
-            <ConnectionState isConnected={isConnected} />
-            <ConnectionManager />
          </main>
-      </>
+      </>      
    );
 }
 

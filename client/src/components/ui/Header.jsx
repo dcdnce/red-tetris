@@ -5,7 +5,10 @@ function Header() {
    return (
       <header className={styles.header}>
          <div className={styles.container}>
-            <div className={styles.logoSpan}></div>
+            <div className={styles.container}>
+               <div className={styles.logoSpan}></div>
+               <h1 className={styles.title}>Tetris</h1>
+            </div>
             <nav className={styles.nav}>
                <ul>
                   <li className="ngos-global">Play</li>
