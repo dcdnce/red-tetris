@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import styles from "../../styles/home/Register.module.css";
 import { socket } from "../../socket";
 
 function Register (){
@@ -13,9 +12,9 @@ function Register (){
 
     return (
         <>
-            <div className={styles.modal}>
-                <input className={styles.modalInput} value={username} onChange={(event) => {setUsername(event.target.value);}} placeholder="Type your username" type="text"></input>
-                <button className={styles.modalButton} onClick={sendUsername}>
+            <div className="modal center-screen">
+                <input className="modal-input" value={username} onChange={(event) => {setUsername(event.target.value);}} placeholder="Type your username" type="text"></input>
+                <button className="rounded-button bg-blue" onClick={sendUsername}>
                     Register
                 </button>
             </div>
