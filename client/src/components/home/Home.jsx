@@ -17,9 +17,9 @@ function Home(){
             <button className="vintage-button bg-blue" onClick={joinRoom}>
                 JOIN
             </button>
-            {/* <button className="vintage-button bg-blue" onClick={createRoom}>
+            <button className="vintage-button bg-blue" onClick={createRoom}>
                 CREATE
-            </button> */}
+            </button>
         </div>
     </>
     );

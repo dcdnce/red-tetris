@@ -48,10 +48,19 @@ body {
    display: flex;
 }
 
+.d-grid{
+   display: grid;
+   grid-template-columns: 50% 50%;
+   gap: 10px;
+}
+
+.jc-center{
+   justify-content: center;
+}
+
 /* MODAL */
 
 .modal {
-   display: grid;
    justify-content:center;
    align-items: center;
    width: 25%;
@@ -98,16 +107,17 @@ body {
 
 .vintage-button {
    display: block;
-   height: 100px;
+   height: 80px;
    width: 100px;
    font-weight: 600;
-   font-size: large;
+   font-size: 0.8em;
+   margin: 10px;
    cursor: pointer;
    color: white;
    border: 15px double rgba(226, 71, 71, 0.514);
-   border-radius: 50%;
+   border-radius: 15%;
    box-shadow: 6px 4px #333;
-   text-shadow: 1px 1px 1px white;
+   text-shadow: 1px 1px 10px white;
 }
 
 .vintage-button:hover {
@@ -115,15 +125,27 @@ body {
    animation-fill-mode: forwards;
 }
 
+.vintage-button:focus {
+   animation: onclick linear 0.3s;
+   animation-fill-mode: forwards;
+}
+
 @keyframes button {
-   /* 0%{
-      b: 15px solid rgba(216, 34, 34, 0.514);
-   } */
    100% {
       transform: translate(8%, 8%) scale(0.95);
       transform: scale(-100px);
       box-shadow: 2px 1px #333;
-      border-width: 20px;
-      font-size: 98%;
+      font-size: 88%;
    }
+}
+
+@keyframes onclick {
+   100% {
+      width: 110vw;
+      height:110vh;
+      border-radius: 0;
+      z-index: 0;
+      box-shadow: 0;
+      font-size: 3em;
+   }  
 }
