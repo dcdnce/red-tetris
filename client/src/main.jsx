@@ -1,8 +1,8 @@
 // Le point d'entrée JS qui monte l'application React et connecte Redux.
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import { store } from "./store/store";
 import App from "./App";
 // Importez un CSS global si nécessaire, ex: import './styles/main.css';
@@ -12,9 +12,11 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
    ReactDOM.createRoot(rootElement).render(
       <React.StrictMode>
-         <Provider store={store}>
-            <App />
-         </Provider>
+        <BrowserRouter>
+            <Provider store={store}>
+               <App />
+            </Provider>
+         </BrowserRouter> 
       </React.StrictMode>
    );
 } else {

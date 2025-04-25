@@ -1,13 +1,14 @@
 // Le composant racine React
-
 import React, { useState, useEffect } from "react";
 import Header from "./components/ui/Header";
 import Home from "./components/home/Home";
+import GameTest from "./components/play/GameTest";
 import Register from "./components/home/Register";
 import "./styles/global.css";
 import { socket } from "./socket";
 import ConnectionState from "./components/sockets/ConnectionState";
 import ConnectionManager from "./components/sockets/ConnectionManager";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
    // State -> component will refresh every time socket.connected changes
@@ -35,9 +36,13 @@ function App() {
    return (
       <>
          <Header />
-         {/* <Register /> */}
-         <Home />
          <main>
+            <Routes>
+               <Route path="/" element={<Home />} />
+               <Route path="/play" element={<GameTest />} />
+               {/* <Route path="/about" element={<Home />} /> */}
+               {/* <Register /> */}
+            </Routes>
          </main>
       </>      
    );
