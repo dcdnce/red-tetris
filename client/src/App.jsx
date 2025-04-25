@@ -35,7 +35,8 @@ function App() {
    return (
       <>
          <Header />
-         <Register />
+         {/* <Register /> */}
+         <Home />
          <main>
          </main>
       </>      

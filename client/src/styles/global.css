@@ -42,6 +42,14 @@ body {
    transition: background-color 0.2s ease-in-out;
 }
 
+/* DISPLAY */
+
+.d-flex{
+   display: flex;
+}
+
+/* MODAL */
+
 .modal {
    display: grid;
    justify-content:center;
@@ -70,22 +78,52 @@ body {
    text-align: center;
 }
 
-/* 
-.modalInput:active {
-   height: 150%;
-   border: solid 2px #064d69;
-   border-radius: 25px;
-} */
+/* BACKGROUND */
+
+.bg-blue {
+   background-color: rgb(216, 34, 34);
+}
+
+/* UTILS */
 
 .rounded-button {
    cursor: pointer;
    margin: 10% 10% 0 10%;
-   padding: 5%;
+   padding: 1vh;
    border: solid 0;
    border-radius: 50px;
    color: white;
+   text-align: center;
 }
 
-.bg-blue {
-   background-color: #064d69;
+.vintage-button {
+   display: block;
+   height: 100px;
+   width: 100px;
+   font-weight: 600;
+   font-size: large;
+   cursor: pointer;
+   color: white;
+   border: 15px double rgba(226, 71, 71, 0.514);
+   border-radius: 50%;
+   box-shadow: 6px 4px #333;
+   text-shadow: 1px 1px 1px white;
+}
+
+.vintage-button:hover {
+   animation: button linear 0.3s;
+   animation-fill-mode: forwards;
+}
+
+@keyframes button {
+   /* 0%{
+      b: 15px solid rgba(216, 34, 34, 0.514);
+   } */
+   100% {
+      transform: translate(8%, 8%) scale(0.95);
+      transform: scale(-100px);
+      box-shadow: 2px 1px #333;
+      border-width: 20px;
+      font-size: 98%;
+   }
 }
