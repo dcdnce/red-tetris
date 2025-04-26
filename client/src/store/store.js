@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-// Importer les futurs reducers ici
+// Importer les reducers ici
+import gameReducer from "./gameSlice";
 
 export const store = configureStore({
    reducer: {
-      // Mappage des features et de leurs reducers
+      game: gameReducer,
    },
    // Middleware
 });

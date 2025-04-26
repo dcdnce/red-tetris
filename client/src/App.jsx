@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./components/ui/Header";
 import Home from "./components/home/Home";
-import GameTest from "./components/play/GameTest";
+import GamePage from "./components/play/GamePage";
 import Register from "./components/home/Register";
 import "./styles/global.css";
 import { socket } from "./socket";
@@ -39,7 +39,7 @@ function App() {
          <main>
             <Routes>
                <Route path="/" element={<Home />} />
-               <Route path="/play" element={<GameTest />} />
+               <Route path="/play" element={<GamePage />} />
                {/* <Route path="/about" element={<Home />} /> */}
                {/* <Register /> */}
             </Routes>
