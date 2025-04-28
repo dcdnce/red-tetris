@@ -12,11 +12,11 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
    ReactDOM.createRoot(rootElement).render(
       <React.StrictMode>
-        <BrowserRouter>
+         <BrowserRouter>
             <Provider store={store}>
                <App />
             </Provider>
-         </BrowserRouter> 
+         </BrowserRouter>
       </React.StrictMode>
    );
 } else {

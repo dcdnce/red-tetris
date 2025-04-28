@@ -1,78 +1,86 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createTestTetrimino, calculateAbsoluteBlockPositions, isValidPosition } from './gameSliceTetriminos.js';
+import {
+   createTestTetrimino,
+   calculateAbsoluteBlockPositions,
+   isValidPosition,
+} from "./gameSliceTetriminos.js";
 
 // const createEmptyBoard = () => Array(20).fill(null).map(() => Array(10).fill(1));
-const createEmptyBoard = () => { return([
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]);}
+const createEmptyBoard = () => {
+   return [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+   ];
+};
 
 const initialState = {
-	board: createEmptyBoard(),
-	fallingTetrimino: createTestTetrimino(),
-	// etc
+   board: createEmptyBoard(),
+   fallingTetrimino: createTestTetrimino(),
+   // etc
 };
 
 export const gameSlice = createSlice({
-	name: 'game',
-	initialState,
-	reducers: { // (state + action = newState)
-		rotatePiece: (state) => {
-			const { fallingTetrimino, board } = state;
+   name: "game",
+   initialState,
+   reducers: {
+      // (state + action = newState)
+      rotatePiece: (state) => {
+         const { fallingTetrimino, board } = state;
 
-			if (!fallingTetrimino) {
-				return;
-			}
+         if (!fallingTetrimino) {
+            return;
+         }
 
-			const nextOrientation = (fallingTetrimino.orientation + 1) % 4;
+         const nextOrientation = (fallingTetrimino.orientation + 1) % 4;
 
-			const nextTetrimino = {
-				...fallingTetrimino,
-				orientation: nextOrientation,
-			};
+         const nextTetrimino = {
+            ...fallingTetrimino,
+            orientation: nextOrientation,
+         };
 
-			const nextBlockPositions = calculateAbsoluteBlockPositions(nextTetrimino);
-			const canRotate = isValidPosition(nextBlockPositions, board);
+         const nextBlockPositions =
+            calculateAbsoluteBlockPositions(nextTetrimino);
+         const canRotate = isValidPosition(nextBlockPositions, board);
 
-			// WALL KICK ??
+         // WALL KICK ??
 
-			if (canRotate) {
-				state.fallingTetrimino.orientation = nextOrientation;
-				console.log("can rotate!");
-			}
-		}
+         if (canRotate) {
+            state.fallingTetrimino.orientation = nextOrientation;
+            console.log("can rotate!");
+         }
+      },
 
-		// startGame
-		// movePieceLeft
-		// eraseLine
-		// etc
-	}
+      // startGame
+      // movePieceLeft
+      // eraseLine
+      // etc
+   },
 });
 
 // EXPORT ACTIONS
 // A utiliser dans vos composants React (via useDispatch).
 export const {
-	rotatePiece,
-	// startGame,
-	// movePieceLeft
+   rotatePiece,
+   // startGame,
+   // movePieceLeft
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

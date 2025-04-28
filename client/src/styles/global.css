@@ -50,11 +50,11 @@ body {
 
 /* DISPLAY */
 
-.d-flex{
+.d-flex {
    display: flex;
 }
 
-.d-grid{
+.d-grid {
    display: grid;
    grid-template-columns: 50% 50%;
    gap: 10px;
@@ -64,14 +64,14 @@ body {
    display: none;
 }
 
-.jc-center{
+.jc-center {
    justify-content: center;
 }
 
 /* MODAL */
 
 .modal {
-   justify-content:center;
+   justify-content: center;
    align-items: center;
    width: 25%;
    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
@@ -84,7 +84,7 @@ body {
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
-   position:fixed;
+   position: fixed;
 }
 
 .modal-input {
@@ -93,7 +93,7 @@ body {
    border-radius: 25px;
 }
 
-.modal-input[type='text'] {
+.modal-input[type="text"] {
    text-align: center;
 }
 
@@ -171,12 +171,12 @@ body {
 @keyframes onclick {
    100% {
       width: 110vw;
-      height:110vh;
+      height: 110vh;
       border-radius: 0;
       z-index: 0;
       box-shadow: 0;
       font-size: 3em;
-   }  
+   }
 }
 
 @keyframes changeButtonRight {
@@ -195,24 +195,23 @@ body {
    100% {
       transform: translateX(0%);
    }
-
 }
 
-@keyframes changeWindowsRight{
+@keyframes changeWindowsRight {
    100% {
-         transform: translateX(60%);
+      transform: translateX(60%);
    }
 }
 
-@keyframes changeWindowsLeft{
+@keyframes changeWindowsLeft {
    100% {
-         transform: translateX(-60%);
+      transform: translateX(-60%);
    }
 }
 
 /* ID */
 
-#homeInputRoom[type=text] {
+#homeInputRoom[type="text"] {
    max-width: 100%;
    max-height: 100%;
    background-color: rgb(216, 34, 34);
@@ -220,7 +219,7 @@ body {
    border-radius: 15%;
 }
 
-#homeInputRoom[type=text]:focus {
+#homeInputRoom[type="text"]:focus {
    max-width: 100%;
    max-height: 100%;
    background-color: rgb(216, 34, 34);
