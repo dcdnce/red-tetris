@@ -1,7 +1,6 @@
 import { Server as SocketIOServer } from "socket.io";
 import handlePing from "./socket-events/ping.js";
 import handleDisconnect from "./socket-events/disconnect.js";
-import handleRegister from "./socket-events/register.js";
 import handleTetrisRelated from "./socket-events/tetris.js";
 
 export function initializeSocketIO(server) {
@@ -18,7 +17,6 @@ export function initializeSocketIO(server) {
       console.log(`Client connected: ${socket.id}`);
 
       handlePing(socket);
-      handleRegister(socket);
       handleDisconnect(socket);
       handleTetrisRelated(socket);
    });

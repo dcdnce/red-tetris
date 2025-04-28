@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket.js";
+import Register from "./Register.jsx";
 //import styles from "../../styles/home/Home.module.css";
 
 const sleep = (ms) => {
@@ -152,6 +153,7 @@ function Home() {
                {createButtonText}
             </button>
          </div>
+         <Register />
       </>
    );
 }

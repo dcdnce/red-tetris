@@ -76,15 +76,13 @@ body {
    width: 25%;
    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
    border-radius: 5px;
+   color: black;
    background-color: #edf2f4;
    padding: 3rem;
 }
 
 .center-screen {
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   position: fixed;
+   margin: auto;
 }
 
 .modal-input {
@@ -111,7 +109,6 @@ body {
    padding: 1vh;
    border: solid 0;
    border-radius: 50px;
-   color: white;
    text-align: center;
 }
 
