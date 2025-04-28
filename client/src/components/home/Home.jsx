@@ -43,7 +43,6 @@ function Home(){
     }
 
     useEffect(() => {
-
         const refreshAnimation = () => {
             if (createButtonRef && joinButtonRef){
                 setClassButton({joinButton: "vintage-button bg-blue", createButton: "vintage-button bg-blue"});
@@ -77,7 +76,15 @@ function Home(){
             return;
         }
 
-        navigate(`/${roomName}/${socket.id}`);
+        socket.emit('room_join_request', { roomName }, (response) => {
+            if (response.success) {
+                navigate(`/${roomName}/${socket.id}`);
+                console.log(response.message);
+            }
+            else {
+                console.log(response.error);
+            }
+        });
 
         // setOnAnimation("SEND");
         // await sleep(499);

@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 function Play() {
    const dispatch = useDispatch();
    const { roomName, username } = useParams();
+   const [joinStatus, setJoinStatus] = useState("pending");
+   const [errorMessage, setErrorMessage] = useState("")
 
    // Inputs
    const handleUserInput = (event) => {
@@ -25,12 +27,41 @@ function Play() {
 
    // Specific room connexion
    useEffect(() => {
-      socket.emit('room_join', roomName);
+      socket.emit('room_join', { roomName }, (response) => {
+            if (response.success) {
+                console.log(response.message);
+                setJoinStatus("success");
+            }
+            else {
+                console.log(response.error);
+                setJoinStatus('error');
+                setErrorMessage(response.error);
+            }
+      });
 
       return () => {
          socket.emit('room_exit');
       }
    }, []);
+
+   if (joinStatus == "pending") {
+      return (
+         <>
+            <h2>Game compo test</h2>
+         </>
+      );
+   }
+
+   if (joinStatus == "error") {
+      return (
+         <>
+            <h2>Game compo test</h2>
+            <h3>Error Joining Room</h3>
+            <p style={{ color: 'red' }}>Could not join room '{roomName}'.</p>
+            <p style={{ color: 'red' }}>Reason: {errorMessage}</p>
+         </>
+      );
+   }
 
    return (
       <>
