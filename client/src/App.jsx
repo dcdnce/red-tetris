@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from "react";
 import Header from "./components/ui/Header";
 import Home from "./components/home/Home";
-import GameComponent from "./components/play/GameComponent";
+import Play from "./components/play/Play";
 import Register from "./components/home/Register";
 import "./styles/global.css";
 import { socket } from "./socket";
-import ConnectionState from "./components/sockets/ConnectionState";
-import ConnectionManager from "./components/sockets/ConnectionManager";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -39,7 +37,7 @@ function App() {
          <main>
             <Routes>
                <Route path="/" element={<Home />} />
-               <Route path="/play" element={<GameComponent />} />
+               <Route path="/play" element={<Play />} />
                <Route path="/about" element={<Home />} />
                {/* <Register />*/}
             </Routes>

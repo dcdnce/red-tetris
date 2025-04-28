@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Board from "./Board";
 import { rotatePiece } from "../../store/gameSlice";
 import { useDispatch } from "react-redux";
+import { socket } from "../../socket"
 
-function GameComponent() {
+function Play() {
    const dispatch = useDispatch();
 
    const handleUserInput = (event) => {
@@ -12,12 +13,22 @@ function GameComponent() {
       }
    };
 
+   // Inputs
    useEffect(() => {
       window.addEventListener('keydown', handleUserInput);
       return () => {
          window.removeEventListener('keydown', handleUserInput);
       };
    }, [dispatch]);
+
+   // Specific room connexion
+   useEffect(() => {
+      socket.emit('room_join', 'play'); // -> 'play' is room name
+
+      return () => {
+         socket.emit('room_exit');
+      }
+   }, []);
 
    return (
       <>
@@ -27,4 +38,4 @@ function GameComponent() {
    );
 }
 
-export default GameComponent;
+export default Play;
