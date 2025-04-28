@@ -60,6 +60,10 @@ body {
    gap: 10px;
 }
 
+.d-none {
+   display: none;
+}
+
 .jc-center{
    justify-content: center;
 }
@@ -126,13 +130,32 @@ body {
    text-shadow: 1px 1px 10px white;
 }
 
-.vintage-button:hover {
+/* .vintage-button:hover {
    animation: button linear 0.3s;
+   animation-fill-mode: forwards;
+} */
+
+.changeButtonRight {
+   animation: changeButtonRight linear 0.3s;
+}
+
+.changeButtonLeft {
+   animation: changeButtonLeft linear 0.3s;
+}
+
+.changeWindowsRight {
+   animation: changeWindowsRight linear 0.3s forwards;
    animation-fill-mode: forwards;
 }
 
-.vintage-button:focus {
-   animation: onclick linear 0.3s;
+.changeWindowsLeft {
+   animation: changeWindowsLeft linear 0.3s;
+   animation-fill-mode: forwards;
+}
+
+.change-windows {
+   border: 0;
+   animation: onclick linear 0.5s;
    animation-fill-mode: forwards;
 }
 
@@ -154,4 +177,52 @@ body {
       box-shadow: 0;
       font-size: 3em;
    }  
+}
+
+@keyframes changeButtonRight {
+   50% {
+      transform: translateX(60%);
+   }
+   100% {
+      transform: translateX(0%);
+   }
+}
+
+@keyframes changeButtonLeft {
+   50% {
+      transform: translateX(-60%);
+   }
+   100% {
+      transform: translateX(0%);
+   }
+
+}
+
+@keyframes changeWindowsRight{
+   100% {
+         transform: translateX(60%);
+   }
+}
+
+@keyframes changeWindowsLeft{
+   100% {
+         transform: translateX(-60%);
+   }
+}
+
+/* ID */
+
+#homeInputRoom[type=text] {
+   max-width: 100%;
+   max-height: 100%;
+   background-color: rgb(216, 34, 34);
+   border: 3px solid rgb(19, 18, 18);
+   border-radius: 15%;
+}
+
+#homeInputRoom[type=text]:focus {
+   max-width: 100%;
+   max-height: 100%;
+   background-color: rgb(216, 34, 34);
+   border: 2px solid rgba(226, 71, 71, 0.514);
 }

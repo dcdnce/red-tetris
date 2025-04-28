@@ -40,8 +40,8 @@ function App() {
             <Routes>
                <Route path="/" element={<Home />} />
                <Route path="/play" element={<GameComponent />} />
-               {/* <Route path="/about" element={<Home />} /> */}
-               {/* <Register /> */}
+               <Route path="/about" element={<Home />} />
+               {/* <Register />*/}
             </Routes>
          </main>
       </>      

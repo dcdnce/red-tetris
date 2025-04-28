@@ -18,7 +18,7 @@ function Header() {
                      <Link to="/play">Play</Link>
                   </li>
                   <li className="ngos-global">
-                     <Link to="/">About</Link>
+                     <Link to="/about">About</Link>
                   </li>
                </ul>
             </nav>
