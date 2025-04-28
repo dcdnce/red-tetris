@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-// import socket from "../../socket";
+import { useNavigate } from "react-router-dom";
+import { socket } from "../../socket.js"
 //import styles from "../../styles/home/Home.module.css";
 
 const sleep = (ms) => {
@@ -18,6 +19,7 @@ function Home(){
     const [onAnimation, setOnAnimation] = useState("None");
     const joinButtonRef = useRef(null);
     const createButtonRef = useRef(null);
+    const navigate = useNavigate();
     
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -70,9 +72,16 @@ function Home(){
     }
 
     async function joinRoom(){
-        setOnAnimation("SEND");
-        await sleep(499);
-        setClassButton({joinButton: "d-none", createButton:"vintage-button bg-blue change-windows"});
+        if (!roomName.trim()) {
+            alert("Please enter a room name.");
+            return;
+        }
+
+        navigate(`/${roomName}/${socket.id}`);
+
+        // setOnAnimation("SEND");
+        // await sleep(499);
+        // setClassButton({joinButton: "d-none", createButton:"vintage-button bg-blue change-windows"});
         
     }
 

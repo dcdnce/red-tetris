@@ -15,9 +15,6 @@ function Header() {
             <nav className={styles.nav}>
                <ul>
                   <li className="ngos-global">
-                     <Link to="/play">Play</Link>
-                  </li>
-                  <li className="ngos-global">
                      <Link to="/about">About</Link>
                   </li>
                </ul>

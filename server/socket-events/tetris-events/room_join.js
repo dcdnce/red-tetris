@@ -1,7 +1,7 @@
 export default function handleRoomJoin(socket)
 {
 	socket.on('room_join', (roomName) => {
-		if (typeof roomName !== 'string' || roomName !== 'play') {
+		if (typeof roomName !== 'string') {
 			console.warn(`Invalid room name received from ${socket.id}:`, roomName);
 		}
 

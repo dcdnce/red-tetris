@@ -100,7 +100,7 @@ body {
 /* BACKGROUND */
 
 .bg-blue {
-   background-color: rgb(216, 34, 34);
+   background-color: #edf2f4;
 }
 
 /* UTILS */
@@ -123,8 +123,8 @@ body {
    font-size: 0.8em;
    margin: 10px;
    cursor: pointer;
-   color: white;
-   border: 15px double rgba(226, 71, 71, 0.514);
+   color: rgb(0, 0, 0);
+   border: 3px solid rgba(185, 185, 185, 0.514);
    border-radius: 15%;
    box-shadow: 6px 4px #333;
    text-shadow: 1px 1px 10px white;

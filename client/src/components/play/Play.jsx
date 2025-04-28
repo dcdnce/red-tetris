@@ -3,17 +3,19 @@ import Board from "./Board";
 import { rotatePiece } from "../../store/gameSlice";
 import { useDispatch } from "react-redux";
 import { socket } from "../../socket"
+import { useParams } from "react-router-dom";
 
 function Play() {
    const dispatch = useDispatch();
+   const { roomName, username } = useParams();
 
+   // Inputs
    const handleUserInput = (event) => {
       if (event.key == 'ArrowUp') {
          dispatch(rotatePiece())
       }
    };
 
-   // Inputs
    useEffect(() => {
       window.addEventListener('keydown', handleUserInput);
       return () => {
@@ -23,7 +25,7 @@ function Play() {
 
    // Specific room connexion
    useEffect(() => {
-      socket.emit('room_join', 'play'); // -> 'play' is room name
+      socket.emit('room_join', roomName);
 
       return () => {
          socket.emit('room_exit');
