@@ -14,8 +14,8 @@ function Home() {
    const [joinButtonText, setJoinButtonText] = useState("JOIN");
    const [createButtonText, setCreateButtonText] = useState("CREATE");
    const [classButton, setClassButton] = useState({
-      joinButton: "vintage-button bg-blue",
-      createButton: "vintage-button bg-blue",
+      joinButton: "button-press button-press-hover bg-blue",
+      createButton: "button-press button-press-hover bg-blue",
    });
    const [onAnimation, setOnAnimation] = useState("None");
    const joinButtonRef = useRef(null);
@@ -27,13 +27,13 @@ function Home() {
    async function displayInput(e) {
       e.preventDefault();
       if (showInput === false) {
-         setOnAnimation("JOIN");
+         setOnAnimation("change-button");
          await sleep(150);
          setShowInput(true);
          setJoinButtonText("");
          setCreateButtonText("JOIN");
       } else {
-         setOnAnimation("JOIN");
+         setOnAnimation("change-button");
          await sleep(150);
          setShowInput(false);
          setJoinButtonText("JOIN");
@@ -45,18 +45,18 @@ function Home() {
       const refreshAnimation = () => {
          if (createButtonRef && joinButtonRef) {
             setClassButton({
-               joinButton: "vintage-button bg-blue",
-               createButton: "vintage-button bg-blue",
+               joinButton: "button-press button-press-hover bg-blue",
+               createButton: "button-press button-press-hover bg-blue",
             });
             setOnAnimation("");
          }
       };
 
-      if (joinButtonRef.current && createButtonRef && onAnimation == "JOIN") {
+      if (joinButtonRef.current && createButtonRef && onAnimation == "change-button") {
          setClassButton((prev) => ({
             ...prev,
-            joinButton: `${prev.joinButton} changeButtonRight`,
-            createButton: ` ${prev.createButton} changeButtonLeft`,
+            joinButton: `button-press bg-blue move-to-right`,
+            createButton: ` button-press bg-blue move-to-left`,
          }));
          joinButtonRef.current.addEventListener(
             "animationend",
@@ -64,11 +64,11 @@ function Home() {
          );
       }
 
-      if (joinButtonRef.current && createButtonRef && onAnimation == "SEND") {
+      if (joinButtonRef.current && createButtonRef && onAnimation == "change-windows") {
          setClassButton((prev) => ({
             ...prev,
-            joinButton: `${prev.joinButton} changeWindowsRight`,
-            createButton: ` ${prev.createButton} changeWindowsLeft`,
+            joinButton: `button-press bg-blue move-to-right-forwards`,
+            createButton: `button-press bg-blue move-to-left-forwards`,
          }));
       }
 
@@ -76,7 +76,7 @@ function Home() {
          if (
             joinButtonRef.current &&
             createButtonRef.current &&
-            onAnimation != "SEND"
+            onAnimation != "change-windows"
          ) {
             joinButtonRef.current.removeEventListener(
                "animationend",
@@ -107,9 +107,9 @@ function Home() {
          }
       });
 
-      // setOnAnimation("SEND");
+      // setOnAnimation(change-windows");
       // await sleep(499);
-      // setClassButton({joinButton: "d-none", createButton:"vintage-button bg-blue change-windows"});
+      // setClassButton({joinButton: "d-none", createButton:"button-press bg-blue change-windows"});
    }
 
    function createRoom() {}
