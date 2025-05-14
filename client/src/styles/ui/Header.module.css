@@ -1,15 +1,13 @@
 .header {
-   background-color: #edf2f4; /* Bleu foncé/gris */
-   padding: 1rem;
-   border-radius: 5px;
-   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+   background-color: var(--color-black);
+   color: color-mix(in srgb, var(--color-black), var(--color-white) var(--font-lighten-amount));
+   grid-area: 1 / 1 / 2 / 2;
 }
 
 .container {
    display: flex;
-   justify-content: space-between;
+   justify-content: left;
    align-items: center;
-   min-height: 50px;
    font-weight: bold;
 }
 
@@ -20,18 +18,8 @@
    height: 2rem;
 }
 
-.nav ul {
-   list-style: none;
-   padding: 0;
-   margin: 0;
-   display: flex;
-}
-
-.nav li {
-   margin-left: 1.5rem;
-   cursor: pointer;
-}
-
 .title {
    margin-left: 1rem;
+   color: color-mix(in srgb, var(--color-orange), black var(--darken-amount));
+
 }

@@ -116,7 +116,7 @@ function Home() {
 
    return (
       <>
-         <div className="d-flex center-screen">
+         <div className="d-flex center-screen home">
             <button
                id="homeButton1"
                className={classButton.joinButton}
