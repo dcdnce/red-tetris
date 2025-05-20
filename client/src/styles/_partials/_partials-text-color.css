@@ -1,0 +1,11 @@
+.text-red {
+   color: var(--color-red-darken);
+}
+
+.text-cyan {
+   color: var(--color-cyan-darken);
+}
+
+.text-blue {
+   color: var(--color-blue-darken);
+}

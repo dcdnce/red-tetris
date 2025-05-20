@@ -6,7 +6,6 @@ function Register() {
    const [username, setUsername] = useState(localStorage.getItem("username"));
    const [input, setInput] = useState("");
 
-
    function sendUsername() {
       localStorage.setItem("username", input);
       setUsername(input);
@@ -30,7 +29,10 @@ function Register() {
                   placeholder="Type your username"
                   type="text"
                ></input>
-               <button className="rounded-button bg-red" onClick={sendUsername}>
+               <button
+                  className="rounded-button bg-red"
+                  onClick={sendUsername}
+               >
                   Register
                </button>
             </div>
@@ -45,7 +47,7 @@ function Register() {
             Disconnect
          </button>
       </div>
-   )
+   );
 }
 
 export default Register;

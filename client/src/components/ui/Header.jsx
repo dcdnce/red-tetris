@@ -4,11 +4,11 @@ import styles from "../../styles/ui/Header.module.css";
 
 function Header() {
    return (
-      <header className={`${styles.header} card`}>
+      <header className={`${styles.header} card bg-red text-red`}>
          <Link to="/">
             <div className={styles.container}>
                <div className={styles.logoSpan}></div>
-               <h1 className={styles.title}>Tetris</h1>
+               <h1>Tetris</h1>
             </div>
          </Link>
       </header>

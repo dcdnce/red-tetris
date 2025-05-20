@@ -2,20 +2,24 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket.js";
 import Register from "./Register.jsx";
-//import styles from "../../styles/home/Home.module.css";
+import styles from "../../styles/home/Home.module.css";
 
 const sleep = (ms) => {
    return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+function createButtonIcon() {
+   return <h1>(●´⌓`●)</h1>;
+}
+
 function Home() {
    const [showInput, setShowInput] = useState(false);
    const [roomName, setRoomName] = useState("");
-   const [joinButtonText, setJoinButtonText] = useState("JOIN");
-   const [createButtonText, setCreateButtonText] = useState("CREATE");
+   const [joinButtonText, setJoinButtonText] = useState("Join");
+   const [createButtonText, setCreateButtonText] = useState("Create");
    const [classButton, setClassButton] = useState({
-      joinButton: "button-press button-press-hover bg-blue",
-      createButton: "button-press button-press-hover bg-blue",
+      joinButton: "button-press button-press-hover card bg-cyan text-cyan",
+      createButton: "button-press button-press-hover card bg-blue text-blue",
    });
    const [onAnimation, setOnAnimation] = useState("None");
    const joinButtonRef = useRef(null);
@@ -31,13 +35,13 @@ function Home() {
          await sleep(150);
          setShowInput(true);
          setJoinButtonText("");
-         setCreateButtonText("JOIN");
+         setCreateButtonText("Join");
       } else {
          setOnAnimation("change-button");
          await sleep(150);
          setShowInput(false);
-         setJoinButtonText("JOIN");
-         setCreateButtonText("CREATE");
+         setJoinButtonText("Join");
+         setCreateButtonText("Create");
       }
    }
 
@@ -45,18 +49,24 @@ function Home() {
       const refreshAnimation = () => {
          if (createButtonRef && joinButtonRef) {
             setClassButton({
-               joinButton: "button-press button-press-hover bg-blue",
-               createButton: "button-press button-press-hover bg-blue",
+               joinButton:
+                  "button-press button-press-hover card bg-cyan text-cyan",
+               createButton:
+                  "button-press button-press-hover card bg-blue text-blue",
             });
             setOnAnimation("");
          }
       };
 
-      if (joinButtonRef.current && createButtonRef && onAnimation == "change-button") {
+      if (
+         joinButtonRef.current &&
+         createButtonRef &&
+         onAnimation == "change-button"
+      ) {
          setClassButton((prev) => ({
             ...prev,
-            joinButton: `button-press bg-blue move-to-right`,
-            createButton: ` button-press bg-blue move-to-left`,
+            joinButton: `button-press move-to-right card bg-cyan text-cyan`,
+            createButton: ` button-press move-to-left card bg-blue text-blue`,
          }));
          joinButtonRef.current.addEventListener(
             "animationend",
@@ -64,11 +74,15 @@ function Home() {
          );
       }
 
-      if (joinButtonRef.current && createButtonRef && onAnimation == "change-windows") {
+      if (
+         joinButtonRef.current &&
+         createButtonRef &&
+         onAnimation == "change-windows"
+      ) {
          setClassButton((prev) => ({
             ...prev,
-            joinButton: `button-press bg-blue move-to-right-forwards`,
-            createButton: `button-press bg-blue move-to-left-forwards`,
+            joinButton: `button-press move-to-right-forwards card bg-cyan text-cyan`,
+            createButton: `button-press move-to-left-forwards card bg-blue text-blue`,
          }));
       }
 
@@ -116,44 +130,46 @@ function Home() {
 
    return (
       <>
-         <div className="d-flex center-screen home">
-            <button
-               id="homeButton1"
-               className={classButton.joinButton}
-               onClick={(e) => {
-                  displayInput(e);
-               }}
-               ref={joinButtonRef}
-            >
-               {joinButtonText}
-               {showInput && (
-                  <input
-                     id="homeInputRoom"
-                     value={roomName}
-                     placeholder="Room Name"
-                     onChange={(e) => {
-                        setRoomName(e.target.value);
-                     }}
-                     onClick={(e) => {
-                        e.stopPropagation();
-                     }}
-                     autoFocus
-                     type="text"
-                  />
-               )}
-            </button>
-            <button
-               id="homeButton2"
-               className={classButton.createButton}
-               onClick={() => {
-                  createButtonText === "CREATE" ? createRoom() : joinRoom();
-               }}
-               ref={createButtonRef}
-            >
-               {createButtonText}
-            </button>
-         </div>
-         <Register />
+         <button
+            id="homeButton1"
+            className={`${styles.homeButton1} ${classButton.joinButton}`}
+            onClick={(e) => {
+               displayInput(e);
+            }}
+            ref={joinButtonRef}
+         >
+            <h3 className={`${styles.homeButtonText}`}>{joinButtonText}</h3>
+            {!showInput && <h3 className={`${styles.homeButtonIcon}`}>╰⋃╯</h3>}
+            {showInput && (
+               <input
+                  id="homeInputRoom"
+                  value={roomName}
+                  placeholder="Room Name"
+                  onChange={(e) => {
+                     setRoomName(e.target.value);
+                  }}
+                  onClick={(e) => {
+                     e.stopPropagation();
+                  }}
+                  autoFocus
+                  type="text"
+               />
+            )}
+         </button>
+         <button
+            id="homeButton2"
+            className={`${styles.homeButton2} ${classButton.createButton}`}
+            onClick={() => {
+               createButtonText === "Create" ? createRoom() : joinRoom();
+            }}
+            ref={createButtonRef}
+         >
+            <h3 className={`${styles.homeButtonText}`}>{createButtonText}</h3>
+            {!showInput && (
+               <h3 className={`${styles.homeButtonIcon}`}>( ㅅ )</h3>
+            )}
+         </button>
+         {/* <Register /> */}
       </>
    );
 }

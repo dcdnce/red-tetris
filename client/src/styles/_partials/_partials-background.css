@@ -1,0 +1,37 @@
+/* _utilities-backgrounds.css */
+
+.bg-blue {
+   background-color: var(--color-blue);
+}
+
+.bg-red {
+   background-color: var(--color-red);
+}
+
+.bg-cyan {
+   background-color: var(--color-cyan);
+}
+
+.bg-orange {
+   background-color: var(--color-orange);
+}
+
+.bg-green {
+   background-color: var(--color-green);
+}
+
+.bg-purple {
+   background-color: var(--color-purple);
+}
+
+.bg-yellow {
+   background-color: var(--color-yellow);
+}
+
+.bg-white {
+   background-color: var(--color-white);
+}
+
+.bg-black {
+   background-color: var(--color-black);
+}
