@@ -3,6 +3,8 @@
 @import url("./_partials/_partials-pre-steps.css");
 
 :root {
+   font-size: 1vw;
+
    --app-grid-col-size: 10;
    --app-grid-row-size: 10;
    --font-darken-amount: 40%;
@@ -44,12 +46,19 @@ html {
    line-height: 1.6;
 }
 
+input {
+   width: 100%;
+   height: 100%;
+   border-radius: 5px;
+   font-size: 1.5rem;
+}
+
 /* GLOBAL IDENTITY */
 
 .card {
    padding: 1rem;
    border-radius: 5px;
-   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
    border-style: none;
 }
 
@@ -152,7 +161,6 @@ html {
       border-radius: 0;
       z-index: 0;
       box-shadow: 0;
-      font-size: 3em;
    }
 }
 
@@ -188,17 +196,3 @@ html {
 
 /* ID */
 
-#homeInputRoom[type="text"] {
-   max-width: 100%;
-   max-height: 100%;
-   background-color: rgb(216, 34, 34);
-   border: 3px solid rgb(19, 18, 18);
-   border-radius: 15%;
-}
-
-#homeInputRoom[type="text"]:focus {
-   max-width: 100%;
-   max-height: 100%;
-   background-color: rgb(216, 34, 34);
-   border: 2px solid rgba(226, 71, 71, 0.514);
-}

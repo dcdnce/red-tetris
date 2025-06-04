@@ -3,6 +3,7 @@
    display: grid;
    grid-template-columns: 1fr 1fr;
    grid-template-rows: 1fr 1fr;
+   /* background-color: red !important; */
 }
 
 .homeButton2 {
@@ -15,11 +16,18 @@
 .homeButtonText {
    grid-row: 1 / 2;
    grid-column: 1 / 2;
-   text-align: left;
+   align-self: start;
+   justify-self: start;
 }
 
 .homeButtonIcon {
    grid-row: 2 / 3;
    grid-column: 2 / 3;
-   text-align: right;
+   align-self: end;
+   justify-self: end;
+}
+
+.homeInputRoom {
+   grid-area: 1 / 1 / 2 / 3;
+   width: 100%;
 }

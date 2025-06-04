@@ -8,10 +8,6 @@ const sleep = (ms) => {
    return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-function createButtonIcon() {
-   return <h1>(●´⌓`●)</h1>;
-}
-
 function Home() {
    const [showInput, setShowInput] = useState(false);
    const [roomName, setRoomName] = useState("");
@@ -142,7 +138,7 @@ function Home() {
             {!showInput && <h3 className={`${styles.homeButtonIcon}`}>╰⋃╯</h3>}
             {showInput && (
                <input
-                  id="homeInputRoom"
+                  className={`${styles.homeInputRoom}`}
                   value={roomName}
                   placeholder="Room Name"
                   onChange={(e) => {
@@ -155,6 +151,7 @@ function Home() {
                   type="text"
                />
             )}
+            {showInput && <h3 className={`${styles.homeButtonIcon}`}>✕</h3>}
          </button>
          <button
             id="homeButton2"
