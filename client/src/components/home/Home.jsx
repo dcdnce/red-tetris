@@ -115,7 +115,7 @@ function Home() {
          return;
       }
 
-      socket.emit("room_join_request", { roomName, username }, (response) => {
+      socket.emit("room_join", { roomName, username }, (response) => {
          if (response.success) {
             navigate(`/${roomName}/${username}`);
             console.log(response.message);

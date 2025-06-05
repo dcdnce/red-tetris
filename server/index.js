@@ -4,6 +4,8 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import { initializeSocketIO } from "./socket.js";
+import GameMapSingleton from "./objects/gameMapSingleton.js";
+import ActivePlayersSingleton from "./objects/activePlayersSingleton.js";
 
 /* --- Configuration initiale --- */
 const PORT = process.env.SERVER_PORT || 3001; // Récupère le port depuis les variables d'environnement ou utilise 3001 par défaut
@@ -36,6 +38,10 @@ appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
       }
    });
 });
+
+/* --- Game Logic Related --- */
+const gameMap = new GameMapSingleton();
+const activePlayers = new ActivePlayersSingleton();
 
 /* --- Socket.IO --- */
 const io = initializeSocketIO(httpServer);

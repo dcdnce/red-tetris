@@ -27,7 +27,7 @@ function Play() {
 
    // Specific room connexion
    useEffect(() => {
-      socket.emit("room_join", { roomName }, (response) => {
+      socket.emit("room_join", { roomName, username}, (response) => {
          if (response.success) {
             console.log(response.message);
             setJoinStatus("success");
