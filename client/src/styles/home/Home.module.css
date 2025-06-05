@@ -1,5 +1,5 @@
 .homeButton1 {
-   grid-area: 1 / 7 / 3 / 9;
+   grid-area: 2 / -5 / 4 / -3;
    display: grid;
    grid-template-columns: 1fr 1fr;
    grid-template-rows: 1fr 1fr;
@@ -7,7 +7,7 @@
 }
 
 .homeButton2 {
-   grid-area: 1 / 9 / 3 / 11;
+   grid-area: 2 / -3 / 4 / -1;
    display: grid;
    grid-template-columns: 1fr 1fr;
    grid-template-rows: 1fr 1fr;

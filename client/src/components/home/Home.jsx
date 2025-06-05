@@ -103,14 +103,21 @@ function Home() {
    async function changeWindows() {}
 
    async function joinRoom() {
+      const username = localStorage.getItem("username")
+
       if (!roomName.trim()) {
          alert("Please enter a room name.");
          return;
       }
 
-      socket.emit("room_join_request", { roomName }, (response) => {
+      if (username === null) {
+         alert("Please register.");
+         return;
+      }
+
+      socket.emit("room_join_request", { roomName, username }, (response) => {
          if (response.success) {
-            navigate(`/${roomName}/${socket.id}`);
+            navigate(`/${roomName}/${username}`);
             console.log(response.message);
          } else {
             console.log(response.error);

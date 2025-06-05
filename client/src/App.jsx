@@ -16,8 +16,8 @@ function App() {
          <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/:roomName/:username" element={<Play />} />
-            {/* <Register />*/}
          </Routes>
+         <Register />
       </div>
    );
 }

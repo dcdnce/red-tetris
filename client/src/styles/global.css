@@ -53,6 +53,11 @@ input {
    font-size: 1.5rem;
 }
 
+button {
+   border-radius: 5px;
+   font-size: 1.5rem;
+}
+
 /* GLOBAL IDENTITY */
 
 .card {
@@ -97,16 +102,6 @@ input {
 
 .center-screen {
    margin: auto;
-}
-
-.modal-input {
-   height: 150%;
-   border: solid 2px #064d69;
-   border-radius: 25px;
-}
-
-.modal-input[type="text"] {
-   text-align: center;
 }
 
 /* UTILS */
