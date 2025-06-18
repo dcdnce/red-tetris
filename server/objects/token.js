@@ -1,7 +1,6 @@
 
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-dotenv.config();
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 class Token {
     constructor(username) {

@@ -1,11 +1,11 @@
-import Game from "./game";
+//import Game from "./game";
 
 class GameMapSingleton {
 	constructor() {
 		if (GameMapSingleton._instance) {
 			return GameMapSingleton._instance;
 		}
-		_instance = this;
+		GameMapSingleton._instance = this;
 
 		this.container = new Map(); // <roomName, Game>
 	}

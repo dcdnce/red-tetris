@@ -4,10 +4,6 @@ import { socket } from "../../socket.js";
 import Register from "./Register.jsx";
 import styles from "../../styles/home/Home.module.css";
 
-const sleep = (ms) => {
-   return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 function Home() {
    const [showInput, setShowInput] = useState(false);
    const [roomName, setRoomName] = useState("");

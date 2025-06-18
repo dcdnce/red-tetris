@@ -1,11 +1,11 @@
-import Player from "./player";
+import Player from "./player.js";
 
 class ActivePlayersSingleton {
 	constructor() {
 		if (ActivePlayersSingleton._instance) {
 			return ActivePlayersSingleton._instance;
 		}
-		_instance = this;
+		ActivePlayersSingleton._instance = this;
 
 		this.container = new Map(); // <username, Player>
 	}

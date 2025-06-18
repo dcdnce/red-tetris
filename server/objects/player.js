@@ -1,5 +1,5 @@
-import ActivePlayersSingleton from "./activePlayersSingleton";
-import Token from "./token";
+import ActivePlayersSingleton from "./activePlayersSingleton.js";
+import Token from "./token.js";
 
 class Player {
 	constructor(username) {
@@ -10,7 +10,7 @@ class Player {
 		this.currentGameRoomName = null;
 		this.token = new Token(username).token;
 		console.log(`Player created: ${username} with token: ${this.token}`);
-		activePlayers = new ActivePlayersSingleton();
+		const activePlayers = new ActivePlayersSingleton();
         activePlayers.set(username, this);
 
 	}

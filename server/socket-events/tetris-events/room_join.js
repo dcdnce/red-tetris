@@ -9,8 +9,8 @@ export default function handleRoomJoinRequest(socket) {
    socket.on("room_join", (params, callback) => {
       const roomName = params.roomName;
       const username = params.username;
-      activePlayers = new ActivePlayersSingleton();
-      gameMap = new GameMapSingleton();
+      const activePlayers = new ActivePlayersSingleton();
+      const gameMap = new GameMapSingleton();
 
       if (roomJoinRoomNameCheck(roomName, socket) == false) {
          return callback({
