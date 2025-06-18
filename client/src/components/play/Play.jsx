@@ -27,40 +27,40 @@ function Play() {
 
    // Specific room connexion
    useEffect(() => {
-      socket.emit("room_join", { roomName, username}, (response) => {
-         if (response.success) {
-            console.log(response.message);
-            setJoinStatus("success");
-         } else {
-            console.log(response.error);
-            setJoinStatus("error");
-            setErrorMessage(response.error);
-         }
-      });
+      // socket.emit("room_join", { roomName, username}, (response) => {
+      //    if (response.success) {
+      //       console.log(response.message);
+      //       setJoinStatus("success");
+      //    } else {
+      //       console.log(response.error);
+      //       setJoinStatus("error");
+      //       setErrorMessage(response.error);
+      //    }
+      // });
 
-      return () => {
-         socket.emit("room_exit");
-      };
+      // return () => {
+      //    socket.emit("room_exit");
+      // };
    }, []);
 
-   if (joinStatus == "pending") {
-      return (
-         <>
-            <h2>Game compo test</h2>
-         </>
-      );
-   }
+   // if (joinStatus == "pending") {
+   //    return (
+   //       <>
+   //          <h2>Game compo test</h2>
+   //       </>
+   //    );
+   // }
 
-   if (joinStatus == "error") {
-      return (
-         <>
-            <h2>Game compo test</h2>
-            <h3>Error Joining Room</h3>
-            <p style={{ color: "red" }}>Could not join room '{roomName}'.</p>
-            <p style={{ color: "red" }}>Reason: {errorMessage}</p>
-         </>
-      );
-   }
+   // if (joinStatus == "error") {
+   //    return (
+   //       <>
+   //          <h2>Game compo test</h2>
+   //          <h3>Error Joining Room</h3>
+   //          <p style={{ color: "red" }}>Could not join room '{roomName}'.</p>
+   //          <p style={{ color: "red" }}>Reason: {errorMessage}</p>
+   //       </>
+   //    );
+   // }
 
    return (
       <>

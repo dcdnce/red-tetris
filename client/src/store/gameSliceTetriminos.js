@@ -16,7 +16,7 @@ export const createTestTetrimino = () => {
    return {
       type: kTetriminosTypes[0],
       orientation: 0,
-      position: [9, 5],
+      position: [7, 5],
       // etc
    };
 };

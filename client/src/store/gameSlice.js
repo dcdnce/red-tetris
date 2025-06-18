@@ -6,6 +6,7 @@ import {
 } from "./gameSliceTetriminos.js";
 
 // const createEmptyBoard = () => Array(20).fill(null).map(() => Array(10).fill(1));
+
 const createEmptyBoard = () => {
    return [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
