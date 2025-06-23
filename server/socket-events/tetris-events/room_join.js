@@ -22,30 +22,22 @@ export default function handleRoomJoinRequest(socket) {
       // ACTIVE PLAYERS CHECK
          // Player doesn't exist
             // Create player
+            // TODO -> send back a token
             // => ACTIVE ROOM CHECK
          // Player exist
-            // Check socket id
-               // Different => fuck off (connected to a room)
-               // Null => welcome back
-                  // => ACTIVE ROOM CHECK
+            // Return error -> already connected somewhere
+            // TODO -> check token to handle reconnection
+            // => ACTIVE ROOM CHECK
 
       let player = null;
+      console.log(`ActivePlayers has ${username} == ${activePlayers.has(username)}`);
       if (activePlayers.has(username) === true) {
          player = activePlayers.get(username);
 
-         if (player.currentSocketId !== null) {
-            return callback({
-               success: false,
-               error: `Player '${username}' is already connected somewhere.`,
-            });
-         }
-
-         if (player.currentSocketId === socket.id) {
-            return callback({
-               success: true,
-               message: `Client ${username} joined room: ${roomName}`,
-            });
-         }
+         return callback({
+            success: false,
+            error: `Player '${username}' is already registered somewhere in an other room.`,
+         });
       }
       
       if (activePlayers.has(username) === false) {
@@ -71,15 +63,13 @@ export default function handleRoomJoinRequest(socket) {
          game = new Game(roomName);
       }
 
-      player.currentSocketId = socket.id;
       player.currentGameRoomName = roomName;
       game.players.set(username, player);
 
-
-      console.log(`Client ${username} can join room: ${roomName}`);
+      console.log(`Client ${username} joined room: ${roomName}`);
       return callback({
          success: true,
-         message: `Client ${username} can join room: ${roomName}`,
+         message: `Client ${username} joined room: ${roomName}`,
       });
    });
 }

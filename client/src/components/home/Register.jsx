@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import styles from "../../styles/home/Register.module.css"
-import { socket } from "../../socket";
 
 function Register() {
    const [username, setUsername] = useState(localStorage.getItem("username"));

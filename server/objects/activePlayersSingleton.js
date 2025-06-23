@@ -21,6 +21,10 @@ class ActivePlayersSingleton {
 	set(key, value) {
 		this.container.set(key, value);
 	}
+
+	delete(key) {
+		return this.container.delete(key);
+	}
 }
 
 export default ActivePlayersSingleton;

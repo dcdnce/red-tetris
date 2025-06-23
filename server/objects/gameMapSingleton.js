@@ -18,6 +18,10 @@ class GameMapSingleton {
 		return this.container.has(key);
 	}
 
+	delete(key) {
+		return this.container.delete(key);
+	}
+
 	set(key, value) {
 		this.container.set(key, value);
 	}

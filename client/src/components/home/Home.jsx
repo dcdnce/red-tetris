@@ -111,18 +111,7 @@ function Home() {
          return;
       }
 
-      socket.emit("room_join", { roomName, username }, (response) => {
-         if (response.success) {
-            navigate(`/${roomName}/${username}`);
-            console.log(response.message);
-         } else {
-            console.log(response.error);
-         }
-      });
-
-      // setOnAnimation(change-windows");
-      // await sleep(499);
-      // setClassButton({joinButton: "d-none", createButton:"button-press bg-blue change-windows"});
+      navigate(`/${roomName}/${username}`);
    }
 
    function createRoom() {}

@@ -9,7 +9,8 @@ class Game {
 		this.board = null;
 
 		const gameMap = new GameMapSingleton();
-        gameMap.set(roomName, this);
+        gameMap.set(roomName, this); // <roomName, Game>
+
 
 	}
 }
