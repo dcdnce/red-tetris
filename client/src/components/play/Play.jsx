@@ -1,15 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import Board from "./Board";
-import { rotatePiece } from "../../store/gameSlice";
-import { useDispatch } from "react-redux";
+// import { rotatePiece } from "../../store/gameSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../socket";
 import { useParams } from "react-router-dom";
+import { setBoard } from '../../store/gameSlice';
+
+let localBoard = "";
 
 function Play() {
    const dispatch = useDispatch();
    const { roomName, username } = useParams();
    const [joinStatus, setJoinStatus] = useState("pending");
    const [errorMessage, setErrorMessage] = useState("");
+   const gameBoard = useSelector((state) => state.game.board);
+
+   useEffect(() => {
+      socket.emit("get_board", {username, roomName}, (response) => {
+         if (response.success) {
+            dispatch(setBoard(response.content));
+            console.log("Board received:", response.content);
+         } else {
+            console.error("Error receiving board:", response.error);
+         }
+      });
+   },  [joinStatus, dispatch, roomName, username]);
 
    // Inputs
    const handleUserInput = (event) => {
@@ -65,7 +80,7 @@ function Play() {
    return (
       <>
          <h2>Game compo test</h2>
-         <Board />
+         <Board/>
       </>
    );
 }
