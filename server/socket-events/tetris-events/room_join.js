@@ -4,6 +4,7 @@ import Player from "../../objects/player.js";
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Game from "../../objects/game.js";
 import { use } from "react";
+import { io } from "socket.io-client";
 
 export default function handleRoomJoinRequest(socket) {
    socket.on("room_join", (params, callback) => {
@@ -65,11 +66,21 @@ export default function handleRoomJoinRequest(socket) {
 
       player.currentGameRoomName = roomName;
       game.players.set(username, player);
+      socket.join(roomName);
 
       console.log(`Client ${username} joined room: ${roomName}`);
-      return callback({
-         success: true,
+
+      socket.emit('join_room_success', {
          message: `Client ${username} joined room: ${roomName}`,
+         // initialGameState
+         username: player.username,
+         roomName: game.roomName,
+         playersInRoom: game.getPlayerListForClient()
+      });
+
+      socket.to(roomName).emit('update_player_list', {
+         message: `Client ${username} joined room: ${roomName}`,
+         playersInRoom: game.getPlayerListForClient()
       });
    });
 }

@@ -1,12 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isPending } from "@reduxjs/toolkit";
 import {
    createTestTetrimino,
    calculateAbsoluteBlockPositions,
    isValidPosition,
 } from "./gameSliceTetriminos.js";
+import { act } from "react";
 
 const initialState = {
    board: null,
+   roomName: null,
+   username: null,
+   playersInRoom: [],
+   roomStatus: 'pending',
+   error: null,
 }
 
 const gameSlice = createSlice({
@@ -16,97 +22,36 @@ const gameSlice = createSlice({
       setBoard: (state, action) => {
          state.board = action.payload;
       },
+      joinRoomSuccess: (state, action) => {
+         state.username = action.payload.username;
+         state.roomName = action.payload.roomName;
+         state.playersInRoom = action.payload.playersInRoom;
+         console.log(`Players in room: ${state.playersInRoom}`);
+         state.roomStatus = 'loaded';
+         // state.board = action.payload.initialGameState.board;
+      },
+      updatePlayerList: (state, action) => {
+         // recu quand un autre joueur rejoint ou quitte
+         state.playersInRoom = action.payload.playersInRoom;
+         console.log(`Players in room: ${state.playersInRoom}`);
+      },
+      joinRoomFailed: (state, action) => {
+         state.roomStatus = 'error';
+         state.error = action.payload.error;
+      },
    },
 });
 
-export const { setBoard } = gameSlice.actions;
+export const { 
+   setBoard,
+   joinRoomSuccess,
+   joinRoomFailed,
+   updatePlayerList,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;
 
-// const createEmptyBoard = () => Array(20).fill(null).map(() => Array(10).fill(1));
-
-// const createEmptyBoard = () => {
-//    return [
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-//    ];
-// };
-
-// const initialState = {
-//    board: createEmptyBoard(),
-//    fallingTetrimino: createTestTetrimino(),
-//    // etc
-// };
-
-// export const gameSlice = createSlice({
-//    name: "game",
-//    initialState,
-//    reducers: {
-//       // (state + action = newState)
-//       rotatePiece: (state) => {
-//          const { fallingTetrimino, board } = state;
-
-//          if (!fallingTetrimino) {
-//             return;
-//          }
-
-//          const nextOrientation = (fallingTetrimino.orientation + 1) % 4;
-
-//          const nextTetrimino = {
-//             ...fallingTetrimino,
-//             orientation: nextOrientation,
-//          };
-
-//          const nextBlockPositions =
-//             calculateAbsoluteBlockPositions(nextTetrimino);
-//          const canRotate = isValidPosition(nextBlockPositions, board);
-
-//          // WALL KICK ??
-
-//          if (canRotate) {
-//             state.fallingTetrimino.orientation = nextOrientation;
-//             console.log("can rotate!");
-//          }
-//       },
-
-//       // startGame
-//       // movePieceLeft
-//       // eraseLine
-//       // etc
-//    },
-// });
-
-// // EXPORT ACTIONS
-// // A utiliser dans vos composants React (via useDispatch).
-// export const {
-//    rotatePiece,
-//    // startGame,
-//    // movePieceLeft
-// } = gameSlice.actions;
-
-// export default gameSlice.reducer;
-
-// // EXPORT SELECTORS
-// // Les selectors permettent d'extraire des parties spécifiques de l'état
-// // dans les composants React sans qu'ils aient à connaître la structure exacte du state.
-// export const selectGame = (state) => state.game;
-// export const selectBoard = (state) => state.game.board;
-// export const selectFallingTetrimino = (state) => state.game.fallingTetrimino;
+// Selectors
+export const selectRoomStatus = (state) => state.game.roomStatus;
+export const selectRoomError = (state) => state.game.error;
+export const selectPlayerGameBoard = (state) => state.game.board;

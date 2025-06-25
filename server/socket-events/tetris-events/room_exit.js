@@ -25,6 +25,8 @@ export default function handleRoomExit(socket) {
          // TODO -> handle reconnection with token
       delete activePlayers.delete(username);
 
+      socket.leave(currentGameRoomName);
+
       console.log(`Client ${username} exited room: ${currentGameRoomName}`);
    });
 }

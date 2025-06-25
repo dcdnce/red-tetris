@@ -35,6 +35,16 @@ class Game {
 			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		];
 	};
+
+	getPlayerListForClient() {
+		const playerList = [];
+		for (const [username, playerData] of this.players) {
+			playerList.push({
+				username: username
+			});
+		}
+		return playerList;
+	}
 }
 
 export default Game;
