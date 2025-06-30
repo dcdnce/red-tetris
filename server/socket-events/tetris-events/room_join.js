@@ -3,8 +3,7 @@ import ActivePlayersSingleton from "../../objects/activePlayersSingleton.js";
 import Player from "../../objects/player.js";
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Game from "../../objects/game.js";
-import { use } from "react";
-import { io } from "socket.io-client";
+import Logger from "../../utils/logger.js";
 
 export default function handleRoomJoinRequest(socket) {
    socket.on("room_join", (params, callback) => {
@@ -30,8 +29,8 @@ export default function handleRoomJoinRequest(socket) {
             // TODO -> check token to handle reconnection
             // => ACTIVE ROOM CHECK
 
+      Logger.debug(`ActivePlayers has ${username} == ${activePlayers.has(username)}`);
       let player = null;
-      console.log(`ActivePlayers has ${username} == ${activePlayers.has(username)}`);
       if (activePlayers.has(username) === true) {
          player = activePlayers.get(username);
 
@@ -41,9 +40,7 @@ export default function handleRoomJoinRequest(socket) {
          });
       }
       
-      if (activePlayers.has(username) === false) {
-         player = new Player(username);
-      }
+      player = new Player(username);
       
       // => we have a Player, that wants to connect to a room
       // ACTIVE ROOM CHECK
@@ -66,16 +63,19 @@ export default function handleRoomJoinRequest(socket) {
 
       player.currentGameRoomName = roomName;
       game.players.set(username, player);
-      socket.join(roomName);
+      socket.join(roomName); // socketio room
 
-      console.log(`Client ${username} joined room: ${roomName}`);
+      Logger.debug(`Client ${username} joined room: ${roomName}`);
 
       socket.emit('join_room_success', {
          message: `Client ${username} joined room: ${roomName}`,
          // initialGameState
          username: player.username,
          roomName: game.roomName,
-         playersInRoom: game.getPlayerListForClient()
+         playersInRoom: game.getPlayerListForClient(),
+         // TEMP
+         // Board will be later inherent to each player
+         board: player.board
       });
 
       socket.to(roomName).emit('update_player_list', {

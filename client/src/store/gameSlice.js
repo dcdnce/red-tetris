@@ -27,8 +27,10 @@ const gameSlice = createSlice({
          state.roomName = action.payload.roomName;
          state.playersInRoom = action.payload.playersInRoom;
          console.log(`Players in room: ${state.playersInRoom}`);
+         state.board = action.payload.board;
          state.roomStatus = 'loaded';
-         // state.board = action.payload.initialGameState.board;
+         // TEMP
+         // Board will be later inherent to each player
       },
       updatePlayerList: (state, action) => {
          // recu quand un autre joueur rejoint ou quitte

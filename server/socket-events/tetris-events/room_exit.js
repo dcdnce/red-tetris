@@ -1,5 +1,6 @@
 import ActivePlayersSingleton from "../../objects/activePlayersSingleton.js";
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
+import Logger from "./../../utils/logger.js"
 
 export default function handleRoomExit(socket) {
    socket.on("room_exit", (params) => {
@@ -18,6 +19,7 @@ export default function handleRoomExit(socket) {
       
       if (currentGame.players.size === 0) {
          gameMap.delete(currentGame)
+         Logger.debug(`Deleting room: ${currentGameRoomName}, last player left.`);
       }
 
       // Player deletion
@@ -25,8 +27,8 @@ export default function handleRoomExit(socket) {
          // TODO -> handle reconnection with token
       delete activePlayers.delete(username);
 
-      socket.leave(currentGameRoomName);
+      socket.leave(currentGameRoomName); // Leave socket.io room
 
-      console.log(`Client ${username} exited room: ${currentGameRoomName}`);
+      Logger.debug(`Client ${username} exited room: ${currentGameRoomName}`);
    });
 }

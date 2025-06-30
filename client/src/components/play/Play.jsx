@@ -11,7 +11,6 @@ function Play() {
    const { roomName, username } = useParams();
    const roomStatus = useSelector(selectRoomStatus);
    const errorMessage = useSelector(selectRoomError);
-   const gameBoard = useSelector(selectPlayerGameBoard);
 
    useEffect(() => {
       socket.on('join_room_success', (data) => {
@@ -33,17 +32,6 @@ function Play() {
          // socket.off('player_left_room');
        };
      }, [dispatch, socket]);
-
-   useEffect(() => {
-      socket.emit("get_board", {username, roomName}, (response) => {
-         if (response.success) {
-            dispatch(setBoard(response.content));
-            console.log("Board received:", response.content);
-         } else {
-            console.error("Error receiving board:", response.error);
-         }
-      });
-   },  [roomStatus, dispatch, roomName, username]);
 
    // // Inputs
    // const handleUserInput = (event) => {
