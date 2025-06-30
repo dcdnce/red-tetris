@@ -51,7 +51,7 @@ function Play() {
    useEffect(() => {
       socket.emit("room_join", { roomName, username});
       return () => {
-            socket.emit("room_exit", {username});
+            socket.emit("room_exit");
       }
    }, []);
 

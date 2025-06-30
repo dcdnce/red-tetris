@@ -1,9 +1,11 @@
+import { socket } from "../../client/src/socket.js";
 import ActivePlayersSingleton from "./activePlayersSingleton.js";
 import Token from "./token.js";
 
 class Player {
-	constructor(username) {
+	constructor(username, socket) {
 		this.username = username;
+		this.socket = socket
 		// this.userId = generateUserId()
 		// this.lastSeen  === null
 		this.currentGameRoomName = null;

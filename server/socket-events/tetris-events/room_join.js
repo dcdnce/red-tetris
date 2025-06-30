@@ -13,10 +13,11 @@ export default function handleRoomJoinRequest(socket) {
       const gameMap = new GameMapSingleton();
 
       if (roomJoinRoomNameCheck(roomName, socket) == false) {
-         return callback({
+         Logger.debug(`Room name '${roomName}' is invalid.`);
+         return (socket.emit('join_room_failed', {
             success: false,
             error: `Room name '${roomName}' is invalid.`,
-         });
+         }));
       }
 
       // ACTIVE PLAYERS CHECK
@@ -34,13 +35,14 @@ export default function handleRoomJoinRequest(socket) {
       if (activePlayers.has(username) === true) {
          player = activePlayers.get(username);
 
-         return callback({
+         Logger.debug(`Player '${username}' is already registered somewhere in an other room.`);
+         return (socket.emit('join_room_failed', {
             success: false,
             error: `Player '${username}' is already registered somewhere in an other room.`,
-         });
+         }));
       }
       
-      player = new Player(username);
+      player = new Player(username, socket);
       
       // => we have a Player, that wants to connect to a room
       // ACTIVE ROOM CHECK
@@ -61,9 +63,10 @@ export default function handleRoomJoinRequest(socket) {
          game = new Game(roomName);
       }
 
+      socket.username = username; // !Important - if socket has no username it won't clean the room at exit time.
       player.currentGameRoomName = roomName;
+      player.socket.join(roomName); // socketio room
       game.players.set(username, player);
-      socket.join(roomName); // socketio room
 
       Logger.debug(`Client ${username} joined room: ${roomName}`);
 

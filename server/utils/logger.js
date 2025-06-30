@@ -11,7 +11,6 @@ export default class Logger {
 		blue: "\x1b[34m"
 	};
 
-
 	static error(message) {
 		console.error(`${this._colors.red}[ERROR]${this._colors.reset} ${message}`);
 	}
