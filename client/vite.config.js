@@ -16,14 +16,14 @@ export default defineConfig({
          "/api": {
             target: `http://localhost:${BACKEND_PORT}`,
             changeOrigin: true,
-            secure: false
+            secure: false,
          },
          // Proxy pour Socket.IO (essentiel !)
          "/socket.io": {
             target: `http://localhost:${BACKEND_PORT}`,
             secure: false,
             ws: true, // Activer le proxy WebSocket
-            changeOrigin: true
+            changeOrigin: true,
          },
       },
    },

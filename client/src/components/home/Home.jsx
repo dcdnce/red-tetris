@@ -99,7 +99,7 @@ function Home() {
    async function changeWindows() {}
 
    async function joinRoom() {
-      const username = localStorage.getItem("username")
+      const username = localStorage.getItem("username");
 
       if (!roomName.trim()) {
          alert("Please enter a room name.");

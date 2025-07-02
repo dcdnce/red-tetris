@@ -11,7 +11,7 @@ import Logger from "./utils/logger.js";
 /* --- Configuration initiale --- */
 const PORT = process.env.SERVER_PORT || 3001; // Récupère le port depuis les variables d'environnement ou utilise 3001 par défaut
 
-Logger.info(`Server is in debug mode : ${process.env.DEBUG}`);
+Logger.info(false, `Server is in debug mode : ${process.env.DEBUG}`);
 
 // Calcule les chemins __dirname et __filename pour les modules ES
 // __filename correspond au chemin complet du fichier courant (server/index.js)

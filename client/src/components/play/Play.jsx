@@ -4,7 +4,15 @@ import Board from "./Board";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../socket";
 import { useParams } from "react-router-dom";
-import { selectRoomStatus, selectRoomError, joinRoomSuccess, joinRoomFailed, updatePlayerList, selectPlayerGameBoard, setBoard } from '../../store/gameSlice';
+import {
+   selectRoomStatus,
+   selectRoomError,
+   joinRoomSuccess,
+   joinRoomFailed,
+   updatePlayerList,
+   selectPlayerGameBoard,
+   setBoard,
+} from "../../store/gameSlice";
 
 function Play() {
    const dispatch = useDispatch();
@@ -13,25 +21,25 @@ function Play() {
    const errorMessage = useSelector(selectRoomError);
 
    useEffect(() => {
-      socket.on('join_room_success', (data) => {
+      socket.on("join_room_success", (data) => {
          dispatch(joinRoomSuccess(data));
-       });
-     
-       socket.on('join_room_failed', (data) => {
-         dispatch(joinRoomFailed(data));
-       });
-     
-       socket.on('update_player_list', (data) => {
-         dispatch(updatePlayerList(data));
-       });
+      });
 
-       return () => {
-         socket.off('join_room_success');
-         socket.off('join_room_failed');
-         socket.off('update_player_list');
+      socket.on("join_room_failed", (data) => {
+         dispatch(joinRoomFailed(data));
+      });
+
+      socket.on("update_player_list", (data) => {
+         dispatch(updatePlayerList(data));
+      });
+
+      return () => {
+         socket.off("join_room_success");
+         socket.off("join_room_failed");
+         socket.off("update_player_list");
          // socket.off('player_left_room');
-       };
-     }, [dispatch, socket]);
+      };
+   }, [dispatch, socket]);
 
    // // Inputs
    // const handleUserInput = (event) => {
@@ -49,10 +57,10 @@ function Play() {
 
    // Room connexion
    useEffect(() => {
-      socket.emit("room_join", { roomName, username});
+      socket.emit("room_join", { roomName, username });
       return () => {
-            socket.emit("room_exit");
-      }
+         socket.emit("room_exit");
+      };
    }, []);
 
    if (roomStatus == "pending") {
@@ -77,7 +85,7 @@ function Play() {
    return (
       <>
          <h2>Game compo test</h2>
-         <Board/>
+         <Board />
       </>
    );
 }

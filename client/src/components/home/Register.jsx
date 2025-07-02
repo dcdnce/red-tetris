@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import styles from "../../styles/home/Register.module.css"
+import styles from "../../styles/home/Register.module.css";
 
 function Register() {
    const [username, setUsername] = useState(localStorage.getItem("username"));
@@ -19,7 +19,9 @@ function Register() {
    if (username === null) {
       return (
          <>
-            <div className={` ${styles.registerBlock} card bg-cyan text-cyan `}>
+            <div
+               className={` ${styles.registerBlock} card bg-cyan text-cyan `}
+            >
                <input
                   className={`${styles.registerInput}`}
                   value={input}
@@ -30,7 +32,7 @@ function Register() {
                   type="text"
                ></input>
                <button
-                  className={ ` ${styles.registerButton} bg-blue text-blue `}
+                  className={` ${styles.registerButton} bg-blue text-blue `}
                   onClick={sendUsername}
                >
                   Register
@@ -41,10 +43,10 @@ function Register() {
    }
 
    return (
-         <div className={` ${styles.registerBlock} card bg-cyan text-cyan `}>
+      <div className={` ${styles.registerBlock} card bg-cyan text-cyan `}>
          <p>Registered</p>
          <button
-            className={ ` ${styles.registerButton} bg-blue text-blue `}
+            className={` ${styles.registerButton} bg-blue text-blue `}
             onClick={disconnect}
          >
             Disconnect

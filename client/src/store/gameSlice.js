@@ -11,12 +11,12 @@ const initialState = {
    roomName: null,
    username: null,
    playersInRoom: [],
-   roomStatus: 'pending',
+   roomStatus: "pending",
    error: null,
-}
+};
 
 const gameSlice = createSlice({
-   name: 'game',
+   name: "game",
    initialState,
    reducers: {
       setBoard: (state, action) => {
@@ -28,7 +28,7 @@ const gameSlice = createSlice({
          state.playersInRoom = action.payload.playersInRoom;
          console.log(`Players in room: ${state.playersInRoom}`);
          state.board = action.payload.board;
-         state.roomStatus = 'loaded';
+         state.roomStatus = "loaded";
          // TEMP
          // Board will be later inherent to each player
       },
@@ -38,18 +38,14 @@ const gameSlice = createSlice({
          console.log(`Players in room: ${state.playersInRoom}`);
       },
       joinRoomFailed: (state, action) => {
-         state.roomStatus = 'error';
+         state.roomStatus = "error";
          state.error = action.payload.error;
       },
    },
 });
 
-export const { 
-   setBoard,
-   joinRoomSuccess,
-   joinRoomFailed,
-   updatePlayerList,
-} = gameSlice.actions;
+export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList } =
+   gameSlice.actions;
 
 export default gameSlice.reducer;
 

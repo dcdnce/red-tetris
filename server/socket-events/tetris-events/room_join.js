@@ -1,89 +1,88 @@
-import { roomJoinRoomNameCheck } from "../../utils/socket_checks.js";
 import ActivePlayersSingleton from "../../objects/activePlayersSingleton.js";
 import Player from "../../objects/player.js";
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Game from "../../objects/game.js";
 import Logger from "../../utils/logger.js";
+import emitUpdatePlayerList from "./emit_update_player_list.js";
+import emitJoinRoomFail from "./emit_join_room_fail.js";
+import emitJoinRoomSuccess from "./emit_join_room_success.js";
 
 export default function handleRoomJoinRequest(socket) {
-   socket.on("room_join", (params, callback) => {
+   socket.on("room_join", (params) => {
       const roomName = params.roomName;
       const username = params.username;
-      const activePlayers = new ActivePlayersSingleton();
-      const gameMap = new GameMapSingleton();
 
-      if (roomJoinRoomNameCheck(roomName, socket) == false) {
-         Logger.debug(`Room name '${roomName}' is invalid.`);
-         return (socket.emit('join_room_failed', {
-            success: false,
-            error: `Room name '${roomName}' is invalid.`,
-         }));
-      }
+      try {
+         roomNameCheck(roomName);
 
-      // ACTIVE PLAYERS CHECK
+         activePlayersCheck(username);
+
          // Player doesn't exist
-            // Create player
-            // TODO -> send back a token
-            // => ACTIVE ROOM CHECK
-         // Player exist
-            // Return error -> already connected somewhere
-            // TODO -> check token to handle reconnection
-            // => ACTIVE ROOM CHECK
+         //   - Create player
+         // TODO -> send back a token
+         let player = new Player(username, socket);
 
-      Logger.debug(`ActivePlayers has ${username} == ${activePlayers.has(username)}`);
-      let player = null;
-      if (activePlayers.has(username) === true) {
-         player = activePlayers.get(username);
+         gameRoomConnectionOrCreation(roomName, player);
 
-         Logger.debug(`Player '${username}' is already registered somewhere in an other room.`);
-         return (socket.emit('join_room_failed', {
-            success: false,
-            error: `Player '${username}' is already registered somewhere in an other room.`,
-         }));
+         emitJoinRoomSuccess(socket, player);
+
+         emitUpdatePlayerList(socket, player);
+      } catch (error) {
+         Logger.error(true, error.stack);
+         emitJoinRoomFail(socket, error);
       }
-      
-      player = new Player(username, socket);
-      
-      // => we have a Player, that wants to connect to a room
-      // ACTIVE ROOM CHECK
-         // Room exist (later check room state, pending, launched, etc)
-            // Retrieve room
-            // ADD PLAYER
-         // Room doesn't exist
-            // Create room
-            // ADD PLAYER
-         
-
-      let game = null;
-      if (gameMap.has(roomName) == true) {
-         game = gameMap.get(roomName);
-      }
-
-      if (gameMap.has(roomName) == false) {
-         game = new Game(roomName);
-      }
-
-      socket.username = username; // !Important - if socket has no username it won't clean the room at exit time.
-      player.currentGameRoomName = roomName;
-      player.socket.join(roomName); // socketio room
-      game.players.set(username, player);
-
-      Logger.debug(`Client ${username} joined room: ${roomName}`);
-
-      socket.emit('join_room_success', {
-         message: `Client ${username} joined room: ${roomName}`,
-         // initialGameState
-         username: player.username,
-         roomName: game.roomName,
-         playersInRoom: game.getPlayerListForClient(),
-         // TEMP
-         // Board will be later inherent to each player
-         board: player.board
-      });
-
-      socket.to(roomName).emit('update_player_list', {
-         message: `Client ${username} joined room: ${roomName}`,
-         playersInRoom: game.getPlayerListForClient()
-      });
    });
+}
+
+function roomNameCheck(roomName) {
+   if (
+      typeof roomName !== "string" ||
+      !roomName.trim().length ||
+      roomName.trim().length > 5
+   ) {
+      throw new Error(`Room name '${roomName}' is invalid.`);
+   }
+}
+
+function activePlayersCheck(username) {
+   const activePlayers = new ActivePlayersSingleton();
+
+   // Logs
+   Logger.info(
+      true,
+      `ActivePlayers has ${username} == ${activePlayers.has(username)}`
+   );
+
+   // Player exist
+   //   - Return error -> already connected somewhere
+   // TODO -> check token to handle reconnection
+   if (activePlayers.has(username) === true) {
+      throw new Error(
+         `Player '${username}' is already registered somewhere in an other room.`
+      );
+   }
+}
+
+function gameRoomConnectionOrCreation(roomName, player) {
+   const gameMap = new GameMapSingleton();
+
+   let game = null;
+
+   // Room exist (later check room state, pending, launched, etc)
+   // Retrieve room
+   // ADD PLAYER
+   if (gameMap.has(roomName) == true) {
+      game = gameMap.get(roomName);
+   }
+
+   // Room doesn't exist
+   // Create room
+   // ADD PLAYER
+   if (gameMap.has(roomName) == false) {
+      game = new Game(roomName);
+   }
+
+   player.socket.join(roomName); // socketio room
+   game.players.set(player.username, player);
+   player.currentGame = game;
 }
