@@ -10,7 +10,7 @@ import {
    joinRoomSuccess,
    joinRoomFailed,
    updatePlayerList,
-   selectPlayerGameBoard,
+   selectPlayersInRoom,
    setBoard,
 } from "../../store/gameSlice";
 
@@ -19,6 +19,7 @@ function Play() {
    const { roomName, username } = useParams();
    const roomStatus = useSelector(selectRoomStatus);
    const errorMessage = useSelector(selectRoomError);
+   const playersInRoom = useSelector(selectPlayersInRoom);
 
    useEffect(() => {
       socket.on("join_room_success", (data) => {
@@ -84,10 +85,12 @@ function Play() {
 
    return (
       <>
-         <h2>Game compo test</h2>
-         <Board />
+        <h2>Game compo test</h2>
+        {playersInRoom.map((_, i) => (
+          <Board key={i} number={i} />
+        ))}
       </>
-   );
+    );
 }
 
 export default Play;

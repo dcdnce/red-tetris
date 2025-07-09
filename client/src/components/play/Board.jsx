@@ -13,8 +13,8 @@ function Block({ row, col }) {
    return <div className={styles.block} style={style} />;
 }
 
-function Board() {
-   const gameBoard = useSelector((state) => state.game.board);
+function Board({number}) {
+   const gameBoard = useSelector((state) => state.game.playersInRoom[number].board);
    const fallingTetrimino = useSelector(
       (state) => state.game.fallingTetrimino
    );

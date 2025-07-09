@@ -7,10 +7,9 @@ import {
 import { act } from "react";
 
 const initialState = {
-   board: null,
    roomName: null,
    username: null,
-   playersInRoom: [],
+   playersInRoom: [], // each player contains username and board
    roomStatus: "pending",
    error: null,
 };
@@ -26,11 +25,10 @@ const gameSlice = createSlice({
          state.username = action.payload.username;
          state.roomName = action.payload.roomName;
          state.playersInRoom = action.payload.playersInRoom;
-         console.log(`Players in room: ${state.playersInRoom}`);
-         state.board = action.payload.board;
+         for (const p of state.playersInRoom) {
+            console.log(`${p.username} with board: ${p.board}`);
+         };
          state.roomStatus = "loaded";
-         // TEMP
-         // Board will be later inherent to each player
       },
       updatePlayerList: (state, action) => {
          // recu quand un autre joueur rejoint ou quitte
@@ -50,6 +48,7 @@ export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList } =
 export default gameSlice.reducer;
 
 // Selectors
+//    - Ready to use lambda function to access Redux store
 export const selectRoomStatus = (state) => state.game.roomStatus;
 export const selectRoomError = (state) => state.game.error;
-export const selectPlayerGameBoard = (state) => state.game.board;
+export const selectPlayersInRoom = (state) => state.game.playersInRoom || [];

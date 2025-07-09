@@ -1,6 +1,7 @@
 import ActivePlayersSingleton from "../../objects/activePlayersSingleton.js";
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Logger from "./../../utils/logger.js";
+import emitUpdatePlayerList from "./emit_update_player_list.js";
 
 export default function handleRoomExit(socket) {
    const activePlayers = new ActivePlayersSingleton();
@@ -13,9 +14,9 @@ export default function handleRoomExit(socket) {
       const roomName = player.currentGame.roomName;
       const game = gameMap.get(roomName);
       if (game) {
-         delete game.players[username];
+         game.players.delete(username);
 
-         // Game deletion if last player
+         // Last player ?
          if (game.players.size === 0) {
             gameMap.delete(roomName);
             Logger.info(true, `Deleting room: ${roomName}, last player left.`);
@@ -28,6 +29,7 @@ export default function handleRoomExit(socket) {
       activePlayers.delete(username);
       socket.leave(roomName); // Leave socket.io room
       socket.username = null;
+      emitUpdatePlayerList(game);
 
       Logger.info(true, `Client ${username} exited room: ${roomName}`);
    };

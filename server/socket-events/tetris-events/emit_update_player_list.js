@@ -1,13 +1,14 @@
 import Logger from "../../utils/logger.js";
+import { ioServer } from "../../index.js";
 
-export default function emitUpdatePlayerList(socket, player) {
+export default function emitUpdatePlayerList(game) {
    Logger.info(
       true,
-      `Update player list for room ${player.currentGame.roomName}`
+      `Update player list for room ${game.roomName}`
    );
 
-   socket.to(player.currentGame.roomName).emit("update_player_list", {
-      message: `Client ${socket.username} joined room: ${player.currentGame.roomName}`,
-      playersInRoom: player.currentGame.getPlayerListForClient(),
+   ioServer.to(game.roomName).emit("update_player_list", {
+      message: `Update player list for room ${game.roomName}`,
+      playersInRoom: game.getPlayerListForClient(),
    });
 }

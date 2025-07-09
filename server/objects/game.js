@@ -15,6 +15,7 @@ class Game {
       for (const [username, playerData] of this.players) {
          playerList.push({
             username: username,
+            board: playerData.board,
          });
       }
       return playerList;

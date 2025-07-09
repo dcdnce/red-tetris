@@ -47,7 +47,7 @@ const gameMap = new GameMapSingleton();
 const activePlayers = new ActivePlayersSingleton();
 
 /* --- Socket.IO --- */
-const io = initializeSocketIO(httpServer);
+export const ioServer = initializeSocketIO(httpServer);
 
 /* --- Demarrage serveur --- */
 httpServer.listen(PORT, () => {
