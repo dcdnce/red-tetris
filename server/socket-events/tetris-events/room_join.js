@@ -19,10 +19,9 @@ export default function handleRoomJoinRequest(socket) {
 
          let game = gameMap.get(roomName);
 
-         let player = new Player(username, socket);
+         let player = new Player(username, socket, game);
          player.socket.join(roomName); // socketio room
          game.players.set(player.username, player);
-         player.currentGame = game;
          socket.player = player; // !Important - if socket has no player it won't clean the room at exit time.
 
          emitJoinRoomSuccess(socket, player);

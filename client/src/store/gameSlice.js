@@ -25,6 +25,7 @@ const gameSlice = createSlice({
          state.username = action.payload.username;
          state.roomName = action.payload.roomName;
          state.playersInRoom = action.payload.playersInRoom;
+         localStorage.setItem(String(action.payload.username + action.payload.roomName), action.payload.token)
          for (const p of state.playersInRoom) {
             console.log(`${p.username} with board: ${p.board}`);
          };

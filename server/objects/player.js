@@ -1,15 +1,14 @@
 import Token from "./token.js";
 
 class Player {
-   constructor(username, socket) {
+   constructor(username, socket, game) {
       this.username = username;
       this.socket = socket;
       // this.userId = generateUserId()
       // this.lastSeen  === null
-      this.currentGame = null;
+      this.currentGame = game;
       this.board = this.createEmptyBoard();
-      // this.token = new Token(username).token;
-      // console.log(`Player created: ${username} with token: ${this.token}`);
+      this.token = new Token(username, game.roomName).token;
    }
 
    createEmptyBoard() {
