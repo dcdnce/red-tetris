@@ -5,7 +5,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { initializeSocketIO } from "./socket.js";
 import GameMapSingleton from "./objects/gameMapSingleton.js";
-import ActivePlayersSingleton from "./objects/activePlayersSingleton.js";
 import Logger from "./utils/logger.js";
 
 /* --- Configuration initiale --- */
@@ -44,7 +43,6 @@ appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
 
 /* --- Game Logic Related --- */
 const gameMap = new GameMapSingleton();
-const activePlayers = new ActivePlayersSingleton();
 
 /* --- Socket.IO --- */
 export const ioServer = initializeSocketIO(httpServer);

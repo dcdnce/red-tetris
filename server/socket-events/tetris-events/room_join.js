@@ -1,4 +1,3 @@
-import ActivePlayersSingleton from "../../objects/activePlayersSingleton.js";
 import Player from "../../objects/player.js";
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Game from "../../objects/game.js";
@@ -11,22 +10,25 @@ export default function handleRoomJoinRequest(socket) {
    socket.on("room_join", (params) => {
       const roomName = params.roomName;
       const username = params.username;
+      const gameMap = new GameMapSingleton();
 
       try {
          roomNameCheck(roomName);
 
-         activePlayersCheck(username);
+         gameRoomConnectionOrCreation(roomName, username);
 
-         // Player doesn't exist
-         //   - Create player
-         // TODO -> send back a token
+         let game = gameMap.get(roomName);
+
          let player = new Player(username, socket);
-
-         gameRoomConnectionOrCreation(roomName, player);
+         player.socket.join(roomName); // socketio room
+         game.players.set(player.username, player);
+         player.currentGame = game;
+         socket.player = player; // !Important - if socket has no player it won't clean the room at exit time.
 
          emitJoinRoomSuccess(socket, player);
 
          emitUpdatePlayerList(player.currentGame);
+
       } catch (error) {
          Logger.error(true, error.stack);
          emitJoinRoomFail(socket, error);
@@ -44,26 +46,7 @@ function roomNameCheck(roomName) {
    }
 }
 
-function activePlayersCheck(username) {
-   const activePlayers = new ActivePlayersSingleton();
-
-   // Logs
-   Logger.info(
-      true,
-      `ActivePlayers has ${username} == ${activePlayers.has(username)}`
-   );
-
-   // Player exist
-   //   - Return error -> already connected somewhere
-   // TODO -> check token to handle reconnection
-   if (activePlayers.has(username) === true) {
-      throw new Error(
-         `Player '${username}' is already registered somewhere in an other room.`
-      );
-   }
-}
-
-function gameRoomConnectionOrCreation(roomName, player) {
+function gameRoomConnectionOrCreation(roomName, username) {
    const gameMap = new GameMapSingleton();
 
    let game = null;
@@ -73,6 +56,7 @@ function gameRoomConnectionOrCreation(roomName, player) {
    // ADD PLAYER
    if (gameMap.has(roomName) == true) {
       game = gameMap.get(roomName);
+      playerExistsInRoomCheck(game, username)
    }
 
    // Room doesn't exist
@@ -82,7 +66,21 @@ function gameRoomConnectionOrCreation(roomName, player) {
       game = new Game(roomName);
    }
 
-   player.socket.join(roomName); // socketio room
-   game.players.set(player.username, player);
-   player.currentGame = game;
+}
+
+function playerExistsInRoomCheck(game, username) {
+   // Logs
+   Logger.info(
+      true,
+      `Room ${game.roomName} has ${username} == ${game.players.has(username)}`
+   );
+
+   // Player exist
+   //   - Return error -> already taken
+   // TODO -> check token to handle reconnection
+   if (game.players.has(username) === true) {
+      throw new Error(
+         `Player '${username}' is already registered in this room.`
+      );
+   }
 }
