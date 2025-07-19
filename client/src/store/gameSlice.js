@@ -25,16 +25,15 @@ const gameSlice = createSlice({
          state.username = action.payload.username;
          state.roomName = action.payload.roomName;
          state.playersInRoom = action.payload.playersInRoom;
-         localStorage.setItem(String(action.payload.username + action.payload.roomName), action.payload.token)
          for (const p of state.playersInRoom) {
-            console.log(`${p.username} with board: ${p.board}`);
+            // console.log(`${p.username} with board: ${p.board}`);
          };
          state.roomStatus = "loaded";
       },
       updatePlayerList: (state, action) => {
          // recu quand un autre joueur rejoint ou quitte
          state.playersInRoom = action.payload.playersInRoom;
-         console.log(`Players in room: ${state.playersInRoom}`);
+         // console.log(`Players in room: ${state.playersInRoom}`);
       },
       joinRoomFailed: (state, action) => {
          state.roomStatus = "error";
@@ -43,7 +42,7 @@ const gameSlice = createSlice({
    },
 });
 
-export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList } =
+export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList} =
    gameSlice.actions;
 
 export default gameSlice.reducer;

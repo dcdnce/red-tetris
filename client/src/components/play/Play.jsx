@@ -1,46 +1,51 @@
-import React, { useState, useEffect, useRef } from "react";
-import Board from "./Board";
-// import { rotatePiece } from "../../store/gameSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { socket } from "../../socket";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Board from "./Board";
 import {
-   selectRoomStatus,
-   selectRoomError,
-   joinRoomSuccess,
-   joinRoomFailed,
-   updatePlayerList,
-   selectPlayersInRoom,
-   setBoard,
+  selectRoomStatus,
+  selectRoomError,
+  selectPlayersInRoom,
 } from "../../store/gameSlice";
+import { useRoomSocketHandlers } from "../../hooks/useRoomSocketHandlers.js";
+import { useRoomJoin } from "../../hooks/useRoomJoin.js";
 
 function Play() {
-   const dispatch = useDispatch();
-   const { roomName, username } = useParams();
-   const roomStatus = useSelector(selectRoomStatus);
-   const errorMessage = useSelector(selectRoomError);
-   const playersInRoom = useSelector(selectPlayersInRoom);
+  const { roomName, username } = useParams();
+  const roomStatus = useSelector(selectRoomStatus);
+  const errorMessage = useSelector(selectRoomError);
+  const playersInRoom = useSelector(selectPlayersInRoom);
 
-   useEffect(() => {
-      socket.on("join_room_success", (data) => {
-         dispatch(joinRoomSuccess(data));
-      });
+  useRoomSocketHandlers(roomName, username);
+  useRoomJoin(roomName, username);
 
-      socket.on("join_room_failed", (data) => {
-         dispatch(joinRoomFailed(data));
-      });
+  if (roomStatus === "pending") {
+    return <h2>Game compo test</h2>;
+  }
 
-      socket.on("update_player_list", (data) => {
-         dispatch(updatePlayerList(data));
-      });
+  if (roomStatus === "error") {
+    return (
+      <>
+        <h2>Game compo test</h2>
+        <h3>Error Joining Room</h3>
+        <p style={{ color: "red" }}>Could not join room '{roomName}'.</p>
+        <p style={{ color: "red" }}>Reason: {errorMessage}</p>
+      </>
+    );
+  }
 
-      return () => {
-         socket.off("join_room_success");
-         socket.off("join_room_failed");
-         socket.off("update_player_list");
-         // socket.off('player_left_room');
-      };
-   }, [dispatch, socket]);
+  return (
+    <>
+      <h2>Game compo test</h2>
+      {playersInRoom.map((_, index) => (
+        <Board key={index} number={index} />
+      ))}
+    </>
+  );
+}
+
+export default Play;
+
 
    // // Inputs
    // const handleUserInput = (event) => {
@@ -55,42 +60,3 @@ function Play() {
    //       window.removeEventListener("keydown", handleUserInput);
    //    };
    // }, [dispatch]);
-
-   // Room connexion
-   useEffect(() => {
-      socket.emit("room_join", { roomName, username });
-      return () => {
-         socket.emit("room_exit");
-      };
-   }, []);
-
-   if (roomStatus == "pending") {
-      return (
-         <>
-            <h2>Game compo test</h2>
-         </>
-      );
-   }
-
-   if (roomStatus == "error") {
-      return (
-         <>
-            <h2>Game compo test</h2>
-            <h3>Error Joining Room</h3>
-            <p style={{ color: "red" }}>Could not join room '{roomName}'.</p>
-            <p style={{ color: "red" }}>Reason: {errorMessage}</p>
-         </>
-      );
-   }
-
-   return (
-      <>
-        <h2>Game compo test</h2>
-        {playersInRoom.map((_, i) => (
-          <Board key={i} number={i} />
-        ))}
-      </>
-    );
-}
-
-export default Play;
