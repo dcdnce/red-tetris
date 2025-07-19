@@ -10,24 +10,30 @@ export default function handleRoomJoinRequest(socket) {
    socket.on("room_join", (params) => {
       const roomName = params.roomName;
       const username = params.username;
+      const token = params.token;
+      Logger.info(true, `Received token: ${token}`);
       const gameMap = new GameMapSingleton();
 
       try {
          roomNameCheck(roomName);
 
-         gameRoomConnectionOrCreation(roomName, username);
+         gameRoomConnectionOrCreation(roomName, username, token);
 
          let game = gameMap.get(roomName);
+         let player = null;
+         if (playerIsReconnecting(game, username, token, socket)) {
+            player = game.players.get(username);
+         }
+         else {
+            player = new Player(username, game);
+            game.players.set(player.username, player);
+         }
 
-         let player = new Player(username, socket, game);
-         player.socket.join(roomName); // socketio room
-         game.players.set(player.username, player);
-         socket.player = player; // !Important - if socket has no player it won't clean the room at exit time.
+         player.refreshClient(socket, roomName);
 
          emitJoinRoomSuccess(socket, player);
 
          emitUpdatePlayerList(player.currentGame);
-
       } catch (error) {
          Logger.error(true, error.stack);
          emitJoinRoomFail(socket, error);
@@ -45,7 +51,7 @@ function roomNameCheck(roomName) {
    }
 }
 
-function gameRoomConnectionOrCreation(roomName, username) {
+function gameRoomConnectionOrCreation(roomName) {
    const gameMap = new GameMapSingleton();
 
    let game = null;
@@ -55,7 +61,6 @@ function gameRoomConnectionOrCreation(roomName, username) {
    // ADD PLAYER
    if (gameMap.has(roomName) == true) {
       game = gameMap.get(roomName);
-      playerExistsInRoomCheck(game, username)
    }
 
    // Room doesn't exist
@@ -67,19 +72,38 @@ function gameRoomConnectionOrCreation(roomName, username) {
 
 }
 
-function playerExistsInRoomCheck(game, username) {
+function playerIsReconnecting(game, username, token, socket) {
    // Logs
    Logger.info(
       true,
       `Room ${game.roomName} has ${username} == ${game.players.has(username)}`
    );
 
-   // Player exist
-   //   - Return error -> already taken
-   // TODO -> check token to handle reconnection
-   if (game.players.has(username) === true) {
+   // Check token to handle reconnection
+   if (game.players.has(username) === true) { //exists in room
+      let player = game.players.get(username);
+      if (token === player.token && player.socket !== socket && !player.isConnected){ // reconnection
+         Logger.info(true, `Reconnection👌`);
+         // Reconnect player
+         return true;
+      }
+
+      if (token === player.token && player.socket === socket && player.isConnected) { // second room join, confirmation
+         Logger.info(true, `Room join confirmation 👌`);
+         return true;
+      }
+
+      if (token === player.token && player.socket === socket && !player.isConnected) { // second room join, confirmation when react strict mode is slow
+         Logger.info(true, `Room join confirmation - room_exit arrived meantime 👌`);
+         return true;
+      }
+
+      // Logger.info(true, `token == player.token : ${token === player.token}\nsocket === player.socket : ${socket === player.socket}\nplayer.isConnected : ${player.isConnected}`);
+
       throw new Error(
-         `Player '${username}' is already registered in this room.`
+         `A player with '${username}' is already registered in this room.`
       );
    }
+
+   return false;
 }

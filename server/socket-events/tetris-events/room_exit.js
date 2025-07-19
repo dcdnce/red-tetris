@@ -10,25 +10,24 @@ export default function handleRoomExit(socket) {
 
       const roomName = player.currentGame.roomName;
       const game = player.currentGame;
-      game.players.delete(player.username);
 
       // Last player ?
-      if (game.players.size === 0) {
+      if (game.players.size === 1) {
+         game.players.delete(player.username);
          gameMap.delete(roomName);
          Logger.info(true, `Deleting room: ${roomName}, last player left.`);
       }
 
-      // Player deletion
-      // always for now
-      // TODO -> handle reconnection with token
+      // Temporary disconnection
       socket.leave(roomName); // Leave socket.io room
-      socket.username = null;
       socket.player = null;
+      player.isConnected = false;
+
       emitUpdatePlayerList(game);
 
       Logger.info(true, `Client ${player.username} exited room: ${roomName}`);
-   };
-
+   }
+ 
    socket.on("room_exit", () => {
       // If socket has no username => nothing to clean
       cleanupPlayer(socket.player);
@@ -39,3 +38,4 @@ export default function handleRoomExit(socket) {
       cleanupPlayer(socket.player);
    });
 }
+
