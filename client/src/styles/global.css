@@ -86,6 +86,9 @@ button {
 .jc-center {
    justify-content: center;
 }
+.jc-end {
+   justify-content: center;
+}
 
 /* MODAL */
 

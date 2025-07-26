@@ -2,7 +2,7 @@ import { Server as SocketIOServer } from "socket.io";
 import handlePing from "./socket-events/ping.js";
 import handleDisconnect from "./socket-events/disconnect.js";
 import handleTetrisRelated from "./socket-events/tetris.js";
-import getAllRoom from "./socket-events/tetris-events/get_all_room.js";
+import getAllRoom from "./socket-events/tetris-events/emit_all_room.js";
 
 export function initializeSocketIO(server) {
    const io = new SocketIOServer(server, {

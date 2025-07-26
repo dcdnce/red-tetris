@@ -1,0 +1,35 @@
+.container {
+   grid-area: 4 / 1 / -1 / -1;
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   gap: 8px;
+   padding: 1rem 1rem 1rem 0;
+   align-content: flex-start; /* Aligne le contenu en haut */
+}
+
+.caseHeader {
+   display: flex;
+   justify-content: space-between;
+}
+
+.case {
+   background-color: var(--color-yellow);
+   padding: 1rem;
+   border-radius: 4px;
+   box-shadow: 10px;
+   min-width: calc(20% - 100px);
+}
+
+.join {
+   justify-content: end;
+}
+
+.refresh {
+   grid-area: 3;
+   background-color: red;
+   color: white;
+   border: none;
+   padding: 0.5rem 1rem;
+   cursor: pointer;
+}

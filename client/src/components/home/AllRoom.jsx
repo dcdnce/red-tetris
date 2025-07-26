@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { socket } from "../../socket.js";
+import styles from "../../styles/home/AllRoom.module.css";
 
 export default function AllRoom() {
 
@@ -18,14 +19,20 @@ export default function AllRoom() {
 
     return (
         <>
-            <div className="d-flex d-column">
-                {allRoom.map((room) =>(
-                    <div>
-                        <p>{room.roomName}</p>
+            <button className={styles.refresh} onClick={() => {setRefresh(true)}}>refresh</button>
+            <div className={styles.container}>
+                {allRoom.length ? (allRoom.map((room, index) =>(
+                    <div key={index} className={styles.case}>
+                        <div className={styles.caseHeader}>
+                            <p>{room.roomName}</p>
+                            <button className={styles.join}>JOIN</button>
+                        </div>
+                        <p>{`${room.playerCount} players`}</p>
                     </div>
-                ))}
+                ))) : (
+                    <p>No room available</p>
+                )}
             </div>
-            <button onClick={() => {setRefresh(true)}}>refresh</button>
         </>
     )
 }
