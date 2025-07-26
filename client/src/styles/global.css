@@ -104,6 +104,10 @@ button {
    margin: auto;
 }
 
+.d-column {
+   direction: column;
+}
+
 /* UTILS */
 
 .button-press {

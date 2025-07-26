@@ -33,7 +33,7 @@ export default class Logger {
          if (!isEnvDebug) {
             return;
          }
-         fullMessage += `${this._colors.yellow}[debug]${this_.colors.reset}`;
+         fullMessage += `${this._colors.yellow}[debug]${this._colors.reset}`;
       }
       fullMessage += `${this._colors.yellow}[WARNING]${this._colors.reset} ${message}`;
       console.log(fullMessage);
@@ -61,7 +61,7 @@ export default class Logger {
          if (!isEnvDebug) {
             return;
          }
-         fullMessage += `${this._colors.yellow}[debug]${this_.colors.reset}`;
+         fullMessage += `${this._colors.yellow}[debug]${this._colors.reset}`;
       }
       fullMessage += `${this._colors.green}[SUCCESS]${this._colors.reset} ${message}`;
       console.log(fullMessage);

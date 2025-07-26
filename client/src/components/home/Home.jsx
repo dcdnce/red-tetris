@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket.js";
 import Register from "./Register.jsx";
 import styles from "../../styles/home/Home.module.css";
+import AllRoom from "./AllRoom.jsx";
 
 function Home() {
    const [showInput, setShowInput] = useState(false);
@@ -158,6 +159,7 @@ function Home() {
                <h3 className={`${styles.homeButtonIcon}`}>( ㅅ )</h3>
             )}
          </button>
+         <AllRoom />
          {/* <Register /> */}
       </>
    );
