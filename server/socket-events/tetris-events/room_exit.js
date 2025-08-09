@@ -37,5 +37,23 @@ export default function handleRoomExit(socket) {
       // If socket has no username => nothing to clean
       cleanupPlayer(socket.player);
    });
+
+   socket.on("exit_all", () => {
+   try {
+      const gameMap = new GameMapSingleton();
+      const roomCount = gameMap.container.size;
+      
+      // Supprimer toutes les rooms
+      gameMap.container.clear();
+      
+      Logger.info(true, `All ${roomCount} rooms have been deleted`);
+      
+      // Optionnel : Déconnecter tous les sockets de toutes les rooms
+      socket.broadcast.emit("all_rooms_cleared");
+      
+   } catch (error) {
+      Logger.error(true, `Error clearing all rooms: ${error.message}`);
+   }
+});
 }
 
