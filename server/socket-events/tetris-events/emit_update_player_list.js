@@ -6,6 +6,6 @@ export default function emitUpdatePlayerList(game) {
 
    ioServer.to(game.roomName).emit("update_player_list", {
       message: `Update player list for room ${game.roomName}`,
-      playersInRoom: game.getPlayerListForClient(),
+      players: game.getPlayerListForClient(),
    });
 }

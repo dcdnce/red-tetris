@@ -11,7 +11,7 @@ export default function emitJoinRoomSuccess(socket, player) {
       // initialGameState
       username: player.username,
       roomName: player.currentGame.roomName,
-      playersInRoom: player.currentGame.getPlayerListForClient(),
+      players: player.currentGame.getPlayerListForClient(),
       token: player.token,
    });
 }

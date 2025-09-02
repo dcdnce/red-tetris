@@ -12,3 +12,8 @@
    background-color: azure;
    border: 1px outset rgba(255, 255, 255, 0.3);
 }
+
+.blockOffline {
+   background-color: red;
+   border: 1px outset rgba(255, 255, 255, 0.3);
+}

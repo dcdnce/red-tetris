@@ -16,6 +16,7 @@ class Game {
          playerList.push({
             username: username,
             board: playerData.board,
+            isConnected: playerData.isConnected,
          });
       }
       return playerList;

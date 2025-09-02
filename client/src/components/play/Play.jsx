@@ -5,7 +5,7 @@ import Board from "./Board";
 import {
    selectRoomStatus,
    selectRoomError,
-   selectPlayersInRoom,
+   selectplayers,
 } from "../../store/gameSlice";
 import { useRoomSocketHandlers } from "../../hooks/useRoomSocketHandlers.js";
 import { useRoomJoin } from "../../hooks/useRoomJoin.js";
@@ -14,7 +14,7 @@ function Play() {
    const { roomName, username } = useParams();
    const roomStatus = useSelector(selectRoomStatus);
    const errorMessage = useSelector(selectRoomError);
-   const playersInRoom = useSelector(selectPlayersInRoom);
+   const players = useSelector(selectplayers);
 
    useRoomSocketHandlers(roomName, username);
    useRoomJoin(roomName, username);
@@ -37,7 +37,7 @@ function Play() {
    return (
       <>
          <h2>Game compo test</h2>
-         {playersInRoom.map((_, index) => (
+         {players.map((_, index) => (
             <Board key={index} number={index} />
          ))}
       </>
