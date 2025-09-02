@@ -6,7 +6,10 @@ class Token {
       this.token = jwt.sign({ username, roomName }, process.env.TOKEN_SECRET, {
          expiresIn: "1h",
       });
-      Logger.info(true, `Player created: ${username} with token: ${this.token}`);
+      Logger.info(
+         true,
+         `Player created: ${username} with token: ${this.token}`
+      );
    }
 }
 

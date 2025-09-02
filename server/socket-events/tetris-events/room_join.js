@@ -21,10 +21,10 @@ export default function handleRoomJoinRequest(socket) {
 
          let game = gameMap.get(roomName);
          let player = null;
+
          if (playerIsReconnecting(game, username, token, socket)) {
             player = game.players.get(username);
-         }
-         else {
+         } else {
             player = new Player(username, game);
             game.players.set(player.username, player);
          }
@@ -69,7 +69,6 @@ function gameRoomConnectionOrCreation(roomName) {
    if (gameMap.has(roomName) == false) {
       game = new Game(roomName);
    }
-
 }
 
 function playerIsReconnecting(game, username, token, socket) {
@@ -80,21 +79,41 @@ function playerIsReconnecting(game, username, token, socket) {
    );
 
    // Check token to handle reconnection
-   if (game.players.has(username) === true) { //exists in room
+   if (game.players.has(username) === true) {
+      //exists in room
       let player = game.players.get(username);
-      if (token === player.token && player.socket !== socket && !player.isConnected){ // reconnection
+
+      if (
+         token === player.token &&
+         player.socket !== socket &&
+         !player.isConnected
+      ) {
+         // reconnection
          Logger.info(true, `Reconnection👌`);
          // Reconnect player
          return true;
       }
 
-      if (token === player.token && player.socket === socket && player.isConnected) { // second room join, confirmation
+      if (
+         token === player.token &&
+         player.socket === socket &&
+         player.isConnected
+      ) {
+         // second room join, confirmation
          Logger.info(true, `Room join confirmation 👌`);
          return true;
       }
 
-      if (token === player.token && player.socket === socket && !player.isConnected) { // second room join, confirmation when react strict mode is slow
-         Logger.info(true, `Room join confirmation - room_exit arrived meantime 👌`);
+      if (
+         token === player.token &&
+         player.socket === socket &&
+         !player.isConnected
+      ) {
+         // second room join, confirmation when react strict mode is slow
+         Logger.info(
+            true,
+            `Room join confirmation - room_exit arrived meantime 👌`
+         );
          return true;
       }
 

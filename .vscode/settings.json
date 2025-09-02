@@ -1,0 +1,12 @@
+{
+   "folder-color.pathColors": [
+      {
+         "folderPath": "red-tetris/client/",
+         "badge": "🇫🇷"
+      },
+      {
+         "folderPath": "red-tetris/server/",
+         "badge": "🇧🇦"
+      }
+   ]
+}

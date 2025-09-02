@@ -25,9 +25,6 @@ const gameSlice = createSlice({
          state.username = action.payload.username;
          state.roomName = action.payload.roomName;
          state.playersInRoom = action.payload.playersInRoom;
-         for (const p of state.playersInRoom) {
-            // console.log(`${p.username} with board: ${p.board}`);
-         };
          state.roomStatus = "loaded";
       },
       updatePlayerList: (state, action) => {
@@ -42,7 +39,7 @@ const gameSlice = createSlice({
    },
 });
 
-export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList} =
+export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList } =
    gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -12,12 +12,12 @@ class GameMapSingleton {
 
    getAllRoom() {
       const allRooms = [];
-      for (const [roomName, gameInstance] of this.container){
+      for (const [roomName, gameInstance] of this.container) {
          allRooms.push({
             roomName: roomName,
             playerCount: gameInstance.players ? gameInstance.players.size : 0,
-            players: gameInstance.getPlayerListForClient()
-         })
+            players: gameInstance.getPlayerListForClient(),
+         });
       }
       return allRooms;
    }
