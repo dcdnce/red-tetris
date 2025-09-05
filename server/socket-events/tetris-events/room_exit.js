@@ -3,8 +3,6 @@ import Logger from "./../../utils/logger.js";
 import emitUpdatePlayerList from "./emit_update_player_list.js";
 
 export default function handleRoomExit(socket) {
-   const gameMap = new GameMapSingleton();
-
    const cleanupPlayer = (player) => {
       if (!player) return;
 
@@ -13,15 +11,15 @@ export default function handleRoomExit(socket) {
 
       // Last player ?
       if (game.players.size === 1) {
-         game.players.delete(player.username);
-         gameMap.delete(roomName);
-         Logger.info(true, `Deleting room: ${roomName}, last player left.`);
+         deleteRoom(player, game, roomName);
+         return;
       }
 
-      // Temporary disconnection
-      socket.leave(roomName); // Leave socket.io room
-      socket.player = null;
-      player.isConnected = false;
+      // If lobby is not launched ...
+      definitiveDisconnection(socket, game, player);
+
+      // If lobby is launched..
+      // temporaryDisconnection(socket, player);
 
       emitUpdatePlayerList(game);
 
@@ -54,4 +52,33 @@ export default function handleRoomExit(socket) {
          Logger.error(true, `Error clearing all rooms: ${error.message}`);
       }
    });
+}
+
+function deleteRoom(player, game, roomName) {
+   const gameMap = new GameMapSingleton();
+   game.players.delete(player.username);
+   gameMap.delete(roomName);
+   Logger.info(true, `Deleting room: ${roomName}, last player left.`);
+}
+
+// Either called by :
+//    - gameloop after x seconds disconnected
+//    - handleRoomExit if player quits a lobby being in waiting state
+export function definitiveDisconnection(socket, game, player) {
+   const roomName = player.currentGame.roomName;
+   socket.leave(roomName);
+   game.players.delete(player.username);
+
+   // Change room leader
+   if (game.leaderToken === player.token) {
+      let newLeader = game.players.values().next().value;
+      game.leaderToken = newLeader.token;
+      Logger.info(true, `New room leader is : ${newLeader.username}`);
+   }
+}
+
+function temporaryDisconnection(socket, player) {
+   socket.leave(roomName); // Leave socket.io room
+   socket.player = null;
+   player.isConnected = false;
 }

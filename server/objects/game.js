@@ -5,6 +5,7 @@ class Game {
    constructor(roomName) {
       Logger.info(true, `Creating game room: ${roomName}`);
       this.roomName = roomName;
+      this.leaderToken = null;
       this.players = new Map(); // <username, Player>
       const gameMap = new GameMapSingleton();
       gameMap.set(roomName, this); // <roomName, Game>

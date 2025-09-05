@@ -3,24 +3,27 @@ import styles from "../../styles/play/Board.module.css";
 import { useSelector } from "react-redux";
 import { calculateAbsoluteBlockPositions } from "../../store/gameSliceTetriminos";
 
-function Block({ row, col, isPlayerConnected}) {
+function Block({ row, col, isPlayerConnected }) {
    // Add color later
    const style = {
       gridRowStart: row + 1,
       gridColumnStart: col + 1,
    };
 
-   return <div className={`${isPlayerConnected ? styles.block : styles.blockOffline}`} style={style} />;
+   return (
+      <div
+         className={`${isPlayerConnected ? styles.block : styles.blockOffline}`}
+         style={style}
+      />
+   );
 }
 
 function Board({ number }) {
-   const gameBoard = useSelector(
-      (state) => state.game.players[number].board
-   );
+   const gameBoard = useSelector((state) => state.game.players[number].board);
 
    const isPlayerConnected = useSelector(
       (state) => state.game.players[number].isConnected
-   )
+   );
 
    const fallingTetrimino = useSelector(
       (state) => state.game.fallingTetrimino

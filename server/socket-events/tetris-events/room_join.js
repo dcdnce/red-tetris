@@ -17,7 +17,9 @@ export default function handleRoomJoinRequest(socket) {
       try {
          roomNameCheck(roomName);
 
-         gameRoomConnectionOrCreation(roomName, username, token);
+         if (isGameRoomCreationNeeded(roomName)) {
+            new Game(roomName);
+         }
 
          let game = gameMap.get(roomName);
          let player = null;
@@ -26,15 +28,13 @@ export default function handleRoomJoinRequest(socket) {
             player = game.players.get(username);
          } else {
             player = new Player(username, game);
-            game.players.set(player.username, player);
          }
 
-         player.refreshClient(socket, roomName);
+         player.refreshSocket(socket, roomName);
 
          emitJoinRoomSuccess(socket, player);
 
          emitUpdatePlayerList(player.currentGame);
-
       } catch (error) {
          Logger.error(true, error.stack);
          emitJoinRoomFail(socket, error);
@@ -52,24 +52,14 @@ function roomNameCheck(roomName) {
    }
 }
 
-function gameRoomConnectionOrCreation(roomName) {
+function isGameRoomCreationNeeded(roomName) {
    const gameMap = new GameMapSingleton();
 
-   let game = null;
-
-   // Room exist (later check room state, pending, launched, etc)
-   // Retrieve room
-   // ADD PLAYER
    if (gameMap.has(roomName) == true) {
-      game = gameMap.get(roomName);
+      return false;
    }
 
-   // Room doesn't exist
-   // Create room
-   // ADD PLAYER
-   if (gameMap.has(roomName) == false) {
-      game = new Game(roomName);
-   }
+   return true;
 }
 
 function playerIsReconnecting(game, username, token, socket) {
