@@ -1,12 +1,12 @@
 // hooks/useRoomSocketHandlers.js
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { socket } from "../socket";
+import { socket } from "../../socket";
 import {
    joinRoomSuccess,
    joinRoomFailed,
    updatePlayerList,
-} from "../store/gameSlice";
+} from "../../store/gameSlice";
 
 export function useRoomSocketHandlers(roomName, username) {
    const dispatch = useDispatch();

@@ -2,13 +2,14 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Board from "./Board";
+import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
 import {
    selectRoomStatus,
    selectRoomError,
    selectplayers,
 } from "../../store/gameSlice";
-import { useRoomSocketHandlers } from "../../hooks/useRoomSocketHandlers.js";
-import { useRoomJoin } from "../../hooks/useRoomJoin.js";
+import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js";
+import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
 
 function Play() {
    const { roomName, username } = useParams();
@@ -40,6 +41,7 @@ function Play() {
          {players.map((_, index) => (
             <Board key={index} number={index} />
          ))}
+         <RoomLeaderDashBoard />
       </>
    );
 }

@@ -7,6 +7,10 @@
       {
          "folderPath": "red-tetris/server/",
          "badge": "🇧🇦"
+      },
+      {
+         "folderPath": "red-tetris/client/src/hooks/",
+         "badge": "🪝"
       }
    ]
 }

@@ -36,7 +36,7 @@ export default function handleRoomJoinRequest(socket) {
 
          emitUpdatePlayerList(player.currentGame);
       } catch (error) {
-         Logger.error(true, error.stack);
+         Logger.error(false, error.stack);
          emitJoinRoomFail(socket, error);
       }
    });

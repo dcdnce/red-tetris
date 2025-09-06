@@ -1,6 +1,6 @@
 // hooks/useRoomJoinijs.
 import { useEffect } from "react";
-import { socket } from "../socket";
+import { socket } from "../../socket";
 
 export function useRoomJoin(roomName, username) {
    useEffect(() => {
