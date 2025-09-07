@@ -22,6 +22,22 @@ class GameMapSingleton {
       return allRooms;
    }
 
+   getRoomBySearch(searchValue) {
+      const filteredRooms = [];
+      if (!searchValue)
+         return (this.getAllRoom());
+      for (const [roomName, gameInstance] of this.container) {
+         if (roomName.includes(searchValue)) {
+            filteredRooms.push({
+               roomName: roomName,
+               playerCount: gameInstance.players ? gameInstance.players.size : 0,
+               players: gameInstance.getPlayerListForClient()
+            });
+         }
+      }
+      return filteredRooms;
+   }
+
    get(key) {
       return this.container.get(key);
    }
