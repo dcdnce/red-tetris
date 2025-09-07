@@ -1,4 +1,10 @@
 import { createSlice, isPending } from "@reduxjs/toolkit";
+import {
+    kErrorState,
+    kLoadingState,
+    kPendingState,
+    kStartedState,
+} from "../services/constants";
 
 const initialState = {
     roomName: null,
@@ -8,9 +14,10 @@ const initialState = {
             username: null,
             board: null,
             isConnected: null,
+            isLeader: null,
         },
     ],
-    roomStatus: "pending",
+    roomState: kLoadingState,
     error: null,
 };
 
@@ -25,7 +32,7 @@ const gameSlice = createSlice({
             state.username = action.payload.username;
             state.roomName = action.payload.roomName;
             state.players = action.payload.players;
-            state.roomStatus = "loaded";
+            state.roomState = kPendingState;
         },
         updatePlayerList: (state, action) => {
             // recu quand un autre joueur rejoint ou quitte
@@ -33,19 +40,32 @@ const gameSlice = createSlice({
             console.log(`Players in room: ${state.players}`);
         },
         joinRoomFailed: (state, action) => {
-            state.roomStatus = "error";
+            state.roomState = kErrorState;
             state.error = action.payload.error;
+        },
+        roomLaunchSuccess: (state, action) => {
+            state.roomState = kStartedState;
+            console.log(action.payload.message);
         },
     },
 });
 
-export const { setBoard, joinRoomSuccess, joinRoomFailed, updatePlayerList } =
-    gameSlice.actions;
+export const {
+    setBoard,
+    joinRoomSuccess,
+    joinRoomFailed,
+    updatePlayerList,
+    roomLaunchSuccess,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;
 
 // Selectors
 //    - Ready to use lambda function to access Redux store
-export const selectRoomStatus = (state) => state.game.roomStatus;
+export const selectRoomState = (state) => state.game.roomState;
 export const selectRoomError = (state) => state.game.error;
-export const selectplayers = (state) => state.game.players || [];
+export const selectPlayers = (state) => state.game.players || [];
+export const selectIsRoomLeader = (username) => (state) => {
+    const leader = state.game.players.find((player) => player.isLeader);
+    return leader?.username === username;
+};

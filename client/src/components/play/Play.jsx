@@ -4,27 +4,27 @@ import { useParams } from "react-router-dom";
 import Board from "./Board";
 import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
 import {
-    selectRoomStatus,
+    selectRoomState,
     selectRoomError,
-    selectplayers,
+    selectPlayers,
 } from "../../store/gameSlice";
 import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js";
 import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
 
 function Play() {
     const { roomName, username } = useParams();
-    const roomStatus = useSelector(selectRoomStatus);
+    const roomState = useSelector(selectRoomState);
     const errorMessage = useSelector(selectRoomError);
-    const players = useSelector(selectplayers);
+    const players = useSelector(selectPlayers);
 
     useRoomSocketHandlers(roomName, username);
     useRoomJoin(roomName, username);
 
-    if (roomStatus === "pending") {
+    if (roomState === "loading") {
         return <h2>Game compo test</h2>;
     }
 
-    if (roomStatus === "error") {
+    if (roomState === "error") {
         return (
             <>
                 <h2>Game compo test</h2>
