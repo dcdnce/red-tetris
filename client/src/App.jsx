@@ -10,16 +10,16 @@ import { socket } from "./socket";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
-   return (
-      <div className={styles.app}>
-         <Header />
-         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/:roomName/:username" element={<Play />} />
-         </Routes>
-         <Register />
-      </div>
-   );
+    return (
+        <div className={styles.app}>
+            <Header />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/:roomName/:username" element={<Play />} />
+            </Routes>
+            <Register />
+        </div>
+    );
 }
 
 export default App;

@@ -1,4 +1,22 @@
 {
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "red-tetris/client/",
+            "badge": "🇫🇷"
+        },
+        {
+            "folderPath": "red-tetris/server/",
+            "badge": "🇧🇦"
+        },
+        {
+            "folderPath": "red-tetris/client/src/hooks/",
+            "badge": "🪝"
+        }
+    ]
+}
+
+{
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.prettierPath": "./node_modules/prettier",
@@ -26,4 +44,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   }
+}
 }

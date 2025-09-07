@@ -1,24 +1,24 @@
 const kTetriminosTypes = [
-   {
-      id: 0,
-      blocks: [
-         [0, 0],
-         [1, 1],
-         [-1, 1],
-         [0, 1],
-      ],
-      rotateOn: [0, 1],
-   },
-   // etc
+    {
+        id: 0,
+        blocks: [
+            [0, 0],
+            [1, 1],
+            [-1, 1],
+            [0, 1],
+        ],
+        rotateOn: [0, 1],
+    },
+    // etc
 ];
 
 export const createTestTetrimino = () => {
-   return {
-      type: kTetriminosTypes[0],
-      orientation: 0,
-      position: [7, 5],
-      // etc
-   };
+    return {
+        type: kTetriminosTypes[0],
+        orientation: 0,
+        position: [7, 5],
+        // etc
+    };
 };
 
 // Helpers
@@ -30,24 +30,24 @@ export const createTestTetrimino = () => {
  * @returns {Array<Array<number>>} - Un tableau de coordonnées [[x1, y1], [x2, y2], ...]
  */
 export const calculateAbsoluteBlockPositions = (tetrimino) => {
-   if (!tetrimino || !tetrimino.type) return [];
+    if (!tetrimino || !tetrimino.type) return [];
 
-   const { type, orientation, position } = tetrimino;
-   const [pivotX, pivotY] = position;
-   let baseBlocks = type.blocks;
+    const { type, orientation, position } = tetrimino;
+    const [pivotX, pivotY] = position;
+    let baseBlocks = type.blocks;
 
-   let rotatedRelativeBlocks = baseBlocks.map((block) => [...block]);
+    let rotatedRelativeBlocks = baseBlocks.map((block) => [...block]);
 
-   for (let i = 0; i < orientation; i++) {
-      rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [-y, x]);
-   }
+    for (let i = 0; i < orientation; i++) {
+        rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [-y, x]);
+    }
 
-   const rotatedAbsoluteBlocks = rotatedRelativeBlocks.map(([relX, relY]) => [
-      relX + pivotX,
-      relY + pivotY,
-   ]);
+    const rotatedAbsoluteBlocks = rotatedRelativeBlocks.map(([relX, relY]) => [
+        relX + pivotX,
+        relY + pivotY,
+    ]);
 
-   return rotatedAbsoluteBlocks;
+    return rotatedAbsoluteBlocks;
 };
 
 /**
@@ -57,18 +57,18 @@ export const calculateAbsoluteBlockPositions = (tetrimino) => {
  * @returns {boolean} - True si toutes les positions sont valides, false sinon.
  */
 export const isValidPosition = (blockPositions, board) => {
-   const boardHeight = board.length;
-   const boardWidth = board[0].length;
+    const boardHeight = board.length;
+    const boardWidth = board[0].length;
 
-   return blockPositions.every(([x, y]) => {
-      if (x < 0 || y < 0 || x >= boardWidth || y >= boardHeight) {
-         return false;
-      }
+    return blockPositions.every(([x, y]) => {
+        if (x < 0 || y < 0 || x >= boardWidth || y >= boardHeight) {
+            return false;
+        }
 
-      if (board[y][x] !== 0) {
-         return false;
-      }
+        if (board[y][x] !== 0) {
+            return false;
+        }
 
-      return true;
-   });
+        return true;
+    });
 };
