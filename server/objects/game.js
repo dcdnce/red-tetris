@@ -1,5 +1,6 @@
 import Logger from "../utils/logger.js";
 import GameMapSingleton from "./gameMapSingleton.js";
+import RoomState from "./roomstate.js";
 
 class Game {
     constructor(roomName) {
@@ -7,6 +8,7 @@ class Game {
         this.roomName = roomName;
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
+        this.state = new RoomState();
         const gameMap = new GameMapSingleton();
         gameMap.set(roomName, this); // <roomName, Game>
     }
@@ -18,9 +20,22 @@ class Game {
                 username: username,
                 board: playerData.board,
                 isConnected: playerData.isConnected,
+                isLeader: playerData.token === this.leaderToken,
             });
         }
         return playerList;
+    }
+
+    setPending() {
+        this.state.setPending();
+    }
+
+    setStarted() {
+        this.state.setStarted();
+    }
+
+    getState() {
+        return this.state.getState();
     }
 }
 

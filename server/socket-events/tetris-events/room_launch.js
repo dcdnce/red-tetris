@@ -2,16 +2,11 @@ import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Logger from "../../utils/logger.js";
 import emitRoomLaunchFail from "./emit_room_launch_fail.js";
 import Token from "../../services/token.js";
+import emitRoomLaunchSuccess from "./emit_room_launch_success.js";
+import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomLaunch(socket) {
     const gameMap = new GameMapSingleton();
-
-    const launchGame = (player, game) => {
-        Logger.info(
-            true,
-            `🚀 Player ${player.username} launchs room ${game.roomName}`
-        );
-    };
 
     const canLaunchGame = (game, player) => {
         // Verify party leader
@@ -21,7 +16,12 @@ export default function handleRoomLaunch(socket) {
             );
         }
 
-        // TODO verify game is not launched
+        // Verify game is not launched
+        if (game.getState() === kStartedState) {
+            throw new Error(
+                `Cannot launch room : room already in started state.`
+            );
+        }
     };
 
     socket.on("room_launch", (params) => {
@@ -40,7 +40,8 @@ export default function handleRoomLaunch(socket) {
             canLaunchGame(game, player);
 
             // Launch game
-            launchGame(player, game);
+            game.setStarted();
+            emitRoomLaunchSuccess(player, game);
         } catch (error) {
             Logger.error(false, error.stack);
             emitRoomLaunchFail(socket, error);
