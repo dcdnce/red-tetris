@@ -6,5 +6,5 @@ import { io } from "socket.io-client";
 //       : undefined;
 
 export const socket = io(undefined, {
-   autoConnect: true,
+    autoConnect: true,
 });

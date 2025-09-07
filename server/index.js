@@ -30,15 +30,15 @@ console.log(`Serving static files from: ${clientBuildPath}`);
 
 /* --- Route Catch All --- */
 appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
-   // Regex pour capturer tout sauf /api et /socket.io
-   const indexPath = path.join(clientBuildPath, "index.html");
-   console.log(`Serving index.html for route: ${req.path} from ${indexPath}`); // Debug
-   res.sendFile(indexPath, (err) => {
-      if (err) {
-         console.error("Error sending index.html:", err);
-         res.status(500).send(err);
-      }
-   });
+    // Regex pour capturer tout sauf /api et /socket.io
+    const indexPath = path.join(clientBuildPath, "index.html");
+    console.log(`Serving index.html for route: ${req.path} from ${indexPath}`); // Debug
+    res.sendFile(indexPath, (err) => {
+        if (err) {
+            console.error("Error sending index.html:", err);
+            res.status(500).send(err);
+        }
+    });
 });
 
 /* --- Game Logic Related --- */
@@ -49,11 +49,11 @@ export const ioServer = initializeSocketIO(httpServer);
 
 /* --- Demarrage serveur --- */
 httpServer.listen(PORT, () => {
-   console.log(`--- Server listening on http://localhost:${PORT} ---`);
-   console.log(`--- Access the app in dev at http://localhost:5173 ---`);
-   console.log(
-      `--- Access the app in production (after build) at http://localhost:${PORT} ---`
-   );
+    console.log(`--- Server listening on http://localhost:${PORT} ---`);
+    console.log(`--- Access the app in dev at http://localhost:5173 ---`);
+    console.log(
+        `--- Access the app in production (after build) at http://localhost:${PORT} ---`
+    );
 });
 /*
 Ce message d'erreur indique que le client essaie de se connecter à Socket.IO sur le port 3001, mais que le serveur n'est pas encore démarré ou accessible à cette adresse/port.

@@ -1,33 +1,33 @@
 .homeButton1 {
-   grid-area: 2 / -5 / 4 / -3;
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   grid-template-rows: 1fr 1fr;
-   /* background-color: red !important; */
+    grid-area: 2 / -5 / 4 / -3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    /* background-color: red !important; */
 }
 
 .homeButton2 {
-   grid-area: 2 / -3 / 4 / -1;
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   grid-template-rows: 1fr 1fr;
+    grid-area: 2 / -3 / 4 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 }
 
 .homeButtonText {
-   grid-row: 1 / 2;
-   grid-column: 1 / 2;
-   align-self: start;
-   justify-self: start;
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    align-self: start;
+    justify-self: start;
 }
 
 .homeButtonIcon {
-   grid-row: 2 / 3;
-   grid-column: 2 / 3;
-   align-self: end;
-   justify-self: end;
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    align-self: end;
+    justify-self: end;
 }
 
 .homeInputRoom {
-   grid-area: 1 / 1 / 2 / 3;
-   width: 100%;
+    grid-area: 1 / 1 / 2 / 3;
+    width: 100%;
 }

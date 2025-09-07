@@ -1,12 +1,12 @@
 .app {
-   /* width: 100vw; */
-   margin: 1rem;
-   height: 96vh;
-   display: grid;
-   /* border: 2px solid #f76707; */
+    /* width: 100vw; */
+    margin: 1rem;
+    height: 96vh;
+    display: grid;
+    /* border: 2px solid #f76707; */
 
-   /* background-color: rgb(255, 0, 0); */
-   grid-template-columns: repeat(var(--app-grid-col-size), 1fr);
-   grid-template-rows: repeat(var(--app-grid-row-size), 1fr);
-   gap: 1rem;
+    /* background-color: rgb(255, 0, 0); */
+    grid-template-columns: repeat(var(--app-grid-col-size), 1fr);
+    grid-template-rows: repeat(var(--app-grid-row-size), 1fr);
+    gap: 1rem;
 }

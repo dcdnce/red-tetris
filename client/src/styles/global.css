@@ -3,209 +3,209 @@
 @import url("./_partials/_partials-pre-steps.css");
 
 :root {
-   font-size: 1vw;
+    font-size: 1vw;
 
-   --app-grid-col-size: 10;
-   --app-grid-row-size: 10;
-   --font-darken-amount: 40%;
-   --font-lighten-amount: 80%;
+    --app-grid-col-size: 10;
+    --app-grid-row-size: 10;
+    --font-darken-amount: 40%;
+    --font-lighten-amount: 80%;
 
-   /* CSS HEX */
-   --color-cyan: #a0d2dbff;
-   --color-orange: #ffdac1ff;
-   --color-red: #ffb6c1ff;
-   --color-blue: #b4c5e4ff;
-   --color-green: #c1e1c1ff;
-   --color-purple: #c8a2c8;
-   --color-yellow: #fffacdff;
-   --color-orange: #ffdac1;
-   --color-charcoal: #404e5c;
+    /* CSS HEX */
+    --color-cyan: #a0d2dbff;
+    --color-orange: #ffdac1ff;
+    --color-red: #ffb6c1ff;
+    --color-blue: #b4c5e4ff;
+    --color-green: #c1e1c1ff;
+    --color-purple: #c8a2c8;
+    --color-yellow: #fffacdff;
+    --color-orange: #ffdac1;
+    --color-charcoal: #404e5c;
 
-   --color-red-darken: #850014;
-   --color-cyan-darken: #29616a;
-   --color-blue-darken: #2f4d83;
+    --color-red-darken: #850014;
+    --color-cyan-darken: #29616a;
+    --color-blue-darken: #2f4d83;
 
-   --color-white: white;
-   --color-black: black;
+    --color-white: white;
+    --color-black: black;
 }
 
 html {
-   margin: 0;
-   padding: 0;
-   font-family:
-      "Bebas Neue",
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      Roboto,
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      "Open Sans",
-      "Helvetica Neue",
-      sans-serif; /* Pile de polices système courante */
-   line-height: 1.6;
-   /* background: linear-gradient(white, black) */
+    margin: 0;
+    padding: 0;
+    font-family:
+        "Bebas Neue",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        "Open Sans",
+        "Helvetica Neue",
+        sans-serif; /* Pile de polices système courante */
+    line-height: 1.6;
+    /* background: linear-gradient(white, black) */
 }
 
 input {
-   width: 100%;
-   height: 100%;
-   border-radius: 5px;
-   font-size: 1.5rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    font-size: 1.5rem;
 }
 
 button {
-   border-radius: 5px;
-   font-size: 1.5rem;
+    border-radius: 5px;
+    font-size: 1.5rem;
 }
 
 /* GLOBAL IDENTITY */
 
 .card {
-   padding: 1rem;
-   border-radius: 5px;
-   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
-   border-style: none;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+    border-style: none;
 }
 
 .divider {
-   height: 2px;
-   background-color: #333;
-   margin: 10px;
+    height: 2px;
+    background-color: #333;
+    margin: 10px;
 }
 
 /* DISPLAY */
 
 .d-flex {
-   display: flex;
+    display: flex;
 }
 
 .d-grid {
-   display: grid;
-   grid-template-columns: 50% 50%;
-   gap: 10px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 10px;
 }
 
 .d-none {
-   display: none;
+    display: none;
 }
 
 .jc-center {
-   justify-content: center;
+    justify-content: center;
 }
 .jc-end {
-   justify-content: center;
+    justify-content: center;
 }
 
 .jc-sb {
-   justify-content: space-between;
+    justify-content: space-between;
 }
 
 /* MODAL */
 
 .modal {
-   justify-content: center;
-   align-items: center;
-   width: 25%;
-   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
-   border-radius: 5px;
-   color: black;
-   background-color: #edf2f4;
-   padding: 3rem;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: black;
+    background-color: #edf2f4;
+    padding: 3rem;
 }
 
 .center-screen {
-   margin: auto;
+    margin: auto;
 }
 
 .d-column {
-   direction: column;
+    direction: column;
 }
 
 /* UTILS */
 
 .button-press {
-   font-weight: bold;
-   cursor: pointer;
-   font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.5rem;
 }
 
 .button-press-hover:hover {
-   animation: button-3d-hover linear 0.1s;
-   animation-fill-mode: forwards;
+    animation: button-3d-hover linear 0.1s;
+    animation-fill-mode: forwards;
 }
 
 .move-to-right {
-   animation: move-to-right linear 0.3s;
+    animation: move-to-right linear 0.3s;
 }
 
 .move-to-left {
-   animation: move-to-left linear 0.3s;
+    animation: move-to-left linear 0.3s;
 }
 
 .move-to-right-forwards {
-   animation: move-to-right-forwards linear 0.3s forwards;
-   animation-fill-mode: forwards;
+    animation: move-to-right-forwards linear 0.3s forwards;
+    animation-fill-mode: forwards;
 }
 
 .move-to-left-forwards {
-   animation: move-to-left-forwards linear 0.3s;
-   animation-fill-mode: forwards;
+    animation: move-to-left-forwards linear 0.3s;
+    animation-fill-mode: forwards;
 }
 
 .change-windows {
-   border: 0;
-   animation: change-windows linear 0.5s;
-   animation-fill-mode: forwards;
+    border: 0;
+    animation: change-windows linear 0.5s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes button-3d-hover {
-   100% {
-      transform: translate(1%, 1%) scale(0.95);
-      transform: scale(-100px);
-      box-shadow: 2px 1px #333;
-   }
+    100% {
+        transform: translate(1%, 1%) scale(0.95);
+        transform: scale(-100px);
+        box-shadow: 2px 1px #333;
+    }
 }
 
 @keyframes change-windows {
-   100% {
-      width: 110vw;
-      height: 110vh;
-      border-radius: 0;
-      z-index: 0;
-      box-shadow: 0;
-   }
+    100% {
+        width: 110vw;
+        height: 110vh;
+        border-radius: 0;
+        z-index: 0;
+        box-shadow: 0;
+    }
 }
 
 @keyframes move-to-right {
-   50% {
-      transform: translateX(60%);
-   }
-   100% {
-      transform: translateX(0%);
-   }
+    50% {
+        transform: translateX(60%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
 }
 
 @keyframes move-to-left {
-   50% {
-      transform: translateX(-60%);
-   }
-   100% {
-      transform: translateX(0%);
-   }
+    50% {
+        transform: translateX(-60%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
 }
 
 @keyframes move-to-right-forwards {
-   100% {
-      transform: translateX(60%);
-   }
+    100% {
+        transform: translateX(60%);
+    }
 }
 
 @keyframes move-to-left-forwards {
-   100% {
-      transform: translateX(-60%);
-   }
+    100% {
+        transform: translateX(-60%);
+    }
 }
 
 /* ID */

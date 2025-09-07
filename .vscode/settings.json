@@ -1,16 +1,16 @@
 {
-   "folder-color.pathColors": [
-      {
-         "folderPath": "red-tetris/client/",
-         "badge": "🇫🇷"
-      },
-      {
-         "folderPath": "red-tetris/server/",
-         "badge": "🇧🇦"
-      },
-      {
-         "folderPath": "red-tetris/client/src/hooks/",
-         "badge": "🪝"
-      }
-   ]
+    "folder-color.pathColors": [
+        {
+            "folderPath": "red-tetris/client/",
+            "badge": "🇫🇷"
+        },
+        {
+            "folderPath": "red-tetris/server/",
+            "badge": "🇧🇦"
+        },
+        {
+            "folderPath": "red-tetris/client/src/hooks/",
+            "badge": "🪝"
+        }
+    ]
 }

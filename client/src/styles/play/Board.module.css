@@ -1,19 +1,19 @@
 .boardContainer {
-   display: grid;
-   grid-template-columns: repeat(10, 1fr);
-   grid-template-rows: repeat(20, 1fr);
-   width: 250px;
-   height: 500px;
-   border: 1px solid black;
-   background-color: antiquewhite;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    width: 250px;
+    height: 500px;
+    border: 1px solid black;
+    background-color: antiquewhite;
 }
 
 .block {
-   background-color: azure;
-   border: 1px outset rgba(255, 255, 255, 0.3);
+    background-color: azure;
+    border: 1px outset rgba(255, 255, 255, 0.3);
 }
 
 .blockOffline {
-   background-color: red;
-   border: 1px outset rgba(255, 255, 255, 0.3);
+    background-color: red;
+    border: 1px outset rgba(255, 255, 255, 0.3);
 }
