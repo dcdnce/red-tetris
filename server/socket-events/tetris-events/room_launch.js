@@ -1,6 +1,7 @@
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Logger from "../../utils/logger.js";
 import emitRoomLaunchFail from "./emit_room_launch_fail.js";
+import Token from "../../services/token.js";
 
 export default function handleRoomLaunch(socket) {
     const gameMap = new GameMapSingleton();
@@ -32,7 +33,8 @@ export default function handleRoomLaunch(socket) {
             const game = gameMap.get(roomName);
             const player = game.players.get(username);
 
-            // TODO verify token
+            // Verify token
+            Token.verify(token, player);
 
             // Verify can launch game
             canLaunchGame(game, player);

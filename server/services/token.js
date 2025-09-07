@@ -1,0 +1,22 @@
+import jwt from "jsonwebtoken";
+import Logger from "../utils/logger.js";
+
+class Token {
+    static sign(username, roomName) {
+        Logger.info(true, `Created token for ${username}`);
+
+        return jwt.sign({ username, roomName }, process.env.TOKEN_SECRET, {
+            expiresIn: "1h",
+        });
+    }
+
+    static verify(token, player) {
+        jwt.verify(token, process.env.TOKEN_SECRET);
+
+        if (token !== player.token) {
+            throw new Error("Token is valid but not bind to this player.");
+        }
+    }
+}
+
+export default Token;

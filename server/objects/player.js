@@ -1,4 +1,4 @@
-import Token from "./token.js";
+import Token from "../services/token.js";
 
 class Player {
     constructor(username, game) {
@@ -9,7 +9,7 @@ class Player {
         this.currentGame = game;
         this.currentGame.players.set(username, this);
         this.board = this.createEmptyBoard();
-        this.token = new Token(username, game.roomName).token;
+        this.token = Token.sign(username, game.roomName);
 
         // Game leader
         if (this.currentGame.players.size === 1) {
