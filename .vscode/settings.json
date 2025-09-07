@@ -1,5 +1,4 @@
 {
-{
     "folder-color.pathColors": [
         {
             "folderPath": "red-tetris/client/",
@@ -14,8 +13,6 @@
             "badge": "🪝"
         }
     ]
-}
-
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

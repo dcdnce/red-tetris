@@ -49,22 +49,20 @@ export default function AllRoom() {
             setRefresh(false);
         }
     };
-    };
 
     const close = () => {
         for (let i = 0; i < 200; i++) {
             socket.emit("exit_all");
-        for (let i = 0; i < 200; i++) {
-            socket.emit("exit_all");
+            for (let i = 0; i < 200; i++) {
+                socket.emit("exit_all");
+            }
+            setRefresh(false);
         }
-        setRefresh(false);
-    };
         setRefresh(false);
     };
 
     const join = (room) => {
         navigate(`/${room.roomName}/${username}`);
-    };
     };
 
     return (
