@@ -4,7 +4,7 @@ import styles from "../../styles/home/AllRoom.module.css";
 import { useNavigate } from "react-router-dom";
 
 export default function AllRoom() {
-const [allRoom, setAllRoom] = useState([]);
+    const [allRoom, setAllRoom] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();
@@ -68,7 +68,7 @@ const [allRoom, setAllRoom] = useState([]);
                 onChange={(e) => {
                     setSearchValue(e.target.value);
                 }}
-            ></input>
+            />
             <button
                 className={styles.refresh}
                 onClick={() => {
