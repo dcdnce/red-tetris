@@ -7,8 +7,8 @@ import { kStartedState } from "../../services/constants";
 
 function RoomLeaderDashboard() {
     const { roomName, username } = useParams();
-    const roomState = useSelector(selectRoomState);
-    const isRoomLeader = useSelector(selectIsRoomLeader(username));
+    const roomState = useSelector(selectRoomState(roomName));
+    const isRoomLeader = useSelector(selectIsRoomLeader(roomName, username));
 
     const handleClick = () => {
         roomLaunchGameService(roomName, username);

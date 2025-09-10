@@ -7,51 +7,60 @@ import {
 } from "../services/constants";
 
 const initialState = {
-    roomName: null,
-    username: null,
-    players: [
-        {
-            username: null,
-            board: null,
-            isConnected: null,
-            isLeader: null,
-        },
-    ],
-    roomState: kLoadingState,
-    error: null,
+    rooms: {
+        // roomName: null,
+        // players: [
+        //     {
+        //         username: null,
+        //         board: null,
+        //         isConnected: null,
+        //         isLeader: null,
+        //     },
+        // ],
+        // roomState: kLoadingState,
+        // error: null,
+    },
 };
 
 const gameSlice = createSlice({
-    name: "game",
+    name: "roomsHandler",
     initialState,
     reducers: {
-        setBoard: (state, action) => {
-            state.board = action.payload;
-        },
         joinRoomSuccess: (state, action) => {
-            state.username = action.payload.username;
-            state.roomName = action.payload.roomName;
-            state.players = action.payload.players;
-            state.roomState = kPendingState;
+            const roomName = action.payload.roomName;
+
+            state.rooms[roomName] = {
+                roomName: action.payload.roomName,
+                players: action.payload.players,
+                roomState: kPendingState,
+                error: null,
+            };
         },
         updatePlayerList: (state, action) => {
-            // recu quand un autre joueur rejoint ou quitte
-            state.players = action.payload.players;
-            console.log(`Players in room: ${state.players}`);
+            const roomName = action.payload.roomName;
+            state.rooms[roomName].players = action.payload.players;
+            Object.entries(state.rooms).forEach(([roomName, room]) => {
+                console.log(roomName, { ...room });
+            });
         },
         joinRoomFailed: (state, action) => {
-            state.roomState = kErrorState;
-            state.error = action.payload.error;
+            const roomName = action.payload.roomName;
+            state.rooms[roomName] = {
+                roomName: null,
+                players: null,
+                roomState: kErrorState,
+                error: action.payload.error,
+            };
         },
         roomLaunchSuccess: (state, action) => {
-            state.roomState = kStartedState;
+            const roomName = action.payload.roomName;
+            state.rooms[roomName].roomState = kStartedState;
             console.log(action.payload.message);
         },
     },
 });
 
 export const {
-    setBoard,
     joinRoomSuccess,
     joinRoomFailed,
     updatePlayerList,
@@ -62,10 +71,15 @@ export default gameSlice.reducer;
 
 // Selectors
 //    - Ready to use lambda function to access Redux store
-export const selectRoomState = (state) => state.game.roomState;
-export const selectRoomError = (state) => state.game.error;
-export const selectPlayers = (state) => state.game.players || [];
-export const selectIsRoomLeader = (username) => (state) => {
-    const leader = state.game.players.find((player) => player.isLeader);
+export const selectRoomState = (roomName) => (state) =>
+    state.roomsHandler.rooms[roomName]?.roomState || null;
+export const selectRoomError = (roomName) => (state) =>
+    state.roomsHandler.rooms[roomName]?.error || null;
+export const selectPlayers = (roomName) => (state) =>
+    state.roomsHandler.rooms[roomName]?.players || null;
+export const selectIsRoomLeader = (roomName, username) => (state) => {
+    const leader = state.roomsHandler.rooms[roomName]?.players.find(
+        (player) => player.isLeader
+    );
     return leader?.username === username;
 };

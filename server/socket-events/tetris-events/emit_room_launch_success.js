@@ -7,6 +7,7 @@ export default function emitRoomLaunchSuccess(player, game) {
     Logger.info(true, message);
 
     ioServer.to(game.roomName).emit("room_launch_success", {
+        roomName: game.roomName,
         message: message,
     });
 }

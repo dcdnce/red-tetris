@@ -13,9 +13,9 @@ import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
 
 function Play() {
     const { roomName, username } = useParams();
-    const roomState = useSelector(selectRoomState);
-    const errorMessage = useSelector(selectRoomError);
-    const players = useSelector(selectPlayers);
+    const roomState = useSelector(selectRoomState(roomName));
+    const errorMessage = useSelector(selectRoomError(roomName));
+    const players = useSelector(selectPlayers(roomName));
 
     useRoomSocketHandlers(roomName, username);
     useRoomJoin(roomName, username);
@@ -40,7 +40,7 @@ function Play() {
     return (
         <>
             <h2>Game compo test</h2>
-            {players.map((_, index) => (
+            {players?.map((_, index) => (
                 <Board key={index} number={index} />
             ))}
             <RoomLeaderDashBoard />

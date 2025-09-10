@@ -1,6 +1,8 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import styles from "../../styles/play/Board.module.css";
 import { useSelector } from "react-redux";
+import { selectPlayers } from "../../store/gameSlice";
 import { calculateAbsoluteBlockPositions } from "../../store/gameSliceTetriminos";
 
 function Block({ row, col, isPlayerConnected }) {
@@ -19,15 +21,15 @@ function Block({ row, col, isPlayerConnected }) {
 }
 
 function Board({ number }) {
-    const gameBoard = useSelector((state) => state.game.players[number].board);
+    const { roomName, username } = useParams();
 
-    const isPlayerConnected = useSelector(
-        (state) => state.game.players[number].isConnected
-    );
+    const players = useSelector(selectPlayers(roomName));
+    const gameBoard = players[number].board;
+    const isPlayerConnected = players[number].isConnected;
 
-    const fallingTetrimino = useSelector(
-        (state) => state.game.fallingTetrimino
-    );
+    // const fallingTetrimino = useSelector(
+    //     (state) => state.game.fallingTetrimino
+    // );
 
     // Base board
     var allBlocks = Array(0);
@@ -37,12 +39,12 @@ function Board({ number }) {
         }
     }
 
-    // Falling tetrimino
-    const blocksAbsolutePosition =
-        calculateAbsoluteBlockPositions(fallingTetrimino);
-    for (let blockOffset of blocksAbsolutePosition) {
-        allBlocks.push({ col: blockOffset[0], row: blockOffset[1] });
-    }
+    // // Falling tetrimino
+    // const blocksAbsolutePosition =
+    //     calculateAbsoluteBlockPositions(fallingTetrimino);
+    // for (let blockOffset of blocksAbsolutePosition) {
+    //     allBlocks.push({ col: blockOffset[0], row: blockOffset[1] });
+    // }
 
     return (
         <div className={styles.boardContainer}>
