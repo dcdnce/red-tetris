@@ -6,7 +6,7 @@ import emitRoomLaunchSuccess from "./emit_room_launch_success.js";
 import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomLaunch(socket) {
-    const gameMap = new GameMapSingleton();
+    const gameMapSingletonInstance = new GameMapSingleton();
 
     const canLaunchGame = (game, player) => {
         // Verify party leader
@@ -30,7 +30,7 @@ export default function handleRoomLaunch(socket) {
             const roomName = params.roomName;
             const username = params.username;
             const token = params.token;
-            const game = gameMap.get(roomName);
+            const game = gameMapSingletonInstance.get(roomName);
             const player = game.players.get(username);
 
             // Verify token

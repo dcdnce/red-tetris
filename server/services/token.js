@@ -3,8 +3,6 @@ import Logger from "../utils/logger.js";
 
 class Token {
     static sign(username, roomName) {
-        Logger.info(true, `Created token for ${username}`);
-
         return jwt.sign({ username, roomName }, process.env.TOKEN_SECRET, {
             expiresIn: "1h",
         });

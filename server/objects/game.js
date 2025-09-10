@@ -9,8 +9,8 @@ class Game {
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
         this.state = new RoomState();
-        const gameMap = new GameMapSingleton();
-        gameMap.set(roomName, this); // <roomName, Game>
+        const gameMapSingletonInstance = new GameMapSingleton();
+        gameMapSingletonInstance.set(roomName, this); // <roomName, Game>
     }
 
     getPlayerListForClient() {

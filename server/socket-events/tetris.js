@@ -14,16 +14,16 @@ export default function handleTetrisRelated(socket) {
 export function getBoard(socket) {
     socket.on("get_board", (params, callback) => {
         const { username, roomName } = params;
-        const gameMap = new GameMapSingleton();
+        const gameMapSingletonInstance = new GameMapSingleton();
 
-        if (!gameMap.has(roomName)) {
+        if (!gameMapSingletonInstance.has(roomName)) {
             return callback({
                 success: false,
                 error: `No game found for room "${roomName}"`,
             });
         }
 
-        const gameInstance = gameMap.get(roomName);
+        const gameInstance = gameMapSingletonInstance.get(roomName);
         return callback({
             success: true,
             content: gameInstance.board,

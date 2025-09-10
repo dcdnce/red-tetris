@@ -42,7 +42,7 @@ appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
 });
 
 /* --- Game Logic Related --- */
-const gameMap = new GameMapSingleton();
+const gameMapSingletonInstance = new GameMapSingleton();
 
 /* --- Socket.IO --- */
 export const ioServer = initializeSocketIO(httpServer);

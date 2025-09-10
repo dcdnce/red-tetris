@@ -5,28 +5,27 @@ import Logger from "../../utils/logger.js";
 import emitUpdatePlayerList from "./emit_update_player_list.js";
 import emitJoinRoomFail from "./emit_join_room_fail.js";
 import emitJoinRoomSuccess from "./emit_join_room_success.js";
+import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomJoinRequest(socket) {
     socket.on("room_join", (params) => {
         const roomName = params.roomName;
         const username = params.username;
         const token = params.token;
-        Logger.info(true, `Received token: ${token}`);
-        const gameMap = new GameMapSingleton();
+        const gameMapSingletonInstance = new GameMapSingleton();
 
         try {
             roomNameCheck(roomName);
 
-            if (isGameRoomCreationNeeded(roomName)) {
-                new Game(roomName);
-            }
+            createGameRoomIfNeeded(roomName);
 
-            let game = gameMap.get(roomName);
+            let game = gameMapSingletonInstance.get(roomName);
             let player = null;
 
             if (playerIsReconnecting(game, username, token, socket)) {
                 player = game.players.get(username);
             } else {
+                throwIfGameStarted(game);
                 player = new Player(username, game);
             }
 
@@ -52,14 +51,12 @@ function roomNameCheck(roomName) {
     }
 }
 
-function isGameRoomCreationNeeded(roomName) {
-    const gameMap = new GameMapSingleton();
+function createGameRoomIfNeeded(roomName) {
+    const gameMapSingletonInstance = new GameMapSingleton();
 
-    if (gameMap.has(roomName) == true) {
-        return false;
+    if (gameMapSingletonInstance.has(roomName) == false) {
+        new Game(roomName);
     }
-
-    return true;
 }
 
 function playerIsReconnecting(game, username, token, socket) {
@@ -116,4 +113,10 @@ function playerIsReconnecting(game, username, token, socket) {
     }
 
     return false;
+}
+
+function throwIfGameStarted(game) {
+    if (game.getState() == kStartedState) {
+        throw new Error("Cannot join, the game started");
+    }
 }
