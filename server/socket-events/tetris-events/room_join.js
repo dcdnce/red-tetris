@@ -63,8 +63,8 @@ function playerIsReconnecting(game, username, token, socket) {
     // Logs
     Logger.info(
         true,
-        null,
-        `Room ${game.roomName} has ${username} == ${game.players.has(username)}`
+        game.roomName,
+        `Room has ${username} ? : ${game.players.has(username)}`
     );
 
     // Check token to handle reconnection
@@ -78,7 +78,7 @@ function playerIsReconnecting(game, username, token, socket) {
             !player.isConnected
         ) {
             // reconnection
-            Logger.info(true, null, `Reconnection👌`);
+            Logger.info(true, game.roomName, `Reconnection👌`);
             // Reconnect player
             return true;
         }
@@ -89,7 +89,7 @@ function playerIsReconnecting(game, username, token, socket) {
             player.isConnected
         ) {
             // second room join, confirmation
-            Logger.info(true, null, `Room join confirmation 👌`);
+            Logger.info(true, game.roomName, `Room join confirmation 👌`);
             return true;
         }
 
@@ -101,7 +101,7 @@ function playerIsReconnecting(game, username, token, socket) {
             // second room join, confirmation when react strict mode is slow
             Logger.info(
                 true,
-                null,
+                game.roomName,
                 `Room join confirmation - room_exit arrived meantime 👌`
             );
             return true;

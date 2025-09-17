@@ -1,6 +1,7 @@
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Logger from "./../../utils/logger.js";
 import emitUpdatePlayerList from "./emit_update_player_list.js";
+import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomExit(socket) {
     const cleanupPlayer = (player) => {
@@ -16,10 +17,14 @@ export default function handleRoomExit(socket) {
         }
 
         // If lobby is not launched ...
-        definitiveDisconnection(socket, game, player);
+        if (game.getState() != kStartedState) {
+            definitiveDisconnection(socket, game, player);
+        }
 
         // If lobby is launched..
-        // temporaryDisconnection(socket, player);
+        if (game.getState() == kStartedState) {
+            temporaryDisconnection(socket, player);
+        }
 
         emitUpdatePlayerList(game);
 
@@ -63,7 +68,7 @@ function endAndDeleteRoom(player, game, roomName) {
     const gameMapSingletonInstance = new GameMapSingleton();
     game.players.delete(player.username);
     gameMapSingletonInstance.delete(roomName);
-    Logger.info(true, null, `Deleting room: ${roomName}, last player left.`);
+    Logger.info(true, null, `Deleting game room ${roomName}`);
 }
 
 // Either called by :
@@ -83,7 +88,7 @@ export function definitiveDisconnection(socket, game, player) {
 }
 
 function temporaryDisconnection(socket, player) {
-    socket.leave(roomName); // Leave socket.io room
+    socket.leave(player.currentGame.roomName); // Leave socket.io room
     socket.player = null;
     player.isConnected = false;
 }

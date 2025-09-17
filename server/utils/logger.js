@@ -25,7 +25,7 @@ export default class Logger {
         console.log(fullMessage);
     }
 
-    static warning(isDebug, message) {
+    static warning(isDebug, prefix, message) {
         let fullMessage = "";
         let isEnvDebug = process.env.DEBUG == "true";
 
@@ -35,7 +35,12 @@ export default class Logger {
             }
             fullMessage += `${this._colors.yellow}[debug]${this._colors.reset}`;
         }
-        fullMessage += `${this._colors.yellow}[WARNING]${this._colors.reset} ${message}`;
+        fullMessage += `${this._colors.yellow}[WARNING]${this._colors.reset}`;
+        fullMessage += prefix
+            ? `${this._colors.blue}[${prefix}]${this._colors.reset}`
+            : "";
+        fullMessage += message;
+
         console.log(fullMessage);
     }
 

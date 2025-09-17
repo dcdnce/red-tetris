@@ -3,8 +3,8 @@ import Logger from "../../utils/logger.js";
 export default function emitJoinRoomSuccess(socket, player) {
     Logger.info(
         true,
-        null,
-        `Client ${player.username} joined room: ${player.currentGame.roomName}`
+        player.currentGame.roomName,
+        `${player.username} joined room`
     );
 
     socket.emit("join_room_success", {

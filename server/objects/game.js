@@ -65,10 +65,8 @@ class Game {
 
     endGame() {
         if (this.getState() != kStartedState) {
-            Logger.warning(
-                true,
-                `endgame() for room ${this.roomName} despite not being started, undefined behavior`
-            );
+            Logger.info(true, this.roomName, `End room that didn't start`);
+            return;
         }
 
         clearInterval(this.loopIntervalId);
