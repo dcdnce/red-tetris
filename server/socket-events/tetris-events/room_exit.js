@@ -11,7 +11,7 @@ export default function handleRoomExit(socket) {
 
         // Last player ?
         if (game.players.size === 1) {
-            deleteRoom(player, game, roomName);
+            endAndDeleteRoom(player, game, roomName);
             return;
         }
 
@@ -58,7 +58,8 @@ export default function handleRoomExit(socket) {
     });
 }
 
-function deleteRoom(player, game, roomName) {
+function endAndDeleteRoom(player, game, roomName) {
+    game.endGame();
     const gameMapSingletonInstance = new GameMapSingleton();
     game.players.delete(player.username);
     gameMapSingletonInstance.delete(roomName);

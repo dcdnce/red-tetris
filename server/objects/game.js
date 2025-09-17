@@ -37,6 +37,10 @@ class Game {
         this.state.setStarted();
     }
 
+    setFinished() {
+        this.state.setFinished();
+    }
+
     getState() {
         return this.state.getState();
     }
@@ -52,10 +56,32 @@ class Game {
 
         this.setStarted();
 
+        this.loopIntervalId = setInterval(() => {
+            this.gameTick();
+        }, GAME_TICK_RATE_MS);
+
         Logger.info(true, this.roomName, "Game loop started");
     }
 
-    gameTick() {}
+    endGame() {
+        if (this.getState() != kStartedState) {
+            Logger.warning(
+                true,
+                `endgame() for room ${this.roomName} despite not being started, undefined behavior`
+            );
+        }
+
+        clearInterval(this.loopIntervalId);
+        this.loopIntervalId = null;
+
+        this.setFinished();
+
+        Logger.info(true, this.roomName, "Game loop ended");
+    }
+
+    gameTick() {
+        Logger.info(true, this.roomName, "IM CALLED EVERY SECOND");
+    }
 }
 
 export default Game;

@@ -1,5 +1,6 @@
 export const kPendingState = "pending";
 export const kStartedState = "started";
+export const kFinishedState = "finished";
 
 export default class RoomState {
     constructor() {
@@ -12,6 +13,10 @@ export default class RoomState {
 
     setStarted() {
         this.state = kStartedState;
+    }
+
+    setFinished() {
+        this.state = kFinishedState;
     }
 
     getState() {
