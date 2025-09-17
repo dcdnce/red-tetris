@@ -39,7 +39,7 @@ export default class Logger {
         console.log(fullMessage);
     }
 
-    static info(isDebug, message) {
+    static info(isDebug, prefix, message) {
         let fullMessage = "";
         let isEnvDebug = process.env.DEBUG == "true";
 
@@ -49,7 +49,11 @@ export default class Logger {
             }
             fullMessage += `${this._colors.yellow}[debug]${this._colors.reset}`;
         }
-        fullMessage += `${this._colors.blue}[INFO]${this._colors.reset} ${message}`;
+        fullMessage += `${this._colors.blue}[INFO]${this._colors.reset}`;
+        fullMessage += prefix
+            ? `${this._colors.blue}[${prefix}]${this._colors.reset}`
+            : "";
+        fullMessage += message;
         console.log(fullMessage);
     }
 

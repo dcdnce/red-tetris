@@ -23,7 +23,11 @@ export default function handleRoomExit(socket) {
 
         emitUpdatePlayerList(game);
 
-        Logger.info(true, `Client ${player.username} exited room: ${roomName}`);
+        Logger.info(
+            true,
+            null,
+            `Client ${player.username} exited room: ${roomName}`
+        );
     };
 
     socket.on("room_exit", () => {
@@ -44,7 +48,7 @@ export default function handleRoomExit(socket) {
             // Supprimer toutes les rooms
             gameMapSingletonInstance.container.clear();
 
-            Logger.info(true, `All ${roomCount} rooms have been deleted`);
+            Logger.info(true, null, `All ${roomCount} rooms have been deleted`);
 
             // Optionnel : Déconnecter tous les sockets de toutes les rooms
             socket.broadcast.emit("all_rooms_cleared");
@@ -58,7 +62,7 @@ function deleteRoom(player, game, roomName) {
     const gameMapSingletonInstance = new GameMapSingleton();
     game.players.delete(player.username);
     gameMapSingletonInstance.delete(roomName);
-    Logger.info(true, `Deleting room: ${roomName}, last player left.`);
+    Logger.info(true, null, `Deleting room: ${roomName}, last player left.`);
 }
 
 // Either called by :
@@ -73,7 +77,7 @@ export function definitiveDisconnection(socket, game, player) {
     if (game.leaderToken === player.token) {
         let newLeader = game.players.values().next().value;
         game.leaderToken = newLeader.token;
-        Logger.info(true, `New room leader is : ${newLeader.username}`);
+        Logger.info(true, null, `New room leader is : ${newLeader.username}`);
     }
 }
 

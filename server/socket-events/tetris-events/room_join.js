@@ -63,6 +63,7 @@ function playerIsReconnecting(game, username, token, socket) {
     // Logs
     Logger.info(
         true,
+        null,
         `Room ${game.roomName} has ${username} == ${game.players.has(username)}`
     );
 
@@ -77,7 +78,7 @@ function playerIsReconnecting(game, username, token, socket) {
             !player.isConnected
         ) {
             // reconnection
-            Logger.info(true, `Reconnection👌`);
+            Logger.info(true, null, `Reconnection👌`);
             // Reconnect player
             return true;
         }
@@ -88,7 +89,7 @@ function playerIsReconnecting(game, username, token, socket) {
             player.isConnected
         ) {
             // second room join, confirmation
-            Logger.info(true, `Room join confirmation 👌`);
+            Logger.info(true, null, `Room join confirmation 👌`);
             return true;
         }
 
@@ -100,12 +101,11 @@ function playerIsReconnecting(game, username, token, socket) {
             // second room join, confirmation when react strict mode is slow
             Logger.info(
                 true,
+                null,
                 `Room join confirmation - room_exit arrived meantime 👌`
             );
             return true;
         }
-
-        // Logger.info(true, `token == player.token : ${token === player.token}\nsocket === player.socket : ${socket === player.socket}\nplayer.isConnected : ${player.isConnected}`);
 
         throw new Error(
             `A player with '${username}' is already registered in this room.`

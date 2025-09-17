@@ -1,14 +1,17 @@
 import Logger from "../utils/logger.js";
 import GameMapSingleton from "./gameMapSingleton.js";
-import RoomState from "./roomstate.js";
+import RoomState, { kStartedState } from "./roomstate.js";
+
+const GAME_TICK_RATE_MS = 1000;
 
 class Game {
     constructor(roomName) {
-        Logger.info(true, `Creating game room: ${roomName}`);
+        Logger.info(true, roomName, `Creating game room: ${roomName}`);
         this.roomName = roomName;
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
         this.state = new RoomState();
+        this.loopIntervalId = null;
         const gameMapSingletonInstance = new GameMapSingleton();
         gameMapSingletonInstance.set(roomName, this); // <roomName, Game>
     }
@@ -37,6 +40,22 @@ class Game {
     getState() {
         return this.state.getState();
     }
+
+    startGame() {
+        if (this.getState() == kStartedState) {
+            throw new Error("startGame(): state is kStartedState");
+        }
+
+        if (this.loopIntervalId != null) {
+            throw new Error("startGame() : loopIntervalId is not null");
+        }
+
+        this.setStarted();
+
+        Logger.info(true, this.roomName, "Game loop started");
+    }
+
+    gameTick() {}
 }
 
 export default Game;

@@ -40,7 +40,7 @@ export default function handleRoomLaunch(socket) {
             canLaunchGame(game, player);
 
             // Launch game
-            game.setStarted();
+            game.startGame();
             emitRoomLaunchSuccess(player, game);
         } catch (error) {
             Logger.error(false, error.stack);
