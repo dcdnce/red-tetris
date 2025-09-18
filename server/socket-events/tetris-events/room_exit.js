@@ -18,12 +18,12 @@ export default function handleRoomExit(socket) {
 
         // If lobby is not launched ...
         if (game.getState() != kStartedState) {
-            definitiveDisconnection(socket, game, player);
+            definitiveDisconnection(game, player);
         }
 
         // If lobby is launched..
         if (game.getState() == kStartedState) {
-            temporaryDisconnection(socket, player);
+            temporaryDisconnection(player);
         }
 
         emitUpdatePlayerList(game);
@@ -68,27 +68,27 @@ function endAndDeleteRoom(player, game, roomName) {
     const gameMapSingletonInstance = new GameMapSingleton();
     game.players.delete(player.username);
     gameMapSingletonInstance.delete(roomName);
-    Logger.info(true, null, `Deleting game room ${roomName}`);
+    Logger.info(false, null, `Deleting game room ${roomName}`);
 }
 
 // Either called by :
 //    - gameloop after x seconds disconnected
 //    - handleRoomExit if player quits a lobby being in waiting state
-export function definitiveDisconnection(socket, game, player) {
+export function definitiveDisconnection(game, player) {
     const roomName = player.currentGame.roomName;
-    socket.leave(roomName);
+    player.socket.leave(roomName);
     game.players.delete(player.username);
 
     // Change room leader
-    if (game.leaderToken === player.token) {
+    if (game.leaderToken === player.token && game.players.size) {
         let newLeader = game.players.values().next().value;
         game.leaderToken = newLeader.token;
         Logger.info(true, null, `New room leader is : ${newLeader.username}`);
     }
 }
 
-function temporaryDisconnection(socket, player) {
-    socket.leave(player.currentGame.roomName); // Leave socket.io room
-    socket.player = null;
-    player.isConnected = false;
+function temporaryDisconnection(player) {
+    player.socket.leave(player.currentGame.roomName); // Leave socket.io room
+    player.socket.player = null;
+    player.setDisconnected();
 }

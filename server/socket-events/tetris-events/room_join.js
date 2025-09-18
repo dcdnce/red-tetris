@@ -30,6 +30,7 @@ export default function handleRoomJoinRequest(socket) {
             }
 
             player.refreshSocket(socket, roomName);
+            player.setConnected();
 
             emitJoinRoomSuccess(socket, player);
 

@@ -38,6 +38,7 @@ const gameSlice = createSlice({
         },
         updatePlayerList: (state, action) => {
             const roomName = action.payload.roomName;
+            state.rooms[roomName].roomState = action.payload.roomState;
             state.rooms[roomName].players = action.payload.players;
             Object.entries(state.rooms).forEach(([roomName, room]) => {
                 console.log(roomName, { ...room });

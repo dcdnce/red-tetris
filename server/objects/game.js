@@ -1,3 +1,5 @@
+import emitUpdatePlayerList from "../socket-events/tetris-events/emit_update_player_list.js";
+import { definitiveDisconnection } from "../socket-events/tetris-events/room_exit.js";
 import Logger from "../utils/logger.js";
 import GameMapSingleton from "./gameMapSingleton.js";
 import RoomState, { kStartedState } from "./roomstate.js";
@@ -6,7 +8,7 @@ const GAME_TICK_RATE_MS = 1000;
 
 class Game {
     constructor(roomName) {
-        Logger.info(true, roomName, `Creating game room: ${roomName}`);
+        Logger.info(false, null, `Creating game room: ${roomName}`);
         this.roomName = roomName;
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
@@ -78,7 +80,21 @@ class Game {
     }
 
     gameTick() {
-        Logger.info(true, this.roomName, "IM CALLED EVERY SECOND");
+        Logger.info(
+            true,
+            this.roomName,
+            `gameTick() called every ${GAME_TICK_RATE_MS}ms`
+        );
+
+        this.players.forEach((player) => {
+            if (!player.isConnected) {
+                const ticksRemaining = player.decrementGraceTicks();
+                if (!ticksRemaining) {
+                    definitiveDisconnection(this, player);
+                    emitUpdatePlayerList(this);
+                }
+            }
+        });
     }
 }
 
