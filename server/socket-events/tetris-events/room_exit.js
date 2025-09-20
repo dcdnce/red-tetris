@@ -10,18 +10,16 @@ export default function handleRoomExit(socket) {
         const roomName = player.currentGame.roomName;
         const game = player.currentGame;
 
-        // Last player ?
-        if (game.players.size === 1) {
-            endAndDeleteRoom(player, game, roomName);
-            return;
-        }
-
-        // If lobby is not launched ...
         if (game.getState() != kStartedState) {
             definitiveDisconnection(game, player);
+
+            // Last player ?
+            if (!game.players.size) {
+                endAndDeleteRoom(game);
+                return;
+            }
         }
 
-        // If lobby is launched..
         if (game.getState() == kStartedState) {
             temporaryDisconnection(player);
         }
@@ -63,12 +61,11 @@ export default function handleRoomExit(socket) {
     });
 }
 
-function endAndDeleteRoom(player, game, roomName) {
-    game.endGame();
+export function endAndDeleteRoom(game) {
     const gameMapSingletonInstance = new GameMapSingleton();
-    game.players.delete(player.username);
-    gameMapSingletonInstance.delete(roomName);
-    Logger.info(false, null, `Deleting game room ${roomName}`);
+    game.endGame();
+    gameMapSingletonInstance.delete(game.roomName);
+    Logger.info(false, null, `Deleting game room ${game.roomName}`);
 }
 
 // Either called by :

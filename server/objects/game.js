@@ -1,5 +1,8 @@
 import emitUpdateGameData from "../socket-events/tetris-events/emit_update_game_data.js";
-import { definitiveDisconnection } from "../socket-events/tetris-events/room_exit.js";
+import {
+    definitiveDisconnection,
+    endAndDeleteRoom,
+} from "../socket-events/tetris-events/room_exit.js";
 import Logger from "../utils/logger.js";
 import GameMapSingleton from "./gameMapSingleton.js";
 import RoomState, { kStartedState } from "./roomstate.js";
@@ -91,6 +94,10 @@ class Game {
                 const ticksRemaining = player.decrementGraceTicks();
                 if (!ticksRemaining) {
                     definitiveDisconnection(this, player);
+
+                    if (!this.players.size) {
+                        endAndDeleteRoom(this);
+                    }
                 }
             }
         });
