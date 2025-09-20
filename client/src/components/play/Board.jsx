@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import styles from "../../styles/play/Board.module.css";
 import { useSelector } from "react-redux";
 import { selectPlayers } from "../../store/gameSlice";
-import { calculateAbsoluteBlockPositions } from "../../store/gameSliceTetriminos";
 
 function Block({ row, col, isPlayerConnected }) {
     // Add color later
@@ -21,30 +20,19 @@ function Block({ row, col, isPlayerConnected }) {
 }
 
 function Board({ number }) {
-    const { roomName, username } = useParams();
+    const { roomName } = useParams();
 
     const players = useSelector(selectPlayers(roomName));
     const gameBoard = players[number].board;
     const isPlayerConnected = players[number].isConnected;
 
-    // const fallingTetrimino = useSelector(
-    //     (state) => state.game.fallingTetrimino
-    // );
-
-    // Base board
+    // Board
     var allBlocks = Array(0);
     for (let i = 0; i < 20; i++) {
         for (let j = 0; j < 10; j++) {
-            if (gameBoard[i][j] == 1) allBlocks.push({ row: i, col: j });
+            if (gameBoard[i][j] != 0) allBlocks.push({ row: i, col: j });
         }
     }
-
-    // // Falling tetrimino
-    // const blocksAbsolutePosition =
-    //     calculateAbsoluteBlockPositions(fallingTetrimino);
-    // for (let blockOffset of blocksAbsolutePosition) {
-    //     allBlocks.push({ col: blockOffset[0], row: blockOffset[1] });
-    // }
 
     return (
         <div className={styles.boardContainer}>

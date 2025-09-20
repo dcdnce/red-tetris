@@ -26,7 +26,7 @@ class Game {
         for (const [username, playerData] of this.players) {
             playerList.push({
                 username: username,
-                board: playerData.board,
+                board: playerData.getBoard(),
                 isConnected: playerData.isConnected,
                 isLeader: playerData.token === this.leaderToken,
             });
@@ -50,6 +50,12 @@ class Game {
         return this.state.getState();
     }
 
+    addTetrimino(id) {
+        this.players.forEach((player) => {
+            player.addTetrimino(id);
+        });
+    }
+
     startGame() {
         if (this.getState() == kStartedState) {
             throw new Error("startGame(): state is kStartedState");
@@ -64,6 +70,9 @@ class Game {
         this.loopIntervalId = setInterval(() => {
             this.gameTick();
         }, GAME_TICK_RATE_MS);
+
+        // TEST
+        this.addTetrimino(1);
 
         Logger.info(true, this.roomName, "Game loop started");
     }

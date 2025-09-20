@@ -1,4 +1,5 @@
 import Token from "../services/token.js";
+import Board from "./board.js";
 
 const GRACE_TICK_AMOUNT = 10;
 
@@ -9,7 +10,7 @@ class Player {
         this.isConnected = false;
         this.currentGame = game;
         this.currentGame.players.set(username, this);
-        this.board = this.createEmptyBoard();
+        this.board = new Board();
         this.token = Token.sign(username, game.roomName);
         this._graceTicks = null;
 
@@ -40,29 +41,12 @@ class Player {
         return this._graceTicks;
     }
 
-    createEmptyBoard() {
-        return [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        ];
+    getBoard() {
+        return this.board.getBoard();
+    }
+
+    addTetrimino(id) {
+        this.board.addTetrimino(id);
     }
 }
 
