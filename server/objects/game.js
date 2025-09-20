@@ -1,4 +1,4 @@
-import emitUpdatePlayerList from "../socket-events/tetris-events/emit_update_player_list.js";
+import emitUpdateGameData from "../socket-events/tetris-events/emit_update_game_data.js";
 import { definitiveDisconnection } from "../socket-events/tetris-events/room_exit.js";
 import Logger from "../utils/logger.js";
 import GameMapSingleton from "./gameMapSingleton.js";
@@ -91,10 +91,11 @@ class Game {
                 const ticksRemaining = player.decrementGraceTicks();
                 if (!ticksRemaining) {
                     definitiveDisconnection(this, player);
-                    emitUpdatePlayerList(this);
                 }
             }
         });
+
+        emitUpdateGameData(this);
     }
 }
 

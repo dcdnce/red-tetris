@@ -44,6 +44,11 @@ const gameSlice = createSlice({
                 console.log(roomName, { ...room });
             });
         },
+        updateGameData: (state, action) => {
+            const roomName = action.payload.roomName;
+            state.rooms[roomName].roomState = action.payload.roomState;
+            state.rooms[roomName].players = action.payload.players;
+        },
         joinRoomFailed: (state, action) => {
             const roomName = action.payload.roomName;
             state.rooms[roomName] = {
@@ -65,6 +70,7 @@ export const {
     joinRoomSuccess,
     joinRoomFailed,
     updatePlayerList,
+    updateGameData,
     roomLaunchSuccess,
 } = gameSlice.actions;
 
