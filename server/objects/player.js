@@ -48,6 +48,10 @@ class Player {
     addTetrimino(id) {
         this.board.addTetrimino(id);
     }
+
+    applyGravity() {
+        this.board.applyGravity();
+    }
 }
 
 export default Player;

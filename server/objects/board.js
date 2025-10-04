@@ -7,7 +7,7 @@ class Board {
     }
 
     getBoard() {
-        let board = this._board;
+        let board = this._board.map((row) => [...row]);
 
         // Add tetrimino if it exists
         if (this._tetrimino != null) {
@@ -16,7 +16,7 @@ class Board {
             const id = this._tetrimino.id;
 
             absoluteBlocksPosition.forEach(([x, y]) => {
-                board[x][y] = id;
+                board[y][x] = id;
             });
         }
 
@@ -31,6 +31,10 @@ class Board {
         }
 
         this._tetrimino = new Tetrimino(id);
+    }
+
+    applyGravity() {
+        this._tetrimino.applyGravity();
     }
 }
 

@@ -2,6 +2,7 @@ import GameMapSingleton from "../../objects/gameMapSingleton.js";
 import Logger from "./../../utils/logger.js";
 import emitUpdatePlayerList from "./emit_update_player_list.js";
 import { kStartedState } from "../../objects/roomstate.js";
+import emitUpdateGameData from "./emit_update_game_data.js";
 
 export default function handleRoomExit(socket) {
     const cleanupPlayer = (player) => {
@@ -24,7 +25,8 @@ export default function handleRoomExit(socket) {
             temporaryDisconnection(player);
         }
 
-        emitUpdatePlayerList(game);
+        // emitUpdatePlayerList(game);
+        emitUpdateGameData(game);
 
         Logger.info(
             true,

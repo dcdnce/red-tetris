@@ -50,12 +50,6 @@ class Game {
         return this.state.getState();
     }
 
-    addTetrimino(id) {
-        this.players.forEach((player) => {
-            player.addTetrimino(id);
-        });
-    }
-
     startGame() {
         if (this.getState() == kStartedState) {
             throw new Error("startGame(): state is kStartedState");
@@ -111,7 +105,21 @@ class Game {
             }
         });
 
+        this.applyGravity();
+
         emitUpdateGameData(this);
+    }
+
+    addTetrimino(id) {
+        this.players.forEach((player) => {
+            player.addTetrimino(id);
+        });
+    }
+
+    applyGravity() {
+        this.players.forEach((player) => {
+            player.applyGravity();
+        });
     }
 }
 

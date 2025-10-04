@@ -37,6 +37,10 @@ class Tetrimino {
 
         return this.blocks.map(([x, y]) => [x + posX, y + posY]);
     }
+
+    applyGravity() {
+        this.position[1] += 1;
+    }
 }
 
 export default Tetrimino;
