@@ -41,7 +41,7 @@ function Play() {
         <>
             <h2>Game compo test</h2>
             {players?.map((_, index) => (
-                <Board key={index} number={index} />
+                <Board key={index} playerNumber={index} />
             ))}
             <RoomLeaderDashBoard />
         </>

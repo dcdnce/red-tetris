@@ -28,6 +28,7 @@ class Game {
                 username: username,
                 board: playerData.getBoard(),
                 isConnected: playerData.isConnected,
+                didLost: playerData.didLost,
                 isLeader: playerData.token === this.leaderToken,
             });
         }
@@ -94,20 +95,29 @@ class Game {
                 const ticksRemaining = player.decrementGraceTicks();
                 if (!ticksRemaining) {
                     definitiveDisconnection(this, player);
-
-                    if (!this.players.size) {
-                        endAndDeleteRoom(this);
-                    }
                 }
             }
         });
 
-        // TEST
+        if (!this.players.size || this.allPlayersLost()) {
+            endAndDeleteRoom(this);
+        }
+
         this.handleTetriminoSpawn(1);
+
+        this.handleTopOut();
+
         this.handleGravity();
+
         this.handleTetriminoLock();
 
         emitUpdateGameData(this);
+    }
+
+    allPlayersLost() {
+        return Array.from(this.players.values()).every(
+            (player) => player.didLost
+        );
     }
 
     handleTetriminoSpawn(id) {
@@ -125,6 +135,12 @@ class Game {
     handleTetriminoLock() {
         this.players.forEach((player) => {
             player.handleTetriminoLock();
+        });
+    }
+
+    handleTopOut() {
+        this.players.forEach((player) => {
+            player.handleTopOut();
         });
     }
 }

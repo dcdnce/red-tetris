@@ -1,4 +1,5 @@
 import Token from "../services/token.js";
+import Logger from "../utils/logger.js";
 import Board from "./board.js";
 
 const GRACE_TICK_AMOUNT = 10;
@@ -8,6 +9,7 @@ class Player {
         this.username = username;
         this.socket = null;
         this.isConnected = false;
+        this.didLost = false;
         this.currentGame = game;
         this.currentGame.players.set(username, this);
         this.board = new Board();
@@ -46,15 +48,33 @@ class Player {
     }
 
     handleTetriminoSpawn(id) {
+        if (this.didLost) return;
+
         this.board.handleTetriminoSpawn(id);
     }
 
     handleGravity() {
+        if (this.didLost) return;
+
         this.board.handleGravity();
     }
 
     handleTetriminoLock() {
+        if (this.didLost) return;
+
         this.board.handleTetriminoLock();
+    }
+
+    handleTopOut() {
+        this.didLost = this.board.handleTopOut();
+
+        if (this.didLost) {
+            Logger.info(
+                true,
+                this.currentGame.roomName,
+                `${this.username} just topped out.`
+            );
+        }
     }
 }
 

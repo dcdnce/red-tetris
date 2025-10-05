@@ -67,6 +67,25 @@ class Board {
         this._lockTetrimino();
     }
 
+    handleTopOut() {
+        if (this._tetrimino == null) return false;
+
+        let didTopOut = false;
+
+        const absoluteBlocksPosition =
+            this._tetrimino.getAbsoluteBlocksPositionArray();
+
+        absoluteBlocksPosition.forEach(([x, y]) => {
+            if (!this.coordsAreOutOfBound(x, y)) {
+                didTopOut |= this._board[y][x] == 1;
+            }
+        });
+
+        return didTopOut;
+    }
+
+    // Private
+
     _lockTetrimino() {
         if (this._tetrimino == null) {
             throw new Error("lockTetrimino called without valid tetrimino");
@@ -90,7 +109,7 @@ function createEmptyBoard() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

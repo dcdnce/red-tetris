@@ -28,7 +28,7 @@ class Tetrimino {
         this.blocks = kTetriminosTypes[id].blocks;
         this.rotateOn = kTetriminosTypes[id].rotateOn;
         this.orientation = 0;
-        this.position = [5, 1];
+        this.position = [5, 0];
     }
 
     getAbsoluteBlocksPositionArray() {

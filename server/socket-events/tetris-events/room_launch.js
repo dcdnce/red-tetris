@@ -25,9 +25,7 @@ export default function handleRoomLaunch(socket) {
 
         // Verify there is at least 2 players
         if (game.players.size < 2) {
-             throw new Error(
-                `Cannot launch game: not enough players.`
-            );
+            throw new Error(`Cannot launch game: not enough players.`);
         }
     };
 
