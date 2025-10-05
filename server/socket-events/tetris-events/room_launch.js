@@ -12,14 +12,21 @@ export default function handleRoomLaunch(socket) {
         // Verify party leader
         if (game.leaderToken !== player.token) {
             throw new Error(
-                `Cannot launch room : '${player.username}' isn't room leader.`
+                `Cannot launch game: '${player.username}' isn't room leader.`
             );
         }
 
         // Verify game is not launched
         if (game.getState() === kStartedState) {
             throw new Error(
-                `Cannot launch room : room already in started state.`
+                `Cannot launch game: room already in started state.`
+            );
+        }
+
+        // Verify there is at least 2 players
+        if (game.players.size < 2) {
+             throw new Error(
+                `Cannot launch game: not enough players.`
             );
         }
     };
