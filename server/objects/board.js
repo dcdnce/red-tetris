@@ -1,4 +1,7 @@
+import Logger from "../utils/logger.js";
 import Tetrimino from "./tetrimino.js";
+
+export const kLockedBlock = 1;
 
 class Board {
     constructor() {
@@ -23,18 +26,61 @@ class Board {
         return board;
     }
 
-    addTetrimino(id) {
-        if (this._tetrimino != null) {
-            throw new Error(
-                "Tried to build a new tetrimino but one is already configured"
-            );
-        }
+    coordsAreOutOfBound(x, y) {
+        return x < 0 || y < 0 || x >= 10 || y >= 20;
+    }
+
+    handleTetriminoSpawn(id) {
+        if (this._tetrimino != null) return;
 
         this._tetrimino = new Tetrimino(id);
     }
 
-    applyGravity() {
-        this._tetrimino.applyGravity();
+    handleGravity() {
+        if (this._tetrimino == null) return;
+
+        this._tetrimino.handleGravity();
+    }
+
+    handleTetriminoLock() {
+        if (this._tetrimino == null) return;
+
+        let readyToLock = false;
+        const absoluteBlocksPosition =
+            this._tetrimino.getAbsoluteBlocksPositionArray();
+
+        // y > 20
+        readyToLock |= this._tetrimino.isVerticallyOutOfBounds();
+
+        // Touch locked piece
+        if (readyToLock == false) {
+            absoluteBlocksPosition.forEach(([x, y]) => {
+                if (!this.coordsAreOutOfBound(x, y)) {
+                    readyToLock |= this._board[y][x] == 1;
+                }
+            });
+        }
+
+        if (readyToLock == false) return;
+
+        this._tetrimino.moveUp();
+        this._lockTetrimino();
+    }
+
+    _lockTetrimino() {
+        if (this._tetrimino == null) {
+            throw new Error("lockTetrimino called without valid tetrimino");
+        }
+
+        const absoluteBlocksPosition =
+            this._tetrimino.getAbsoluteBlocksPositionArray();
+
+        absoluteBlocksPosition.forEach(([x, y]) => {
+            this._board[y][x] = kLockedBlock;
+        });
+
+        this._tetrimino = null;
+        Logger.success(true, "Applied lock");
     }
 }
 
@@ -59,7 +105,7 @@ function createEmptyBoard() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 }
 

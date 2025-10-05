@@ -65,9 +65,6 @@ class Game {
             this.gameTick();
         }, GAME_TICK_RATE_MS);
 
-        // TEST
-        this.addTetrimino(1);
-
         Logger.info(true, this.roomName, "Game loop started");
     }
 
@@ -105,20 +102,29 @@ class Game {
             }
         });
 
-        this.applyGravity();
+        // TEST
+        this.handleTetriminoSpawn(1);
+        this.handleGravity();
+        this.handleTetriminoLock();
 
         emitUpdateGameData(this);
     }
 
-    addTetrimino(id) {
+    handleTetriminoSpawn(id) {
         this.players.forEach((player) => {
-            player.addTetrimino(id);
+            player.handleTetriminoSpawn(id);
         });
     }
 
-    applyGravity() {
+    handleGravity() {
         this.players.forEach((player) => {
-            player.applyGravity();
+            player.handleGravity();
+        });
+    }
+
+    handleTetriminoLock() {
+        this.players.forEach((player) => {
+            player.handleTetriminoLock();
         });
     }
 }

@@ -38,8 +38,16 @@ class Tetrimino {
         return this.blocks.map(([x, y]) => [x + posX, y + posY]);
     }
 
-    applyGravity() {
+    handleGravity() {
         this.position[1] += 1;
+    }
+
+    moveUp() {
+        this.position[1] -= 1;
+    }
+
+    isVerticallyOutOfBounds() {
+        return this.getAbsoluteBlocksPositionArray().some(([x, y]) => y >= 20);
     }
 }
 

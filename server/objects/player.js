@@ -45,12 +45,16 @@ class Player {
         return this.board.getBoard();
     }
 
-    addTetrimino(id) {
-        this.board.addTetrimino(id);
+    handleTetriminoSpawn(id) {
+        this.board.handleTetriminoSpawn(id);
     }
 
-    applyGravity() {
-        this.board.applyGravity();
+    handleGravity() {
+        this.board.handleGravity();
+    }
+
+    handleTetriminoLock() {
+        this.board.handleTetriminoLock();
     }
 }
 
