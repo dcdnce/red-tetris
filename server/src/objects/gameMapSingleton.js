@@ -1,5 +1,7 @@
 //import Game from "./game";
 
+import Logger from "../utils/logger.js";
+
 class GameMapSingleton {
     constructor() {
         if (GameMapSingleton._instance) {
@@ -55,6 +57,11 @@ class GameMapSingleton {
 
     set(key, value) {
         this.container.set(key, value);
+    }
+
+    clear() {
+        this.container.clear()
+        Logger.info(true, null, "Game map singleton cleared.")
     }
 }
 

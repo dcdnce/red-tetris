@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { initializeSocketIO } from "./socket.js";
 import GameMapSingleton from "./objects/gameMapSingleton.js";
 import Logger from "./utils/logger.js";
+import { SocketManager } from "./socketManager.js";
 
 /* --- Configuration initiale --- */
 const PORT = process.env.SERVER_PORT || 3001; // Récupère le port depuis les variables d'environnement ou utilise 3001 par défaut
@@ -45,7 +46,8 @@ appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
 const gameMapSingletonInstance = new GameMapSingleton();
 
 /* --- Socket.IO --- */
-export const ioServer = initializeSocketIO(httpServer);
+const ioServer = initializeSocketIO(httpServer);
+SocketManager.init(ioServer);
 
 /* --- Demarrage serveur --- */
 httpServer.listen(PORT, () => {

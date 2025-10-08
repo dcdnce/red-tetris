@@ -3,17 +3,17 @@
     "version": "1.0.0",
     "type": "module",
     "description": "",
-    "main": "server/index.js",
+    "main": "server/src/index.js",
     "scripts": {
-        "dev:server": "nodemon server/index.js",
+        "dev:server": "nodemon server/src/index.js",
         "dev:client": "vite client --config client/vite.config.js dev",
         "dev": "concurrently --kill-others-on-fail \"npm:dev:server\" \"npm:dev:client\"",
         "build:client": "vite build --config client/vite.config.js",
         "build": "npm run build:client",
         "start": "NODE_ENV=production node server/index.js",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "test:cov": "jest --coverage",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:cov": "vitest run --coverage",
         "format:check": "prettier --check \"**/*.{js,jsx,json,css,md}\"",
         "format:write": "prettier --write \"**/*.{js,jsx,json,css,md}\"",
         "preview": "vite preview --config client/vite.config.js"
@@ -63,65 +63,5 @@
         "printWidth": 80,
         "arrowParens": "always",
         "jsxSingleQuote": false
-    },
-    "jest": {
-        "testEnvironment": "jest-environment-jsdom",
-        "testMatch": [
-            "<rootDir>/**/*.test.[jt]s?(x)",
-            "<rootDir>/**/*.spec.[jt]s?(x)"
-        ],
-        "testPathIgnorePatterns": [
-            "/node_modules/",
-            "/dist/",
-            "/build/"
-        ],
-        "modulePathIgnorePatterns": [
-            "/dist/",
-            "/build/"
-        ],
-        "collectCoverage": true,
-        "coverageDirectory": "coverage",
-        "coverageProvider": "v8",
-        "collectCoverageFrom": [
-            "client/src/**/*.{js,jsx}",
-            "server/**/*.{js}",
-            "!client/src/main.jsx",
-            "!server/index.js",
-            "!**/*.config.{js,json}",
-            "!**/.eslintrc.js",
-            "!**/node_modules/**",
-            "!**/dist/**",
-            "!**/build/**",
-            "!**/coverage/**",
-            "!**/*.test.{js,jsx}",
-            "!**/*.spec.{js,jsx}"
-        ],
-        "coverageThreshold": {
-            "global": {
-                "statements": 70,
-                "branches": 50,
-                "functions": 70,
-                "lines": 70
-            }
-        },
-        "transform": {
-            "^.+\\.[tj]sx?$": [
-                "babel-jest",
-                {
-                    "configFile": "./babel.config.json"
-                }
-            ]
-        },
-        "transformIgnorePatterns": [
-            "/node_modules/"
-        ],
-        "moduleNameMapper": {
-            "\\.(css|less|scss|sass)$": "identity-obj-proxy",
-            "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js"
-        },
-        "setupFilesAfterEnv": [
-            "<rootDir>/jest.setup.js"
-        ],
-        "verbose": true
     }
 }

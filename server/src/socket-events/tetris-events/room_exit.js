@@ -1,5 +1,5 @@
 import GameMapSingleton from "../../objects/gameMapSingleton.js";
-import Logger from "./../../utils/logger.js";
+import Logger from "../../utils/logger.js";
 import emitUpdatePlayerList from "./emit_update_player_list.js";
 import { kStartedState } from "../../objects/roomstate.js";
 import emitUpdateGameData from "./emit_update_game_data.js";
