@@ -4,6 +4,8 @@ export default defineConfig({
   test: {
     // 1. Activer les globales pour une API compatible Jest (describe, it, expect)
     globals: true,
+
+    setupFiles: './vitest.setup.js',
     
     // 2. Définir l'environnement par défaut (node pour le backend, jsdom pour le frontend)
     // On peut surcharger ça par fichier si besoin.

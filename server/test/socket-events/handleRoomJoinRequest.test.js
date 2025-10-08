@@ -1,4 +1,3 @@
-// On importe les globales de Vitest. C'est plus explicite.
 import { describe, it, expect, beforeEach, afterEach, jest } from 'vitest';
 
 // --- IMPORTER LES MODULES ---
@@ -10,8 +9,7 @@ import emitUpdatePlayerList from "../../src/socket-events/tetris-events/emit_upd
 import emitJoinRoomFail from "../../src/socket-events/tetris-events/emit_join_room_fail.js";
 import emitJoinRoomSuccess from "../../src/socket-events/tetris-events/emit_join_room_success.js";
 
-// --- MOCKING AVEC VITEST ---
-// La syntaxe est très similaire et beaucoup plus fiable avec ESM.
+// --- MOCKING ---
 vi.mock('../../src/socket-events/tetris-events/emit_update_player_list.js', () => ({
     default: vi.fn(),
 }));
@@ -33,6 +31,7 @@ describe('handleRoomJoinRequest', () => {
         mockSocket = {
             on: vi.fn(),
             emit: vi.fn(),
+            join: vi.fn(),
             id: `socket-id-${Math.random()}`
         };
         
@@ -48,7 +47,7 @@ describe('handleRoomJoinRequest', () => {
         roomJoinCallback(params);
     };
 
-    // --- LES TESTS SONT IDENTIQUES ---
+    // --- TESTS ---
     it('should create a new game and add a player when a room does not exist', () => {
         const params = { roomName: 'room1', username: 'Paul', token: null };
         expect(gameMapInstance.has('room1')).toBe(false);
@@ -73,4 +72,9 @@ describe('handleRoomJoinRequest', () => {
         const error = emitJoinRoomFail.mock.calls[0][2];
         expect(error.message).toContain('invalid');
     });
+
+    // it('should fail if a player with the same name is already connected in the room', () => {
+    // it('should allow a disconnected player to reconnect with a valid token', () => {
+    // it('should fail to reconnect if the token is invalid', () => {
+    // it('should fail if trying to join a game that has already started', () => {
 });
