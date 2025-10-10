@@ -1,26 +1,25 @@
 import { describe, it, expect, beforeEach, afterEach, jest } from "vitest";
 
 // --- IMPORTER LES MODULES ---
-import handleRoomJoinRequest from "../../src/socket-events/tetris-events/handleRoomJoinRequest.js";
-import GameMapSingleton from "../../src/objects/gameMapSingleton.js";
+import handleRoomJoinRequest from "../../src/socket-events/handlers/handleRoomJoinRequest.js";
+import GameMapSingleton from "../../src/services/gameMapSingleton.js";
 import Game from "../../src/objects/game.js";
-import Player from "../../src/objects/player.js";
-import emitUpdatePlayerList from "../../src/socket-events/tetris-events/emit_update_player_list.js";
-import emitJoinRoomFail from "../../src/socket-events/tetris-events/emit_join_room_fail.js";
-import emitJoinRoomSuccess from "../../src/socket-events/tetris-events/emit_join_room_success.js";
+import emitUpdatePlayerList from "../../src/socket-events/emitters/emit_update_player_list.js";
+import emitJoinRoomFail from "../../src/socket-events/emitters/emit_join_room_fail.js";
+import emitJoinRoomSuccess from "../../src/socket-events/emitters/emit_join_room_success.js";
 
 // --- MOCKING ---
 vi.mock(
-    "../../src/socket-events/tetris-events/emit_update_player_list.js",
+    "../../src/socket-events/emitters/emit_update_player_list.js",
     () => ({
         default: vi.fn(),
     })
 );
-vi.mock("../../src/socket-events/tetris-events/emit_join_room_fail.js", () => ({
+vi.mock("../../src/socket-events/emitters/emit_join_room_fail.js", () => ({
     default: vi.fn(),
 }));
 vi.mock(
-    "../../src/socket-events/tetris-events/emit_join_room_success.js",
+    "../../src/socket-events/emitters/emit_join_room_success.js",
     () => ({
         default: vi.fn(),
     })

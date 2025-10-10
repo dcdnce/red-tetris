@@ -1,0 +1,35 @@
+name: Red Tetris CI - Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Récupérer le code de votre dépôt
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Étape 2 : Mettre en place l'environnement Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        # 'npm ci' est recommandé pour la CI. Il est plus rapide et plus strict que 'npm install'
+        # car il utilise le fichier package-lock.json pour garantir une installation reproductible.
+
+      - name: Run unit tests
+        env: 
+          TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+        run: npm test
+        # Cette commande exécute "vitest run" comme défini dans votre package.json
