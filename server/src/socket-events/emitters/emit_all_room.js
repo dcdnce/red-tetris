@@ -1,5 +1,5 @@
-import GameMapSingleton from "../../objects/gameMapSingleton.js";
-import Logger from "../../utils/logger.js";
+import GameMapSingleton from "../../services/gameMapSingleton.js";
+import Logger from "../../services/logger.js";
 
 export default function getAllRoom(socket, game) {
     const gameMapSingletonInstance = new GameMapSingleton();

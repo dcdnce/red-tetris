@@ -3,10 +3,8 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import { initializeSocketIO } from "./socket.js";
-import GameMapSingleton from "./objects/gameMapSingleton.js";
-import Logger from "./utils/logger.js";
-import { SocketManager } from "./socketManager.js";
+import { initializeSocketIO } from "./socket-events/initialize_socketio.js";
+import Logger from "./services/logger.js";
 
 /* --- Configuration initiale --- */
 const PORT = process.env.SERVER_PORT || 3001; // Récupère le port depuis les variables d'environnement ou utilise 3001 par défaut
@@ -42,12 +40,8 @@ appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
     });
 });
 
-/* --- Game Logic Related --- */
-const gameMapSingletonInstance = new GameMapSingleton();
-
 /* --- Socket.IO --- */
-const ioServer = initializeSocketIO(httpServer);
-SocketManager.init(ioServer);
+initializeSocketIO(httpServer);
 
 /* --- Demarrage serveur --- */
 httpServer.listen(PORT, () => {

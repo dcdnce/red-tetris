@@ -1,10 +1,10 @@
 import Player from "../../objects/player.js";
-import GameMapSingleton from "../../objects/gameMapSingleton.js";
+import GameMapSingleton from "../../services/gameMapSingleton.js";
 import Game from "../../objects/game.js";
-import Logger from "../../utils/logger.js";
-import emitUpdatePlayerList from "./emit_update_player_list.js";
-import emitJoinRoomFail from "./emit_join_room_fail.js";
-import emitJoinRoomSuccess from "./emit_join_room_success.js";
+import Logger from "../../services/logger.js";
+import emitUpdatePlayerList from "../emitters/emit_update_player_list.js";
+import emitJoinRoomFail from "../emitters/emit_join_room_fail.js";
+import emitJoinRoomSuccess from "../emitters/emit_join_room_success.js";
 import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomJoinRequest(socket) {

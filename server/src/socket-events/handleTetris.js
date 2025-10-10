@@ -1,10 +1,9 @@
-import { socket } from "../../../client/src/socket.js";
-import GameMapSingleton from "../objects/gameMapSingleton.js";
-import handleRoomExit from "./tetris-events/room_exit.js";
-import handleRoomJoin from "./tetris-events/handleRoomJoinRequest.js";
-import handleRoomLaunch from "./tetris-events/room_launch.js";
+import GameMapSingleton from "../services/gameMapSingleton.js";
+import handleRoomExit from "./handlers/handleRoomExit.js";
+import handleRoomJoin from "./handlers/handleRoomJoinRequest.js";
+import handleRoomLaunch from "./handlers/handleRoomLaunch.js";
 
-export default function handleTetrisRelated(socket) {
+export default function handleTetris(socket) {
     handleRoomJoin(socket);
     handleRoomExit(socket);
     handleRoomLaunch(socket);

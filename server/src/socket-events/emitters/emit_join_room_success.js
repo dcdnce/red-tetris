@@ -1,4 +1,4 @@
-import Logger from "../../utils/logger.js";
+import Logger from "../../services/logger.js";
 
 export default function emitJoinRoomSuccess(socket, player) {
     Logger.info(

@@ -1,8 +1,8 @@
-import GameMapSingleton from "../../objects/gameMapSingleton.js";
-import Logger from "../../utils/logger.js";
-import emitRoomLaunchFail from "./emit_room_launch_fail.js";
+import GameMapSingleton from "../../services/gameMapSingleton.js";
+import Logger from "../../services/logger.js";
+import emitRoomLaunchFail from "../emitters/emit_room_launch_fail.js";
 import Token from "../../services/token.js";
-import emitRoomLaunchSuccess from "./emit_room_launch_success.js";
+import emitRoomLaunchSuccess from "../emitters/emit_room_launch_success.js";
 import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomLaunch(socket) {

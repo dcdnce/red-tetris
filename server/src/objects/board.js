@@ -1,4 +1,4 @@
-import Logger from "../utils/logger.js";
+import Logger from "../services/logger.js";
 import Tetrimino from "./tetrimino.js";
 
 export const kLockedBlock = 1;

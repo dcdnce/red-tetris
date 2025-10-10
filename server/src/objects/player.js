@@ -1,5 +1,5 @@
 import Token from "../services/token.js";
-import Logger from "../utils/logger.js";
+import Logger from "../services/logger.js";
 import Board from "./board.js";
 
 const GRACE_TICK_AMOUNT = 10;

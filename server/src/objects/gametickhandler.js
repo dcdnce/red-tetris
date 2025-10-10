@@ -1,5 +1,4 @@
-import { definitiveDisconnection } from "../socket-events/tetris-events/room_exit.js";
-import Logger from "../utils/logger.js";
+import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 
 class GameTickHandler {
     constructor(roomName, players, onGameEndCallback) {

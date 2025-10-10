@@ -1,9 +1,10 @@
 import { Server as SocketIOServer } from "socket.io";
-import handleDisconnect from "./socket-events/disconnect.js";
-import handleTetrisRelated from "./socket-events/tetris.js";
-import getAllRoom from "./socket-events/tetris-events/emit_all_room.js";
-import getRoomBySearch from "./socket-events/tetris-events/emit_get_room_by_search.js";
-import Logger from "./utils/logger.js";
+import handleDisconnect from "./disconnect.js";
+import handleTetris from "./handleTetris.js";
+import getAllRoom from "./emitters/emit_all_room.js";
+import getRoomBySearch from "./emitters/emit_get_room_by_search.js";
+import Logger from "../services/logger.js";
+import { SocketManager } from "../services/socketManager.js";
 
 export function initializeSocketIO(server) {
     const io = new SocketIOServer(server, {
@@ -15,11 +16,13 @@ export function initializeSocketIO(server) {
         },
     });
 
+    SocketManager.init(io);
+
     io.on("connection", (socket) => {
         Logger.info(false, null, `Client connected: ${socket.id}`);
 
         handleDisconnect(socket);
-        handleTetrisRelated(socket);
+        handleTetris(socket);
         getAllRoom(socket);
         getRoomBySearch(socket);
     });

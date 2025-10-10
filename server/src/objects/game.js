@@ -1,9 +1,9 @@
-import { endAndDeleteRoom } from "../socket-events/tetris-events/room_exit.js";
-import Logger from "../utils/logger.js";
-import GameMapSingleton from "./gameMapSingleton.js";
+import { endAndDeleteRoom } from "../socket-events/handlers/handleRoomExit.js";
+import Logger from "../services/logger.js";
+import GameMapSingleton from "../services/gameMapSingleton.js";
 import RoomState, { kStartedState, kPendingState } from "./roomstate.js";
 import GameTickHandler from "./gametickhandler.js";
-import emitUpdateGameData from "../socket-events/tetris-events/emit_update_game_data.js";
+import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
 
 const GAME_TICK_RATE_MS = 1000;
 

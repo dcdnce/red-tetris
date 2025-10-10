@@ -1,4 +1,4 @@
-import Logger from "../utils/logger.js";
+import Logger from "../services/logger.js";
 
 export default function handleDisconnect(socket) {
     socket.on("disconnect", (reason) => {

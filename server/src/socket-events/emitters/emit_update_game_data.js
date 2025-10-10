@@ -1,5 +1,5 @@
-import Logger from "../../utils/logger.js";
-import { SocketManager } from "../../socketManager.js";
+import Logger from "../../services/logger.js";
+import { SocketManager } from "../../services/socketManager.js";
 
 export default function emitUpdateGameData(game) {
     Logger.info(true, game.roomName, `Update game data`);

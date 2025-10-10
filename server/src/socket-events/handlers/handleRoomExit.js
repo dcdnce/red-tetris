@@ -1,8 +1,7 @@
-import GameMapSingleton from "../../objects/gameMapSingleton.js";
-import Logger from "../../utils/logger.js";
-import emitUpdatePlayerList from "./emit_update_player_list.js";
+import GameMapSingleton from "../../services/gameMapSingleton.js";
+import Logger from "../../services/logger.js";
 import { kStartedState } from "../../objects/roomstate.js";
-import emitUpdateGameData from "./emit_update_game_data.js";
+import emitUpdateGameData from "../emitters/emit_update_game_data.js";
 
 export default function handleRoomExit(socket) {
     const cleanupPlayer = (player) => {

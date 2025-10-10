@@ -1,6 +1,6 @@
 //import Game from "./game";
 
-import Logger from "../utils/logger.js";
+import Logger from "./logger.js";
 
 class GameMapSingleton {
     constructor() {

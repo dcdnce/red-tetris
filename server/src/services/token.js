@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import Logger from "../utils/logger.js";
+import Logger from "./logger.js";
 
 class Token {
     static sign(username, roomName) {
