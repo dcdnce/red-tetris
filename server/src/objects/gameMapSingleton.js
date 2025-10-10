@@ -60,8 +60,8 @@ class GameMapSingleton {
     }
 
     clear() {
-        this.container.clear()
-        Logger.info(true, null, "Game map singleton cleared.")
+        this.container.clear();
+        Logger.info(true, null, "Game map singleton cleared.");
     }
 }
 

@@ -1,11 +1,9 @@
-import emitUpdateGameData from "../socket-events/tetris-events/emit_update_game_data.js";
-import {
-    definitiveDisconnection,
-    endAndDeleteRoom,
-} from "../socket-events/tetris-events/room_exit.js";
+import { endAndDeleteRoom } from "../socket-events/tetris-events/room_exit.js";
 import Logger from "../utils/logger.js";
 import GameMapSingleton from "./gameMapSingleton.js";
-import RoomState, { kStartedState } from "./roomstate.js";
+import RoomState, { kStartedState, kPendingState } from "./roomstate.js";
+import GameTickHandler from "./gametickhandler.js";
+import emitUpdateGameData from "../socket-events/tetris-events/emit_update_game_data.js";
 
 const GAME_TICK_RATE_MS = 1000;
 
@@ -16,7 +14,9 @@ class Game {
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
         this.state = new RoomState();
-        this.loopIntervalId = null;
+        this.gametickhandler = null;
+        this.loopIntervalId = null; // La boucle appartient maintenant à la Room
+
         const gameMapSingletonInstance = new GameMapSingleton();
         gameMapSingletonInstance.set(roomName, this); // <roomName, Game>
     }
@@ -52,96 +52,55 @@ class Game {
     }
 
     startGame() {
-        if (this.getState() == kStartedState) {
-            throw new Error("startGame(): state is kStartedState");
-        }
-
-        if (this.loopIntervalId != null) {
-            throw new Error("startGame() : loopIntervalId is not null");
+        if (
+            this.getState() !== kPendingState ||
+            this.gametickhandler !== null
+        ) {
+            throw new Error(
+                "Attempted to start a game that is already running or not pending."
+            );
         }
 
         this.setStarted();
 
+        this.gametickhandler = new GameTickHandler(
+            this.roomName,
+            this.players, // this is a reference
+            () => endAndDeleteRoom(this)
+        );
+
         this.loopIntervalId = setInterval(() => {
-            this.gameTick();
+            Logger.info(
+                true,
+                this.roomName,
+                `GameTickHandler.tick() called every ${GAME_TICK_RATE_MS}ms`
+            );
+
+            this.gametickhandler.tick();
+            emitUpdateGameData(this);
         }, GAME_TICK_RATE_MS);
 
-        Logger.info(true, this.roomName, "Game loop started");
+        Logger.info(true, this.roomName, "Room loop started");
     }
 
     endGame() {
-        if (this.getState() != kStartedState) {
-            Logger.info(true, this.roomName, `End room that didn't start`);
+        if (
+            this.getState() !== kStartedState ||
+            this.gametickhandler === null
+        ) {
+            Logger.warning(
+                true,
+                this.roomName,
+                "Attempted to end a game that is not running."
+            );
             return;
         }
 
         clearInterval(this.loopIntervalId);
         this.loopIntervalId = null;
-
+        this.gametickhandler = null;
         this.setFinished();
-
-        Logger.info(true, this.roomName, "Game loop ended");
-    }
-
-    gameTick() {
-        Logger.info(
-            true,
-            this.roomName,
-            `gameTick() called every ${GAME_TICK_RATE_MS}ms`
-        );
-
-        this.players.forEach((player) => {
-            if (!player.isConnected) {
-                const ticksRemaining = player.decrementGraceTicks();
-                if (!ticksRemaining) {
-                    definitiveDisconnection(this, player);
-                }
-            }
-        });
-
-        if (!this.players.size || this.allPlayersLost()) {
-            endAndDeleteRoom(this);
-        }
-
-        this.handleTetriminoSpawn(1);
-
-        this.handleTopOut();
-
-        this.handleGravity();
-
-        this.handleTetriminoLock();
-
-        emitUpdateGameData(this);
-    }
-
-    allPlayersLost() {
-        return Array.from(this.players.values()).every(
-            (player) => player.didLost
-        );
-    }
-
-    handleTetriminoSpawn(id) {
-        this.players.forEach((player) => {
-            player.handleTetriminoSpawn(id);
-        });
-    }
-
-    handleGravity() {
-        this.players.forEach((player) => {
-            player.handleGravity();
-        });
-    }
-
-    handleTetriminoLock() {
-        this.players.forEach((player) => {
-            player.handleTetriminoLock();
-        });
-    }
-
-    handleTopOut() {
-        this.players.forEach((player) => {
-            player.handleTopOut();
-        });
+        Logger.info(true, this.roomName, "Room loop ended");
     }
 }
 

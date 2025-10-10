@@ -8,7 +8,7 @@ export default function emitRoomLaunchSuccess(player, game) {
 
     const io = SocketManager.getIO();
 
-    ioServer.to(game.roomName).emit("room_launch_success", {
+    io.to(game.roomName).emit("room_launch_success", {
         roomName: game.roomName,
         message: message,
     });

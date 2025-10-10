@@ -12,7 +12,7 @@ export default function handleRoomExit(socket) {
         const game = player.currentGame;
 
         if (game.getState() != kStartedState) {
-            definitiveDisconnection(game, player);
+            definitiveDisconnection(player);
 
             // Last player ?
             if (!game.players.size) {
@@ -70,12 +70,17 @@ export function endAndDeleteRoom(game) {
     Logger.info(false, null, `Deleting game room ${game.roomName}`);
 }
 
-// Either called by :
-//    - gameloop after x seconds disconnected
-//    - handleRoomExit if player quits a lobby being in waiting state
-export function definitiveDisconnection(game, player) {
-    const roomName = player.currentGame.roomName;
-    player.socket.leave(roomName);
+/**
+ *
+ * Either called by :
+ *  - gameloop after x seconds disconnected
+ *  - handleRoomExit if player quits a lobby being in waiting state
+ * @param {Player} player
+ */
+export function definitiveDisconnection(player) {
+    let game = player.currentGame;
+
+    player.socket.leave(game.roomName);
     game.players.delete(player.username);
 
     // Change room leader
