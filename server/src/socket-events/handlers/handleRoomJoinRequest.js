@@ -12,14 +12,21 @@ export default function handleRoomJoinRequest(socket) {
         const roomName = params.roomName;
         const username = params.username;
         const token = params.token;
-        const gameMapSingletonInstance = new GameMapSingleton();
-
         try {
+            if (!roomName || !username) {
+                Logger.warning(
+                    false,
+                    null,
+                    "room_join called with invalid parameters"
+                );
+                return;
+            }
+
             roomNameCheck(roomName);
 
             createGameRoomIfNeeded(roomName);
 
-            let game = gameMapSingletonInstance.get(roomName);
+            let game = GameMapSingleton.get(roomName);
             let player = null;
 
             if (playerIsReconnecting(game, username, token, socket)) {
@@ -53,9 +60,7 @@ function roomNameCheck(roomName) {
 }
 
 function createGameRoomIfNeeded(roomName) {
-    const gameMapSingletonInstance = new GameMapSingleton();
-
-    if (gameMapSingletonInstance.has(roomName) == false) {
+    if (GameMapSingleton.has(roomName) == false) {
         new Game(roomName);
     }
 }

@@ -36,37 +36,6 @@ class Board {
         this._tetrimino = new Tetrimino(id);
     }
 
-    handleGravity() {
-        if (this._tetrimino == null) return;
-
-        this._tetrimino.handleGravity();
-    }
-
-    handleTetriminoLock() {
-        if (this._tetrimino == null) return;
-
-        let readyToLock = false;
-        const absoluteBlocksPosition =
-            this._tetrimino.getAbsoluteBlocksPositionArray();
-
-        // y > 20
-        readyToLock |= this._tetrimino.isVerticallyOutOfBounds();
-
-        // Touch locked piece
-        if (readyToLock == false) {
-            absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!this.coordsAreOutOfBound(x, y)) {
-                    readyToLock |= this._board[y][x] == 1;
-                }
-            });
-        }
-
-        if (readyToLock == false) return;
-
-        this._tetrimino.moveUp();
-        this._lockTetrimino();
-    }
-
     handleTopOut() {
         if (this._tetrimino == null) return false;
 
@@ -77,11 +46,101 @@ class Board {
 
         absoluteBlocksPosition.forEach(([x, y]) => {
             if (!this.coordsAreOutOfBound(x, y)) {
-                didTopOut |= this._board[y][x] == 1;
+                didTopOut |= this._board[y][x] == kLockedBlock;
             }
         });
 
         return didTopOut;
+    }
+
+    handleGravityAndLock() {
+        if (this._tetrimino == null) return;
+
+        let testedTetrimino = this._tetrimino.clone(this._tetrimino.id);
+
+        testedTetrimino.moveDown();
+
+        // Lock tetrimino
+        if (this.isGivenTetriminoInLockState(testedTetrimino)) {
+            this._lockTetrimino();
+            return;
+        }
+
+        // Simple gravity
+        this._tetrimino.enforceMove(testedTetrimino.lastMove);
+    }
+
+    handleInput(input) {
+        if (this._tetrimino == null) return;
+
+        let testedTetrimino = this._tetrimino.clone(this._tetrimino.id);
+
+        if (input === "ArrowUp") {
+            testedTetrimino.rotate();
+        }
+
+        if (input === "ArrowRight") {
+            testedTetrimino.moveRight();
+        }
+
+        if (input === "ArrowLeft") {
+            testedTetrimino.moveLeft();
+        }
+
+        if (input === "ArrowDown") {
+            testedTetrimino.moveDown();
+        }
+
+        if (this.isGivenTetriminoInCollisionState(testedTetrimino)) {
+            return false;
+        }
+
+        this._tetrimino.enforceMove(testedTetrimino.lastMove);
+        return true;
+    }
+
+    isGivenTetriminoInLockState(tetrimino) {
+        let readyToLock = false;
+        const absoluteBlocksPosition =
+            tetrimino.getAbsoluteBlocksPositionArray();
+
+        // y > 20
+        readyToLock |= tetrimino.isVerticallyOutOfBounds();
+
+        // Touch locked piece
+        if (readyToLock == false) {
+            absoluteBlocksPosition.forEach(([x, y]) => {
+                if (!this.coordsAreOutOfBound(x, y)) {
+                    readyToLock |= this._board[y][x] == kLockedBlock;
+                }
+            });
+        }
+
+        return readyToLock;
+    }
+
+    isGivenTetriminoInCollisionState(tetrimino) {
+        let isColliding = false;
+
+        const absoluteBlocksPosition =
+            tetrimino.getAbsoluteBlocksPositionArray();
+
+        // y
+        isColliding |= tetrimino.isVerticallyOutOfBounds();
+
+        // x
+        isColliding |= tetrimino.isHorizontallyOutOfBounds();
+
+        // Touching locked piece
+        if (isColliding == false) {
+            absoluteBlocksPosition.forEach(([x, y]) => {
+                if (!this.coordsAreOutOfBound(x, y)) {
+                    isColliding |= this._board[y][x] == kLockedBlock;
+                }
+            });
+        }
+
+        return isColliding;
     }
 
     // Private

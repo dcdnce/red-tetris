@@ -46,11 +46,10 @@ export default function handleRoomExit(socket) {
 
     socket.on("exit_all", () => {
         try {
-            const gameMapSingletonInstance = new GameMapSingleton();
-            const roomCount = gameMapSingletonInstance.container.size;
+            const roomCount = GameMapSingleton.container.size;
 
             // Supprimer toutes les rooms
-            gameMapSingletonInstance.container.clear();
+            GameMapSingleton.container.clear();
 
             Logger.info(true, null, `All ${roomCount} rooms have been deleted`);
 
@@ -63,9 +62,8 @@ export default function handleRoomExit(socket) {
 }
 
 export function endAndDeleteRoom(game) {
-    const gameMapSingletonInstance = new GameMapSingleton();
     game.endGame();
-    gameMapSingletonInstance.delete(game.roomName);
+    GameMapSingleton.delete(game.roomName);
     Logger.info(false, null, `Deleting game room ${game.roomName}`);
 }
 

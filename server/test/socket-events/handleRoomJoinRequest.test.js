@@ -9,25 +9,18 @@ import emitJoinRoomFail from "../../src/socket-events/emitters/emit_join_room_fa
 import emitJoinRoomSuccess from "../../src/socket-events/emitters/emit_join_room_success.js";
 
 // --- MOCKING ---
-vi.mock(
-    "../../src/socket-events/emitters/emit_update_player_list.js",
-    () => ({
-        default: vi.fn(),
-    })
-);
+vi.mock("../../src/socket-events/emitters/emit_update_player_list.js", () => ({
+    default: vi.fn(),
+}));
 vi.mock("../../src/socket-events/emitters/emit_join_room_fail.js", () => ({
     default: vi.fn(),
 }));
-vi.mock(
-    "../../src/socket-events/emitters/emit_join_room_success.js",
-    () => ({
-        default: vi.fn(),
-    })
-);
+vi.mock("../../src/socket-events/emitters/emit_join_room_success.js", () => ({
+    default: vi.fn(),
+}));
 
 describe("handleRoomJoinRequest", () => {
     let mockSocket;
-    const gameMapInstance = new GameMapSingleton();
 
     beforeEach(() => {
         // Nettoyer les mocks
@@ -44,7 +37,7 @@ describe("handleRoomJoinRequest", () => {
     });
 
     afterEach(() => {
-        gameMapInstance.clear();
+        GameMapSingleton.clear();
     });
 
     const simulateRoomJoinEvent = (params) => {
@@ -55,12 +48,12 @@ describe("handleRoomJoinRequest", () => {
     // --- TESTS ---
     it("should create a new game and add a player when a room does not exist", () => {
         const params = { roomName: "room1", username: "Paul", token: null };
-        expect(gameMapInstance.has("room1")).toBe(false);
+        expect(GameMapSingleton.has("room1")).toBe(false);
 
         simulateRoomJoinEvent(params);
 
-        expect(gameMapInstance.has("room1")).toBe(true);
-        const game = gameMapInstance.get("room1");
+        expect(GameMapSingleton.has("room1")).toBe(true);
+        const game = GameMapSingleton.get("room1");
         expect(game).toBeInstanceOf(Game);
         expect(game.players.has("Paul")).toBe(true);
 

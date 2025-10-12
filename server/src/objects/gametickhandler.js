@@ -22,10 +22,9 @@ class GameTickHandler {
             return;
         }
 
-        this.handleTetriminoSpawn(1);
         this.handleTopOut();
-        this.handleGravity();
-        this.handleTetriminoLock();
+        this.handleGravityAndLock();
+        this.handleTetriminoSpawn(1);
     }
 
     // GAME LOGIC METHODS
@@ -39,12 +38,8 @@ class GameTickHandler {
         this.players.forEach((player) => player.handleTetriminoSpawn(id));
     }
 
-    handleGravity() {
-        this.players.forEach((player) => player.handleGravity());
-    }
-
-    handleTetriminoLock() {
-        this.players.forEach((player) => player.handleTetriminoLock());
+    handleGravityAndLock() {
+        this.players.forEach((player) => player.handleGravityAndLock());
     }
 
     handleTopOut() {

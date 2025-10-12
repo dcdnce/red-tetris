@@ -10,6 +10,7 @@ import {
 } from "../../store/gameSlice";
 import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js";
 import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
+import { useUserInput } from "../../hooks/play/useUserInput.js";
 
 function Play() {
     const { roomName, username } = useParams();
@@ -19,6 +20,7 @@ function Play() {
 
     useRoomSocketHandlers(roomName, username);
     useRoomJoin(roomName, username);
+    useUserInput(roomName, username, roomState);
 
     if (roomState === "loading") {
         return <h2>Game compo test</h2>;
@@ -49,17 +51,3 @@ function Play() {
 }
 
 export default Play;
-
-// // Inputs
-// const handleUserInput = (event) => {
-//    if (event.key == "ArrowUp") {
-//       dispatch(rotatePiece());
-//    }
-// };
-
-// useEffect(() => {
-//    window.addEventListener("keydown", handleUserInput);
-//    return () => {
-//       window.removeEventListener("keydown", handleUserInput);
-//    };
-// }, [dispatch]);

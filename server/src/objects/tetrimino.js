@@ -7,7 +7,7 @@ const kTetriminosTypes = [
         //	XXX
         //   X
         id: 1,
-        blocks: [
+        _baseBlocks: [
             [0, 0],
             [1, 1],
             [-1, 1],
@@ -18,6 +18,11 @@ const kTetriminosTypes = [
     // etc
 ];
 
+const kRotate = "rotate";
+const kMoveRight = "moveright";
+const kMoveLeft = "moveleft";
+const kMoveDown = "movedown";
+
 class Tetrimino {
     constructor(id) {
         if (id == 0) {
@@ -25,80 +30,100 @@ class Tetrimino {
         }
 
         this.id = id;
-        this.blocks = kTetriminosTypes[id].blocks;
-        this.rotateOn = kTetriminosTypes[id].rotateOn;
-        this.orientation = 0;
-        this.position = [5, 0];
+        this._baseBlocks = kTetriminosTypes[id]._baseBlocks;
+        // this.rotateOn = kTetriminosTypes[id].rotateOn;
+        this._orientation = 0;
+        this._position = [5, 0];
+        this.lastMove = null;
+    }
+
+    clone(id) {
+        let newTetrimino = new Tetrimino(this.id);
+        newTetrimino._baseBlocks = kTetriminosTypes[id]._baseBlocks;
+        newTetrimino._orientation = this._orientation;
+        newTetrimino._position = [...this._position];
+        newTetrimino.lastMove = this.lastMove;
+
+        return newTetrimino;
     }
 
     getAbsoluteBlocksPositionArray() {
-        const posX = this.position[0];
-        const posY = this.position[1];
+        const posX = this._position[0];
+        const posY = this._position[1];
+        let rotatedRelativeBlocks = this._baseBlocks.map((block) => [...block]);
 
-        return this.blocks.map(([x, y]) => [x + posX, y + posY]);
-    }
+        for (let i = 0; i < this._orientation; i++) {
+            rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [
+                y,
+                -x,
+            ]);
+        }
 
-    handleGravity() {
-        this.position[1] += 1;
+        return rotatedRelativeBlocks.map(([x, y]) => [x + posX, y + posY]);
     }
 
     moveUp() {
-        this.position[1] -= 1;
+        this._position[1] -= 1;
     }
 
+    // TODO - check top too ?
     isVerticallyOutOfBounds() {
         return this.getAbsoluteBlocksPositionArray().some(([x, y]) => y >= 20);
+    }
+
+    isHorizontallyOutOfBounds() {
+        return this.getAbsoluteBlocksPositionArray().some(
+            ([x, y]) => x >= 10 || x < 0
+        );
+    }
+
+    rotate() {
+        this._orientation = (this._orientation + 1) % 4;
+        this.lastMove = kRotate;
+    }
+
+    moveRight() {
+        this._position[0] += 1;
+        this.lastMove = kMoveRight;
+    }
+
+    moveLeft() {
+        this._position[0] -= 1;
+        this.lastMove = kMoveLeft;
+    }
+
+    moveDown() {
+        this._position[1] += 1;
+        this.lastMove = kMoveDown;
+    }
+
+    enforceMove(move) {
+        if (move === kMoveDown) {
+            this.moveDown();
+        }
+
+        if (move === kMoveRight) {
+            this.moveRight();
+        }
+
+        if (move === kMoveLeft) {
+            this.moveLeft();
+        }
+
+        if (move === kRotate) {
+            this.rotate();
+        }
+    }
+
+    cancelLastMove() {
+        if (this.lastMove === kRotate) {
+            this._orientation = (this._orientation + 3) % 4;
+        } else if (this.lastMove === kMoveRight) {
+            this._position[0] -= 1;
+        } else if (this.lastMove === kMoveLeft) {
+            this._position[0] += 1;
+        }
     }
 }
 
 export default Tetrimino;
-
-// /**
-//  * Calcule les coordonnées absolues [x, y] de chaque bloc d'un tétromino
-//  * en fonction de son type, de sa position et de son orientation.
-//  * @param {object} tetrimino - L'objet tétromino (type, position, orientation)
-//  * @returns {Array<Array<number>>} - Un tableau de coordonnées [[x1, y1], [x2, y2], ...]
-//  */
-// export const calculateAbsoluteBlockPositions = (tetrimino) => {
-//     if (!tetrimino || !tetrimino.type) return [];
-
-//     const { type, orientation, position } = tetrimino;
-//     const [pivotX, pivotY] = position;
-//     let baseBlocks = type.blocks;
-
-//     let rotatedRelativeBlocks = baseBlocks.map((block) => [...block]);
-
-//     for (let i = 0; i < orientation; i++) {
-//         rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [-y, x]);
-//     }
-
-//     const rotatedAbsoluteBlocks = rotatedRelativeBlocks.map(([relX, relY]) => [
-//         relX + pivotX,
-//         relY + pivotY,
-//     ]);
-
-//     return rotatedAbsoluteBlocks;
-// };
-
-// /**
-//  * Vérifie si toutes les positions de bloc données sont valides sur le plateau.
-//  * @param {Array<Array<number>>} blockPositions - Les coordonnées [[x, y], ...] à vérifier.
-//  * @param {Array<Array<number>>} board - Le plateau de jeu.
-//  * @returns {boolean} - True si toutes les positions sont valides, false sinon.
-//  */
-// export const isValidPosition = (blockPositions, board) => {
-//     const boardHeight = board.length;
-//     const boardWidth = board[0].length;
-
-//     return blockPositions.every(([x, y]) => {
-//         if (x < 0 || y < 0 || x >= boardWidth || y >= boardHeight) {
-//             return false;
-//         }
-
-//         if (board[y][x] !== 0) {
-//             return false;
-//         }
-
-//         return true;
-//     });
-// };

@@ -1,15 +1,13 @@
-//import Game from "./game";
-
 import Logger from "./logger.js";
 
 class GameMapSingleton {
     constructor() {
-        if (GameMapSingleton._instance) {
-            return GameMapSingleton._instance;
-        }
-        GameMapSingleton._instance = this;
-
         this.container = new Map(); // <roomName, Game>
+        Logger.warning(
+            false,
+            null,
+            "Creating GameMapSingleton. It should only happen one time."
+        );
     }
 
     getAllRoom() {
@@ -65,4 +63,6 @@ class GameMapSingleton {
     }
 }
 
-export default GameMapSingleton;
+// Direct export of unique instance :
+const gameMapSingletonInstance = new GameMapSingleton();
+export default gameMapSingletonInstance;

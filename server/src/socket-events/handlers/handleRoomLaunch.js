@@ -6,8 +6,6 @@ import emitRoomLaunchSuccess from "../emitters/emit_room_launch_success.js";
 import { kStartedState } from "../../objects/roomstate.js";
 
 export default function handleRoomLaunch(socket) {
-    const gameMapSingletonInstance = new GameMapSingleton();
-
     const canLaunchGame = (game, player) => {
         // Verify party leader
         if (game.leaderToken !== player.token) {
@@ -35,8 +33,17 @@ export default function handleRoomLaunch(socket) {
             const roomName = params.roomName;
             const username = params.username;
             const token = params.token;
-            const game = gameMapSingletonInstance.get(roomName);
+            const game = GameMapSingleton.get(roomName);
             const player = game.players.get(username);
+
+            if (!roomName || !username) {
+                Logger.warning(
+                    false,
+                    null,
+                    "room_launch called with invalid parameters"
+                );
+                return;
+            }
 
             // Verify token
             Token.verify(token, player);

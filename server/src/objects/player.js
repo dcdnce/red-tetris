@@ -53,16 +53,10 @@ class Player {
         this.board.handleTetriminoSpawn(id);
     }
 
-    handleGravity() {
+    handleGravityAndLock() {
         if (this.didLost) return;
 
-        this.board.handleGravity();
-    }
-
-    handleTetriminoLock() {
-        if (this.didLost) return;
-
-        this.board.handleTetriminoLock();
+        this.board.handleGravityAndLock();
     }
 
     handleTopOut() {
@@ -75,6 +69,10 @@ class Player {
                 `${this.username} just topped out.`
             );
         }
+    }
+
+    handleInput(input) {
+        return this.board.handleInput(input);
     }
 }
 

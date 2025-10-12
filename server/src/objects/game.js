@@ -4,6 +4,7 @@ import GameMapSingleton from "../services/gameMapSingleton.js";
 import RoomState, { kStartedState, kPendingState } from "./roomstate.js";
 import GameTickHandler from "./gametickhandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
+import emitUpdateGameDataTo from "../socket-events/emitters/emit_update_game_data_to.js";
 
 const GAME_TICK_RATE_MS = 1000;
 
@@ -17,8 +18,7 @@ class Game {
         this.gametickhandler = null;
         this.loopIntervalId = null; // La boucle appartient maintenant à la Room
 
-        const gameMapSingletonInstance = new GameMapSingleton();
-        gameMapSingletonInstance.set(roomName, this); // <roomName, Game>
+        GameMapSingleton.set(roomName, this); // <roomName, Game>
     }
 
     getPlayerListForClient() {
@@ -101,6 +101,19 @@ class Game {
         this.gametickhandler = null;
         this.setFinished();
         Logger.info(true, this.roomName, "Room loop ended");
+    }
+
+    handleInput(player, input) {
+        let didMove = player.handleInput(input);
+
+        // // not necessary ?? Other players will receive new state at game tick
+        // if (didMove) {
+        //     emitUpdateGameDataTo(player, this);
+        // }
+
+        if (didMove) {
+            emitUpdateGameData(this);
+        }
     }
 }
 
