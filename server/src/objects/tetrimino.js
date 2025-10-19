@@ -13,7 +13,7 @@ const kTetriminosTypes = [
             [-1, 1],
             [0, 1],
         ],
-        rotateOn: [0, 1],
+        baseHeight: 2,
     },
     // etc
 ];
@@ -31,7 +31,7 @@ class Tetrimino {
 
         this.id = id;
         this._baseBlocks = kTetriminosTypes[id]._baseBlocks;
-        // this.rotateOn = kTetriminosTypes[id].rotateOn;
+        this._baseHeight = kTetriminosTypes[id].baseHeight;
         this._orientation = 0;
         this._position = [5, 0];
         this.lastMove = null;
@@ -67,7 +67,7 @@ class Tetrimino {
     }
 
     // TODO - check top too ?
-    isVerticallyOutOfBounds() {
+    isVerticallyOutOfBoundsBottom() {
         return this.getAbsoluteBlocksPositionArray().some(([x, y]) => y >= 20);
     }
 

@@ -1,5 +1,6 @@
 import Logger from "../services/logger.js";
 import Tetrimino from "./tetrimino.js";
+import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
 
 export const kLockedBlock = 1;
 
@@ -19,7 +20,9 @@ class Board {
             const id = this._tetrimino.id;
 
             absoluteBlocksPosition.forEach(([x, y]) => {
-                board[y][x] = id;
+                if (!this.coordsAreOutOfBound(x, y)) {
+                    board[y][x] = id;
+                }
             });
         }
 
@@ -30,27 +33,47 @@ class Board {
         return x < 0 || y < 0 || x >= 10 || y >= 20;
     }
 
-    handleTetriminoSpawn(id) {
-        if (this._tetrimino != null) return;
-
-        this._tetrimino = new Tetrimino(id);
-    }
-
-    handleTopOut() {
-        if (this._tetrimino == null) return false;
-
-        let didTopOut = false;
+    isToppedOut() {
+        if (this._tetrimino == null) return;
 
         const absoluteBlocksPosition =
             this._tetrimino.getAbsoluteBlocksPositionArray();
 
+        // Will touch locked piece at spawn
+        let willTouchLockedPieceAtSpawn = false;
+        let lowestY = 20;
+
         absoluteBlocksPosition.forEach(([x, y]) => {
-            if (!this.coordsAreOutOfBound(x, y)) {
-                didTopOut |= this._board[y][x] == kLockedBlock;
+            if (this._board[y][x] == kLockedBlock) {
+                willTouchLockedPieceAtSpawn = true;
+                lowestY = Math.min(lowestY, y);
             }
         });
 
-        return didTopOut;
+        // Readjust tetrimino spawn
+        if (willTouchLockedPieceAtSpawn) {
+            for (; lowestY < this._tetrimino._baseHeight; lowestY++) {
+                this._tetrimino.moveUp();
+            }
+        }
+
+        return willTouchLockedPieceAtSpawn;
+    }
+
+    handleTetriminoSpawn(id) {
+        if (this._tetrimino != null) return;
+
+        this._tetrimino = new Tetrimino(id);
+
+        if (this.isToppedOut()) {
+            Logger.error(
+                false,
+                "handleTetriminoSpawn spawn is locked, topping out."
+            );
+            throw new TetriminoOutOfBoundsException(
+                "handleTetriminoSpawn spawn is locked, topping out."
+            );
+        }
     }
 
     handleGravityAndLock() {
@@ -105,14 +128,12 @@ class Board {
             tetrimino.getAbsoluteBlocksPositionArray();
 
         // y > 20
-        readyToLock |= tetrimino.isVerticallyOutOfBounds();
+        readyToLock |= tetrimino.isVerticallyOutOfBoundsBottom();
 
         // Touch locked piece
         if (readyToLock == false) {
             absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!this.coordsAreOutOfBound(x, y)) {
-                    readyToLock |= this._board[y][x] == kLockedBlock;
-                }
+                readyToLock |= this._board[y][x] == kLockedBlock;
             });
         }
 
@@ -126,7 +147,7 @@ class Board {
             tetrimino.getAbsoluteBlocksPositionArray();
 
         // y
-        isColliding |= tetrimino.isVerticallyOutOfBounds();
+        isColliding |= tetrimino.isVerticallyOutOfBoundsBottom();
 
         // x
         isColliding |= tetrimino.isHorizontallyOutOfBounds();
@@ -158,7 +179,7 @@ class Board {
         });
 
         this._tetrimino = null;
-        Logger.success(true, "Applied lock");
+        Logger.success(true, null, "Applied lock");
     }
 }
 

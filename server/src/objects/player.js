@@ -38,6 +38,16 @@ class Player {
         this._graceTicks = null;
     }
 
+    setToppedOut() {
+        this.didLost = true;
+
+        Logger.info(
+            true,
+            this.currentGame.roomName,
+            `${this.username} just topped out.`
+        );
+    }
+
     decrementGraceTicks() {
         this._graceTicks -= 1;
         return this._graceTicks;
@@ -57,18 +67,6 @@ class Player {
         if (this.didLost) return;
 
         this.board.handleGravityAndLock();
-    }
-
-    handleTopOut() {
-        this.didLost = this.board.handleTopOut();
-
-        if (this.didLost) {
-            Logger.info(
-                true,
-                this.currentGame.roomName,
-                `${this.username} just topped out.`
-            );
-        }
     }
 
     handleInput(input) {

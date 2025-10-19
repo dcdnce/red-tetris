@@ -62,7 +62,7 @@ export default class Logger {
         console.log(fullMessage);
     }
 
-    static success(isDebug, message) {
+    static success(isDebug, prefix, message) {
         let fullMessage = "";
         let isEnvDebug = process.env.DEBUG == "true";
 
@@ -73,6 +73,9 @@ export default class Logger {
             fullMessage += `${this._colors.yellow}[debug]${this._colors.reset}`;
         }
         fullMessage += `${this._colors.green}[SUCCESS]${this._colors.reset} ${message}`;
+        fullMessage += prefix
+            ? `${this._colors.blue}[${prefix}]${this._colors.reset}`
+            : "";
         console.log(fullMessage);
     }
 }
