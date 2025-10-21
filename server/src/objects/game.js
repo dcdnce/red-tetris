@@ -106,7 +106,7 @@ class Game {
     handleInput(player, input) {
         let didMove = player.handleInput(input);
 
-        // // not necessary ?? Other players will receive new state at game tick
+        // // TODO not necessary ?? Other players will receive new state at game tick
         // if (didMove) {
         //     emitUpdateGameDataTo(player, this);
         // }

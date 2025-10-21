@@ -50,7 +50,7 @@ class Board {
             }
         });
 
-        // Readjust tetrimino spawn
+        // Readjust tetrimino spawn if topping out
         if (willTouchLockedPieceAtSpawn) {
             for (; lowestY < this._tetrimino._baseHeight; lowestY++) {
                 this._tetrimino.moveUp();
@@ -98,8 +98,12 @@ class Board {
 
         let testedTetrimino = this._tetrimino.clone(this._tetrimino.id);
 
-        if (input === "ArrowUp") {
-            testedTetrimino.rotate();
+        if (input === "ArrowUp" || input === "x") {
+            testedTetrimino.rotateRight();
+        }
+
+        if (input === "z") {
+            testedTetrimino.rotateLeft();
         }
 
         if (input === "ArrowRight") {

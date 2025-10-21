@@ -9,16 +9,18 @@ const kTetriminosTypes = [
         id: 1,
         _baseBlocks: [
             [0, 0],
-            [1, 1],
-            [-1, 1],
-            [0, 1],
+            [-1, 0],
+            [1, 0],
+            [0, -1],
         ],
         baseHeight: 2,
+        basePosition: [5, 1],
     },
     // etc
 ];
 
-const kRotate = "rotate";
+const kRotateRight = "rotateright";
+const kRotateLeft = "rotateleft";
 const kMoveRight = "moveright";
 const kMoveLeft = "moveleft";
 const kMoveDown = "movedown";
@@ -30,16 +32,20 @@ class Tetrimino {
         }
 
         this.id = id;
-        this._baseBlocks = kTetriminosTypes[id]._baseBlocks;
+        this._baseBlocks = kTetriminosTypes[id]._baseBlocks.map((coord) => [
+            ...coord,
+        ]);
         this._baseHeight = kTetriminosTypes[id].baseHeight;
+        this._position = [...kTetriminosTypes[id].basePosition];
         this._orientation = 0;
-        this._position = [5, 0];
         this.lastMove = null;
     }
 
     clone(id) {
         let newTetrimino = new Tetrimino(this.id);
-        newTetrimino._baseBlocks = kTetriminosTypes[id]._baseBlocks;
+        this._baseBlocks = kTetriminosTypes[id]._baseBlocks.map((coord) => [
+            ...coord,
+        ]);
         newTetrimino._orientation = this._orientation;
         newTetrimino._position = [...this._position];
         newTetrimino.lastMove = this.lastMove;
@@ -54,8 +60,8 @@ class Tetrimino {
 
         for (let i = 0; i < this._orientation; i++) {
             rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [
-                y,
-                -x,
+                -y,
+                x,
             ]);
         }
 
@@ -77,9 +83,14 @@ class Tetrimino {
         );
     }
 
-    rotate() {
+    rotateRight() {
         this._orientation = (this._orientation + 1) % 4;
-        this.lastMove = kRotate;
+        this.lastMove = kRotateRight;
+    }
+
+    rotateLeft() {
+        this._orientation = (4 + (this._orientation - 1)) % 4;
+        this.lastMove = kRotateLeft;
     }
 
     moveRight() {
@@ -110,18 +121,12 @@ class Tetrimino {
             this.moveLeft();
         }
 
-        if (move === kRotate) {
-            this.rotate();
+        if (move === kRotateRight) {
+            this.rotateRight();
         }
-    }
 
-    cancelLastMove() {
-        if (this.lastMove === kRotate) {
-            this._orientation = (this._orientation + 3) % 4;
-        } else if (this.lastMove === kMoveRight) {
-            this._position[0] -= 1;
-        } else if (this.lastMove === kMoveLeft) {
-            this._position[0] += 1;
+        if (move === kRotateLeft) {
+            this.rotateLeft();
         }
     }
 }

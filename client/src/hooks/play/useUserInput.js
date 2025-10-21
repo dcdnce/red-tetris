@@ -4,10 +4,12 @@ import { kStartedState } from "../../services/constants.js";
 
 const isTetrisInput = (key) => {
     return (
-        key == "ArrowUp" ||
-        key == "ArrowRight" ||
-        key == "ArrowLeft" ||
-        key == "ArrowDown"
+        key === "ArrowUp" ||
+        key === "ArrowRight" ||
+        key === "ArrowLeft" ||
+        key === "ArrowDown" ||
+        key === "z" ||
+        key === "x"
     );
 };
 
