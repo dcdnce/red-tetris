@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./store/store";
 import App from "./App";
+import theme from "./styles/chakra/theme";
 // Importez un CSS global si nécessaire, ex: import './styles/main.css';
 
 const rootElement = document.getElementById("root");
@@ -13,7 +14,7 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
     ReactDOM.createRoot(rootElement).render(
         <React.StrictMode>
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
                 <BrowserRouter>
                     <Provider store={store}>
                         <App />

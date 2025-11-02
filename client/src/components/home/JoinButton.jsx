@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/home/Home.module.css";
 import { showToast } from "../utils/Toast";
+import { Button } from "@chakra-ui/react";
 
 export default function JoinButton() {
     const navigate = useNavigate();
@@ -23,7 +24,8 @@ export default function JoinButton() {
 
     return (
         <>
-            <button
+            <Button
+                variant={"outline"}
                 className="button-press button-press-hover card bg-cyan text-cyan"
                 onClick={joinRoom}
             >
@@ -41,7 +43,7 @@ export default function JoinButton() {
                     autoFocus
                     type="text"
                 />
-            </button>
+            </Button>
         </>
     );
 }
