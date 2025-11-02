@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/home/Home.module.css";
+import { showToast } from "../utils/Toast";
 
 export default function JoinButton() {
     const navigate = useNavigate();
@@ -10,13 +11,11 @@ export default function JoinButton() {
         const username = localStorage.getItem("username");
 
         if (!roomName.trim()) {
-            alert("Please enter a room name.");
-            return;
+            return showToast("Erreur", "Please enter a room name", "error");
         }
 
         if (username === null) {
-            alert("Please register.");
-            return;
+            return showToast("Erreur", "Please register", "error");
         }
 
         navigate(`/${roomName}/${username}`);
