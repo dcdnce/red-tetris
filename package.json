@@ -30,9 +30,13 @@
     },
     "homepage": "https://github.com/dcdnce/red-tetris#readme",
     "dependencies": {
+        "@chakra-ui/react": "^2.10.9",
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.1",
         "@reduxjs/toolkit": "^2.6.1",
         "dotenv": "^16.4.7",
         "express": "^5.1.0",
+        "framer-motion": "^12.23.24",
         "jsonwebtoken": "^9.0.2",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
