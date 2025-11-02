@@ -31,14 +31,14 @@ function Register() {
                         placeholder="Type your username"
                         value={input}
                         onChange={(event) => setInput(event.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && sendUsername()}
+                        onKeyPress={(e) => e.key === "Enter" && sendUsername()}
                         bg="white"
                         color="black"
                     />
                     <Button
                         bg="blue.500"
                         color="white"
-                        _hover={{ bg: 'blue.600' }}
+                        _hover={{ bg: "blue.600" }}
                         onClick={sendUsername}
                         width="100%"
                     >
@@ -64,7 +64,7 @@ function Register() {
                 <Button
                     bg="blue.500"
                     color="white"
-                    _hover={{ bg: 'blue.600' }}
+                    _hover={{ bg: "blue.600" }}
                     onClick={disconnect}
                     width="100%"
                 >

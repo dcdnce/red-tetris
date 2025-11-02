@@ -14,7 +14,12 @@ function Header() {
         >
             <Link to="/">
                 <Flex alignItems="center" gap={2}>
-                    <Box width="40px" height="40px" bg="red.500" borderRadius="5px" />
+                    <Box
+                        width="40px"
+                        height="40px"
+                        bg="red.500"
+                        borderRadius="5px"
+                    />
                     <Heading as="h1" size="lg" margin={0}>
                         Tetris
                     </Heading>
