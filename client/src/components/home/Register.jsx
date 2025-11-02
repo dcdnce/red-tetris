@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Box, VStack, Input, Button, Text, Tag } from "@chakra-ui/react";
+import { showToast } from "../utils/Toast";
 
 function Register() {
     const [username, setUsername] = useState(localStorage.getItem("username"));
     const [input, setInput] = useState("");
 
     function sendUsername() {
+        if (!username)
+            return showToast("Error", "Enter an username please", "error");
         localStorage.setItem("username", input);
         setUsername(input);
         setInput("");
