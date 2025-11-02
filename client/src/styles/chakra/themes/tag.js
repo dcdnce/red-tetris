@@ -7,13 +7,16 @@ export const tagTheme = {
     variants: {
         logo: {
             container: {
-                minW: "200%",
-                minH: "80%",
+                minW: "400px",
+                minH: "150px",
                 bg: "red.500",
-                color: "white",
+                color: "red.600",
+                fontSize: "2rem",
                 padding: "1rem",
                 borderRadius: "5px",
                 boxShadow: "1px 2px 4px rgba(0, 0, 0, 0.1)",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
             },
         },
         blueW100: {

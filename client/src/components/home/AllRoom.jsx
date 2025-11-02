@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { socket } from "../../socket.js";
 import { useNavigate } from "react-router-dom";
 import {
-    Box,
+    Tag,
     Input,
     Button,
     SimpleGrid,
@@ -10,7 +10,11 @@ import {
     HStack,
     Text,
     Divider,
+    Flex,
+    Card,
 } from "@chakra-ui/react";
+import { RepeatIcon } from "@chakra-ui/icons";
+import { Peoples } from "../../styles/Icons/icons";
 
 export default function AllRoom() {
     const [allRoom, setAllRoom] = useState([]);
@@ -47,22 +51,15 @@ export default function AllRoom() {
     };
 
     return (
-        <VStack spacing={4} width="100%">
-            <HStack spacing={2} width="100%">
+        <VStack spacing={4} width="100%" align="flex-start">
+            <HStack spacing={2} width="28%">
                 <Input
                     placeholder="Search a room"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    bg="white"
-                    color="black"
                 />
-                <Button
-                    onClick={() => setRefresh(true)}
-                    bg="brand.500"
-                    color="white"
-                    _hover={{ bg: "brand.600" }}
-                >
-                    ↻
+                <Button onClick={() => setRefresh(true)} variant="solid">
+                    <RepeatIcon />
                 </Button>
             </HStack>
 
@@ -70,42 +67,38 @@ export default function AllRoom() {
                 <SimpleGrid
                     columns={{ base: 1, md: 2, lg: 3 }}
                     spacing={4}
-                    width="100%"
+                    width="60%"
                 >
                     {allRoom.map((room, index) => (
-                        <Box
-                            key={index}
-                            bg="brand.500"
-                            color="white"
-                            padding="1rem"
-                            borderRadius="5px"
-                            boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
-                        >
-                            <VStack spacing={3} align="stretch">
-                                <Text fontSize="1.2rem" fontWeight="bold">
+                        <Card key={index} variant={"outline"}>
+                            <Flex
+                                justifyContent="space-between"
+                                padding={"1rem"}
+                            >
+                                <Text fontSize="1.5rem" fontWeight="bold">
                                     {room.roomName}
                                 </Text>
-                                <Divider borderColor="rgba(255,255,255,0.3)" />
-                                <HStack justify="space-between">
-                                    <Text>{`${room.playerCount} Players`}</Text>
-                                    <Button
-                                        bg="blue.500"
-                                        color="white"
-                                        size="sm"
-                                        _hover={{ bg: "blue.600" }}
-                                        onClick={() => join(room)}
-                                    >
-                                        JOIN
-                                    </Button>
-                                </HStack>
-                            </VStack>
-                        </Box>
+                                <Tag gap="2">
+                                    {room.playerCount}
+                                    <Peoples />
+                                </Tag>
+                            </Flex>
+                            <Button onClick={() => join(room)} margin={"1rem"}>
+                                JOIN
+                            </Button>
+                        </Card>
                     ))}
                 </SimpleGrid>
             ) : (
-                <Text textAlign="center" fontSize="1.1rem">
-                    No room available
-                </Text>
+                <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    height="100%"
+                >
+                    <Text textAlign="center" fontSize="1.1rem">
+                        No room available
+                    </Text>
+                </Flex>
             )}
         </VStack>
     );

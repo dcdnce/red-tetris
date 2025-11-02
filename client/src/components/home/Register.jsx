@@ -7,7 +7,7 @@ function Register() {
     const [input, setInput] = useState("");
 
     function sendUsername() {
-        if (!username)
+        if (!input)
             return showToast("Error", "Enter an username please", "error");
         localStorage.setItem("username", input);
         setUsername(input);

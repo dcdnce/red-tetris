@@ -13,9 +13,7 @@ function Header() {
                         bg="red.600"
                         borderRadius="5px"
                     />
-                    <Heading as="h1" size="lg" margin={0} color="white">
-                        <Text size="lg">Tetris</Text>
-                    </Heading>
+                    Tetris
                 </Flex>
             </Tag>
         </Link>
