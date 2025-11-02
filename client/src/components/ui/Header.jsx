@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading, Badge, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Tag } from "@chakra-ui/react";
 
 function Header() {
     return (
         <Link to="/" width="100%">
-            <Badge as="header" align={"center"} variant="logo">
+            <Tag as="header" align={"center"} variant="logo">
                 <Flex alignItems="center" gap={2}>
                     <Box
                         width="40px"
@@ -14,10 +14,10 @@ function Header() {
                         borderRadius="5px"
                     />
                     <Heading as="h1" size="lg" margin={0} color="white">
-                        <Text>Tetris</Text>
+                        <Text size="lg">Tetris</Text>
                     </Heading>
                 </Flex>
-            </Badge>
+            </Tag>
         </Link>
     );
 }

@@ -5,6 +5,7 @@ import { headingTheme } from "./heading";
 import { dividerTheme } from "./divider";
 import { cardTheme } from "./card";
 import { badgeTheme } from "./badge";
+import { tagTheme } from "./tag";
 
 export const components = {
     Button: buttonTheme,
@@ -14,6 +15,7 @@ export const components = {
     Divider: dividerTheme,
     Card: cardTheme,
     Badge: badgeTheme,
+    Tag: tagTheme,
 };
 
 export default components;

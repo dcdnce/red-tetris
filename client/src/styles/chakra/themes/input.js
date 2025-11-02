@@ -7,11 +7,9 @@ export const inputTheme = {
     },
     variants: {
         outline: {
-            borderColor: "gray.300",
-            _focus: {
-                borderColor: "brand.500",
-                boxShadow: "0 0 0 1px var(--chakra-colors-brand-500)",
-            },
+            bg: "white",
+            color: "black",
+            borderColor: "black",
         },
     },
     defaultProps: {

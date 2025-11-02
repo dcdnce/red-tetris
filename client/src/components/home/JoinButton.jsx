@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Input, HStack } from "@chakra-ui/react";
+import {
+    Button,
+    Input,
+    VStack,
+    InputRightElement,
+    InputGroup,
+} from "@chakra-ui/react";
 import { showToast } from "../utils/Toast";
 
 export default function JoinButton() {
@@ -22,22 +28,25 @@ export default function JoinButton() {
     }
 
     return (
-        <HStack spacing={2}>
-            <Input
-                placeholder="Room Name"
-                value={roomName}
-                onChange={(e) => setRoomName(e.target.value)}
-                autoFocus
-                maxWidth="200px"
-            />
-            <Button
-                bg="brand.500"
-                color="white"
-                _hover={{ bg: "brand.600" }}
-                onClick={joinRoom}
-            >
-                Join
-            </Button>
-        </HStack>
+        <VStack spacing={2}>
+            <InputGroup>
+                <Input
+                    placeholder="Room Name"
+                    value={roomName}
+                    onChange={(e) => setRoomName(e.target.value)}
+                    autoFocus
+                />
+                <InputRightElement>
+                    <Button
+                        bg="brand.500"
+                        padding={"1rem"}
+                        color="white"
+                        onClick={joinRoom}
+                    >
+                        Join
+                    </Button>
+                </InputRightElement>
+            </InputGroup>
+        </VStack>
     );
 }

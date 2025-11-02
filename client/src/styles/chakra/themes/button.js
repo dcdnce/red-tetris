@@ -12,9 +12,16 @@ export const buttonTheme = {
             bg: "brand.500",
             color: "white",
             _hover: {
-                bg: "brand.600",
-                transform: "scale(0.95)",
-                boxShadow: "2px 1px #333",
+                bg: "brand.B500",
+                opacity: "0.95",
+            },
+        },
+        molle: {
+            w: "100%",
+            bg: "blue.600",
+            color: "white",
+            _hover: {
+                opacity: "0.95",
             },
         },
     },
