@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import styles from "../../styles/play/Board.module.css";
 import { useSelector } from "react-redux";
+import { Box, Grid } from "@chakra-ui/react";
 import { selectPlayers } from "../../store/gameSlice";
 
 function Block({ row, col, playerNumber }) {
@@ -10,21 +10,23 @@ function Block({ row, col, playerNumber }) {
     const isPlayerConnected = players[playerNumber].isConnected;
     const didPlayerLost = players[playerNumber].didLost;
 
-    // Position
-    const style = {
-        gridRowStart: row + 1,
-        gridColumnStart: col + 1,
-    };
-
-    let className = styles.block;
+    let bgColor = "brand.500";
     if (!isPlayerConnected) {
-        className = styles.blockOffline;
+        bgColor = "gray.400";
     }
     if (didPlayerLost) {
-        className = styles.blockDidLost;
+        bgColor = "red.600";
     }
 
-    return <div className={`${className}`} style={style} />;
+    return (
+        <Box
+            gridRow={row + 1}
+            gridColumn={col + 1}
+            bg={bgColor}
+            borderRadius="2px"
+            boxShadow="inset 0 0 2px rgba(0,0,0,0.3)"
+        />
+    );
 }
 
 function Board({ playerNumber }) {
@@ -33,8 +35,8 @@ function Board({ playerNumber }) {
     const players = useSelector(selectPlayers(roomName));
     const gameBoard = players[playerNumber].board;
 
-    // Board
-    var allBlocks = Array(0);
+    // Build blocks array
+    const allBlocks = [];
     for (let i = 0; i < 20; i++) {
         for (let j = 0; j < 10; j++) {
             if (gameBoard[i][j] != 0) allBlocks.push({ row: i, col: j });
@@ -42,7 +44,16 @@ function Board({ playerNumber }) {
     }
 
     return (
-        <div className={styles.boardContainer}>
+        <Grid
+            templateColumns="repeat(10, 1fr)"
+            templateRows="repeat(20, 1fr)"
+            gap="1px"
+            bg="black"
+            padding="0.5rem"
+            borderRadius="5px"
+            boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
+            aspectRatio="10/20"
+        >
             {allBlocks.map((block) => (
                 <Block
                     key={`${block.row}-${block.col}`}
@@ -51,7 +62,7 @@ function Board({ playerNumber }) {
                     playerNumber={playerNumber}
                 />
             ))}
-        </div>
+        </Grid>
     );
 }
 

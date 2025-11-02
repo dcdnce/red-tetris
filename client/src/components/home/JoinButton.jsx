@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../../styles/home/Home.module.css";
+import { Button, Input, HStack } from "@chakra-ui/react";
 import { showToast } from "../utils/Toast";
-import { Button } from "@chakra-ui/react";
 
 export default function JoinButton() {
     const navigate = useNavigate();
@@ -23,27 +22,23 @@ export default function JoinButton() {
     }
 
     return (
-        <>
+        <HStack spacing={2}>
             <Button
-                variant={"outline"}
-                className="button-press button-press-hover card bg-cyan text-cyan"
+                bg="brand.500"
+                color="white"
+                _hover={{ bg: "brand.600" }}
                 onClick={joinRoom}
             >
                 Join
-                <input
-                    className={`${styles.homeInputRoom}`}
-                    value={roomName}
-                    placeholder="Room Name"
-                    onChange={(e) => {
-                        setRoomName(e.target.value);
-                    }}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}
-                    autoFocus
-                    type="text"
-                />
             </Button>
-        </>
+            <Input
+                placeholder="Room Name"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && joinRoom()}
+                autoFocus
+                maxWidth="200px"
+            />
+        </HStack>
     );
 }
