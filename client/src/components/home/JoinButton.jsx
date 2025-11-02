@@ -23,6 +23,13 @@ export default function JoinButton() {
 
     return (
         <HStack spacing={2}>
+            <Input
+                placeholder="Room Name"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+                autoFocus
+                maxWidth="200px"
+            />
             <Button
                 bg="brand.500"
                 color="white"
@@ -31,14 +38,6 @@ export default function JoinButton() {
             >
                 Join
             </Button>
-            <Input
-                placeholder="Room Name"
-                value={roomName}
-                onChange={(e) => setRoomName(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && joinRoom()}
-                autoFocus
-                maxWidth="200px"
-            />
         </HStack>
     );
 }

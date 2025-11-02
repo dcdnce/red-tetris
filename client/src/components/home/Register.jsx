@@ -31,7 +31,6 @@ function Register() {
                         placeholder="Type your username"
                         value={input}
                         onChange={(event) => setInput(event.target.value)}
-                        onKeyPress={(e) => e.key === "Enter" && sendUsername()}
                         bg="white"
                         color="black"
                     />

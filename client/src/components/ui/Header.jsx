@@ -1,31 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Badge, Text } from "@chakra-ui/react";
 
 function Header() {
     return (
-        <Box
-            as="header"
-            bg="red.500"
-            color="red.500"
-            padding="1rem"
-            borderRadius="5px"
-            boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
-        >
-            <Link to="/">
+        <Link to="/" width="100%">
+            <Badge as="header" align={"center"} variant="logo">
                 <Flex alignItems="center" gap={2}>
                     <Box
                         width="40px"
-                        height="40px"
-                        bg="red.500"
+                        height={"40px"}
+                        bg="red.600"
                         borderRadius="5px"
                     />
-                    <Heading as="h1" size="lg" margin={0}>
-                        Tetris
+                    <Heading as="h1" size="lg" margin={0} color="white">
+                        <Text>Tetris</Text>
                     </Heading>
                 </Flex>
-            </Link>
-        </Box>
+            </Badge>
+        </Link>
     );
 }
 
