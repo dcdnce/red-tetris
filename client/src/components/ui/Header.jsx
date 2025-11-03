@@ -1,17 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../../styles/ui/Header.module.css";
+import { Box, Flex, Heading, Text, Tag } from "@chakra-ui/react";
 
 function Header() {
     return (
-        <header className={`${styles.header} card bg-red text-red`}>
-            <Link to="/">
-                <div className={styles.container}>
-                    <div className={styles.logoSpan}></div>
-                    <h1>Tetris</h1>
-                </div>
-            </Link>
-        </header>
+        <Link to="/" width="100%">
+            <Tag as="header" align={"center"} variant="logo">
+                <Flex alignItems="center" gap={2}>
+                    <Box
+                        width="40px"
+                        height={"40px"}
+                        bg="red.600"
+                        borderRadius="5px"
+                    />
+                    Tetris
+                </Flex>
+            </Tag>
+        </Link>
     );
 }
 

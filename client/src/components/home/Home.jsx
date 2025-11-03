@@ -1,11 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
-import AllRoom from "./AllRoom.jsx";
+import { Flex, HStack, VStack } from "@chakra-ui/react";
 import JoinButton from "./JoinButton.jsx";
+import Register from "./Register";
+import Header from "../ui/Header.jsx";
+import AllRoom from "./AllRoom.jsx";
 
 function Home() {
     return (
         <>
-            <JoinButton />
+            <Flex justifyContent={"space-between"} marginY={"1rem"}>
+                <Header />
+                <VStack>
+                    <Register />
+                    <JoinButton />
+                </VStack>
+            </Flex>
             <AllRoom />
         </>
     );

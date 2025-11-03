@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Box, Heading, Text, VStack, SimpleGrid } from "@chakra-ui/react";
 import Board from "./Board";
 import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
 import {
@@ -23,30 +24,37 @@ function Play() {
     useUserInput(roomName, username, roomState);
 
     if (roomState === "loading") {
-        return <h2>Game compo test</h2>;
+        return (
+            <Box textAlign="center" py={10}>
+                <Heading>Loading Game...</Heading>
+            </Box>
+        );
     }
 
     if (roomState === "error") {
         return (
-            <>
-                <h2>Game compo test</h2>
-                <h3>Error Joining Room</h3>
-                <p style={{ color: "red" }}>
+            <VStack spacing={4} align="center" py={10}>
+                <Heading>Error Joining Room</Heading>
+                <Text color="red.500" fontSize="lg">
                     Could not join room '{roomName}'.
-                </p>
-                <p style={{ color: "red" }}>Reason: {errorMessage}</p>
-            </>
+                </Text>
+                <Text color="red.500" fontSize="lg">
+                    Reason: {errorMessage}
+                </Text>
+            </VStack>
         );
     }
 
     return (
-        <>
-            <h2>Game compo test</h2>
-            {players?.map((_, index) => (
-                <Board key={index} playerNumber={index} />
-            ))}
+        <VStack spacing={4} align="stretch">
+            <Heading>Room: {roomName}</Heading>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+                {players?.map((_, index) => (
+                    <Board key={index} playerNumber={index} />
+                ))}
+            </SimpleGrid>
             <RoomLeaderDashBoard />
-        </>
+        </VStack>
     );
 }
 

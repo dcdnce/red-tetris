@@ -1,7 +1,20 @@
 import { useEffect, useState } from "react";
 import { socket } from "../../socket.js";
-import styles from "../../styles/home/AllRoom.module.css";
 import { useNavigate } from "react-router-dom";
+import {
+    Tag,
+    Input,
+    Button,
+    SimpleGrid,
+    VStack,
+    HStack,
+    Text,
+    Divider,
+    Flex,
+    Card,
+} from "@chakra-ui/react";
+import { RepeatIcon } from "@chakra-ui/icons";
+import { Peoples } from "../../styles/Icons/icons";
 
 export default function AllRoom() {
     const [allRoom, setAllRoom] = useState([]);
@@ -15,7 +28,6 @@ export default function AllRoom() {
             if (response.success) {
                 setAllRoom(response.rooms);
             }
-            console.log(allRoom);
         });
         setRefresh(false);
     }, [refresh]);
@@ -34,82 +46,60 @@ export default function AllRoom() {
         return () => clearTimeout(delayedSearch);
     }, [searchValue]);
 
-    const add = () => {
-        for (let i = 0; i < 200; i++) {
-            socket.emit(
-                "room_join",
-                { roomName: `abs${i}`, userName: `abgg${i}` },
-                (response) => {
-                    if (response.success) {
-                        setAllRoom(response.rooms);
-                    }
-                    console.log(allRoom);
-                }
-            );
-            setRefresh(false);
-        }
-    };
-
-    const close = () => {
-        for (let i = 0; i < 200; i++) {
-            socket.emit("exit_all");
-            for (let i = 0; i < 200; i++) {
-                socket.emit("exit_all");
-            }
-            setRefresh(false);
-        }
-        setRefresh(false);
-    };
-
     const join = (room) => {
         navigate(`/${room.roomName}/${username}`);
     };
 
     return (
-        <>
-            <input
-                placeholder="Search a room"
-                onChange={(e) => {
-                    setSearchValue(e.target.value);
-                }}
-            />
-            <button
-                className={styles.refresh}
-                onClick={() => {
-                    setRefresh(true);
-                }}
-            >
-                <img src="/icons/refresh.svg" className={styles.refreshImg} />
-            </button>
-            <button className={styles.refresh} onClick={add}>
-                add
-            </button>
-            <button className={styles.refresh} onClick={close}>
-                erase
-            </button>
-            <div className={styles.container}>
-                {allRoom.length ? (
-                    allRoom.map((room, index) => (
-                        <div key={index} className={styles.case}>
-                            <div className={styles.caseHeader}>
-                                <p>{room.roomName}</p>
-                            </div>
-                            <div className="divider d-flex jc-center"></div>
-                            <div className="d-flex jc-sb">
-                                <p>{`${room.playerCount} Players`}</p>
-                                <button
-                                    className={styles.join}
-                                    onClick={() => join(room)}
-                                >
-                                    JOIN
-                                </button>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>No room available</p>
-                )}
-            </div>
-        </>
+        <VStack spacing={4} width="100%" align="flex-start">
+            <HStack spacing={2} width="28%">
+                <Input
+                    placeholder="Search a room"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                />
+                <Button onClick={() => setRefresh(true)} variant="solid">
+                    <RepeatIcon />
+                </Button>
+            </HStack>
+
+            {allRoom.length ? (
+                <SimpleGrid
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing={4}
+                    width="60%"
+                >
+                    {allRoom.map((room, index) => (
+                        <Card key={index} variant={"outline"}>
+                            <Flex
+                                justifyContent="space-between"
+                                padding={"1rem"}
+                            >
+                                <Text fontSize="1.5rem" fontWeight="bold">
+                                    {room.roomName}
+                                </Text>
+                                <Tag gap="2">
+                                    {room.playerCount}
+                                    <Peoples />
+                                </Tag>
+                            </Flex>
+                            <Button onClick={() => join(room)} margin={"1rem"}>
+                                JOIN
+                            </Button>
+                        </Card>
+                    ))}
+                </SimpleGrid>
+            ) : (
+                <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    height="100%"
+                >
+                    <Text textAlign="center" fontSize="1.1rem">
+                        No room available
+                    </Text>
+                </Flex>
+            )}
+        </VStack>
     );
 }

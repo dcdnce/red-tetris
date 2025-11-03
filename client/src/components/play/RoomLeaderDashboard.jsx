@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import roomLaunchGameService from "../../services/roomLaunchGameService";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsRoomLeader, selectRoomState } from "../../store/gameSlice";
 import { kStartedState } from "../../services/constants";
+import { Box, Button } from "@chakra-ui/react";
 
 function RoomLeaderDashboard() {
     const { roomName, username } = useParams();
@@ -15,15 +16,21 @@ function RoomLeaderDashboard() {
     };
 
     if (roomState == kStartedState || isRoomLeader == false) {
-        return <></>;
+        return null;
     }
 
     return (
-        <>
-            <button id="RoomLeaderDashboard" onClick={handleClick}>
+        <Box textAlign="center" py={4}>
+            <Button
+                bg="orange.500"
+                color="white"
+                size="lg"
+                _hover={{ bg: "orange.600" }}
+                onClick={handleClick}
+            >
                 Launch game
-            </button>
-        </>
+            </Button>
+        </Box>
     );
 }
 

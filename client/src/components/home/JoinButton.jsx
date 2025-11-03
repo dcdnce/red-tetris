@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../../styles/home/Home.module.css";
+import {
+    Button,
+    Input,
+    HStack,
+    InputRightElement,
+    InputGroup,
+} from "@chakra-ui/react";
+import { showToast } from "../utils/Toast";
 
 export default function JoinButton() {
     const navigate = useNavigate();
@@ -10,39 +17,32 @@ export default function JoinButton() {
         const username = localStorage.getItem("username");
 
         if (!roomName.trim()) {
-            alert("Please enter a room name.");
-            return;
+            return showToast("Erreur", "Please enter a room name", "error");
         }
 
         if (username === null) {
-            alert("Please register.");
-            return;
+            return showToast("Erreur", "Please register", "error");
         }
 
         navigate(`/${roomName}/${username}`);
     }
 
     return (
-        <>
-            <button
-                className="button-press button-press-hover card bg-cyan text-cyan"
+        <HStack spacing={2}>
+            <Input
+                placeholder="Room Name"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+                autoFocus
+            />
+            <Button
+                bg="brand.500"
+                padding={"1rem"}
+                color="white"
                 onClick={joinRoom}
             >
                 Join
-                <input
-                    className={`${styles.homeInputRoom}`}
-                    value={roomName}
-                    placeholder="Room Name"
-                    onChange={(e) => {
-                        setRoomName(e.target.value);
-                    }}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}
-                    autoFocus
-                    type="text"
-                />
-            </button>
-        </>
+            </Button>
+        </HStack>
     );
 }
