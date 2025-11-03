@@ -125,6 +125,7 @@ class Board {
                 break;
         }
     
+        // TODO merge this code in the above switch
         if (this.isGivenTetriminoInCollisionState(testedTetrimino)) {
             // If rotation, we try a wall-kick
             if (testedTetrimino.lastMove === kRotateLeft || testedTetrimino.lastMove === kRotateRight) {
@@ -211,6 +212,10 @@ class Board {
         }
 
         return isColliding;
+    }
+
+    isTetriminoNull() {
+        return this._tetrimino === null;
     }
 
     // Private

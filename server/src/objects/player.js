@@ -15,6 +15,7 @@ class Player {
         this.board = new Board();
         this.token = Token.sign(username, game.roomName);
         this._graceTicks = null;
+        this._piecesSequenceIndex = 0;
 
         // Game leader
         if (this.currentGame.players.size === 1) {
@@ -57,10 +58,13 @@ class Player {
         return this.board.getBoard();
     }
 
-    handleTetriminoSpawn(id) {
+    handleTetriminoSpawn() {
         if (this.didLost) return;
+        if (this.board.isTetriminoNull() === false) return;
 
-        this.board.handleTetriminoSpawn(id);
+        const tetriminoId = this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
+        this._piecesSequenceIndex += 1;
+        this.board.handleTetriminoSpawn(tetriminoId);
     }
 
     handleGravityAndLock() {

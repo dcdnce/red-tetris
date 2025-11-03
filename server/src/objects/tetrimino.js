@@ -1,22 +1,107 @@
 const kTetriminosTypes = [
     {
         id: 0,
-        // Reserved to empty block
+        type: 'EMPTY',
+        // Reserved for empty blocks on the board
     },
     {
-        // T
+        // T-piece
+        // Spawns with its flat side up, leaning left.
         id: 1,
         type: 'T',
-        _baseBlocks: [
-            [0, 0],
-            [-1, 0],
-            [1, 0],
-            [0, -1],
+        baseBlocks: [
+            [0, 0],   // Pivot block
+            [-1, 0],  // Left arm
+            [+1, 0],  // Right arm
+            [0, -1],  // Top spike (negative Y is up)
         ],
         baseHeight: 2,
-        basePosition: [5, 1],
+        basePosition: [4, 1], // Spawns in row 1, column 4
     },
-    // etc
+    {
+        // I-piece (long bar)
+        // Spawns horizontally, centered.
+        id: 2,
+        type: 'I',
+        baseBlocks: [
+            [0, 0],   // Pivot block (slightly left of center)
+            [-1, 0],
+            [+1, 0],
+            [+2, 0],
+        ],
+        baseHeight: 1,
+        basePosition: [4, 0], // Spawns in row 0, centered
+    },
+    {
+        // O-piece (square)
+        // Spawns centered.
+        id: 3,
+        type: 'O',
+        baseBlocks: [
+            [0, 0],
+            [+1, 0],
+            [0, +1],
+            [+1, +1],
+        ],
+        baseHeight: 2,
+        basePosition: [4, 0], // Spawns in row 0, centered
+    },
+    {
+        // L-piece
+        // Spawns with its flat side up, leaning left.
+        id: 4,
+        type: 'L',
+        baseBlocks: [
+            [0, 0],   // Pivot block
+            [-1, 0],
+            [+1, 0],
+            [+1, -1], // Top-right corner
+        ],
+        baseHeight: 2,
+        basePosition: [4, 1], // Spawns in row 1, column 4
+    },
+    {
+        // J-piece
+        // Spawns with its flat side up, leaning left.
+        id: 5,
+        type: 'J',
+        baseBlocks: [
+            [0, 0],   // Pivot block
+            [-1, 0],
+            [+1, 0],
+            [-1, -1], // Top-left corner
+        ],
+        baseHeight: 2,
+        basePosition: [4, 1], // Spawns in row 1, column 4
+    },
+    {
+        // S-piece
+        // Spawns horizontally, leaning left.
+        id: 6,
+        type: 'S',
+        baseBlocks: [
+            [0, 0],   // Pivot block
+            [+1, 0],
+            [0, -1],
+            [-1, -1],
+        ],
+        baseHeight: 2,
+        basePosition: [4, 1], // Spawns in row 1, column 4
+    },
+    {
+        // Z-piece
+        // Spawns horizontally, leaning left.
+        id: 7,
+        type: 'Z',
+        baseBlocks: [
+            [0, 0],   // Pivot block
+            [-1, 0],
+            [0, -1],
+            [+1, -1],
+        ],
+        baseHeight: 2,
+        basePosition: [4, 1], // Spawns in row 1, column 4
+    },
 ];
 
 export const kicksJLSTZ = {
@@ -58,7 +143,7 @@ class Tetrimino {
         }
 
         this.id = id;
-        this._baseBlocks = kTetriminosTypes[id]._baseBlocks.map((coord) => [
+        this._baseBlocks = kTetriminosTypes[id].baseBlocks.map((coord) => [
             ...coord,
         ]);
         this._baseHeight = kTetriminosTypes[id].baseHeight;

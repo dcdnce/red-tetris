@@ -22,7 +22,7 @@ class GameTickHandler {
         }
 
         this.handleGravityAndLock();
-        this.handleTetriminoSpawn(1);
+        this.handleTetriminoSpawn();
     }
 
     // LOBBY RELATED METHODS
@@ -52,10 +52,10 @@ class GameTickHandler {
      * Player will lose is the piece cannot spawn / be lock.
      * @param {number} id Type of the spawning piece.
      */
-    handleTetriminoSpawn(id) {
+    handleTetriminoSpawn() {
         this.players.forEach((player) => {
             try {
-                player.handleTetriminoSpawn(id);
+                player.handleTetriminoSpawn();
             } catch (error) {
                 if (error instanceof TetriminoOutOfBoundsException) {
                     player.setToppedOut();
