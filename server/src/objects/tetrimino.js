@@ -4,9 +4,9 @@ const kTetriminosTypes = [
         // Reserved to empty block
     },
     {
-        //	XXX
-        //   X
+        // T
         id: 1,
+        type: 'T',
         _baseBlocks: [
             [0, 0],
             [-1, 0],
@@ -19,11 +19,37 @@ const kTetriminosTypes = [
     // etc
 ];
 
-const kRotateRight = "rotateright";
-const kRotateLeft = "rotateleft";
-const kMoveRight = "moveright";
-const kMoveLeft = "moveleft";
-const kMoveDown = "movedown";
+export const kicksJLSTZ = {
+    // Rotate right
+    '0->1': [ [0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2] ],
+    '1->2': [ [0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2] ],
+    '2->3': [ [0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2] ],
+    '3->0': [ [0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2] ],
+    // Rotate left 
+    '1->0': [ [0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2] ],
+    '2->1': [ [0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2] ],
+    '3->2': [ [0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2] ],
+    '0->3': [ [0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2] ],
+  };
+
+export const kicksI = {
+    // Rotate right
+    '0->1': [ [0, 0], [-2, 0], [+1, 0], [-2, -1], [+1, +2] ],
+    '1->2': [ [0, 0], [-1, 0], [+2, 0], [-1, +2], [+2, -1] ],
+    '2->3': [ [0, 0], [+2, 0], [-1, 0], [+2, +1], [-1, -2] ],
+    '3->0': [ [0, 0], [+1, 0], [-2, 0], [+1, -2], [-2, +1] ],
+    // Rotate left 
+    '1->0': [ [0, 0], [+2, 0], [-1, 0], [+2, +1], [-1, -2] ],
+    '2->1': [ [0, 0], [+1, 0], [-2, 0], [+1, -2], [-2, +1] ],
+    '3->2': [ [0, 0], [-2, 0], [+1, 0], [-2, -1], [+1, +2] ],
+    '0->3': [ [0, 0], [-1, 0], [+2, 0], [-1, +2], [+2, -1] ],
+};
+   
+export const kRotateRight = "rotateright";
+export const kRotateLeft = "rotateleft";
+export const kMoveRight = "moveright";
+export const kMoveLeft = "moveleft";
+export const kMoveDown = "movedown";
 
 class Tetrimino {
     constructor(id) {
@@ -38,14 +64,25 @@ class Tetrimino {
         this._baseHeight = kTetriminosTypes[id].baseHeight;
         this._position = [...kTetriminosTypes[id].basePosition];
         this._orientation = 0;
+        this._type = kTetriminosTypes[id].type;
         this.lastMove = null;
     }
 
-    clone(id) {
+    offset(dx, dy) {
+        this._position[0] += dx;
+        this._position[1] += dy;
+    }
+
+    getOrientation() {
+        return this._orientation;
+    }
+
+    getType() {
+        return this._type;
+    }
+
+    clone() {
         let newTetrimino = new Tetrimino(this.id);
-        this._baseBlocks = kTetriminosTypes[id]._baseBlocks.map((coord) => [
-            ...coord,
-        ]);
         newTetrimino._orientation = this._orientation;
         newTetrimino._position = [...this._position];
         newTetrimino.lastMove = this.lastMove;

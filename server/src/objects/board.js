@@ -1,6 +1,7 @@
 import Logger from "../services/logger.js";
-import Tetrimino from "./tetrimino.js";
+import Tetrimino, { kMoveLeft, kRotateLeft, kRotateRight } from "./tetrimino.js";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
+import { kicksI, kicksJLSTZ } from "./tetrimino.js";
 
 export const kLockedBlock = 1;
 
@@ -79,7 +80,7 @@ class Board {
     handleGravityAndLock() {
         if (this._tetrimino == null) return;
 
-        let testedTetrimino = this._tetrimino.clone(this._tetrimino.id);
+        let testedTetrimino = this._tetrimino.clone();
 
         testedTetrimino.moveDown();
 
@@ -95,35 +96,79 @@ class Board {
 
     handleInput(input) {
         if (this._tetrimino == null) return;
-
-        let testedTetrimino = this._tetrimino.clone(this._tetrimino.id);
-
-        if (input === "ArrowUp" || input === "x") {
-            testedTetrimino.rotateRight();
+    
+        let testedTetrimino = this._tetrimino.clone();
+        
+        switch (input) {
+            case "ArrowUp":
+            case "x":
+                testedTetrimino.rotateRight();
+                break;
+        
+            case "z":
+                testedTetrimino.rotateLeft();
+                break;
+        
+            case "ArrowRight":
+                testedTetrimino.moveRight();
+                break;
+        
+            case "ArrowLeft":
+                testedTetrimino.moveLeft();
+                break;
+        
+            case "ArrowDown":
+                testedTetrimino.moveDown();
+                break;
+        
+            default:
+                break;
         }
-
-        if (input === "z") {
-            testedTetrimino.rotateLeft();
-        }
-
-        if (input === "ArrowRight") {
-            testedTetrimino.moveRight();
-        }
-
-        if (input === "ArrowLeft") {
-            testedTetrimino.moveLeft();
-        }
-
-        if (input === "ArrowDown") {
-            testedTetrimino.moveDown();
-        }
-
+    
         if (this.isGivenTetriminoInCollisionState(testedTetrimino)) {
+            // If rotation, we try a wall-kick
+            if (testedTetrimino.lastMove === kRotateLeft || testedTetrimino.lastMove === kRotateRight) {
+                const kickedTetrimino = this.tryWallKick(testedTetrimino, this._tetrimino);
+                if (kickedTetrimino) {
+                    this._tetrimino = kickedTetrimino;
+                    return true;
+                }
+            }
+    
             return false;
         }
-
-        this._tetrimino.enforceMove(testedTetrimino.lastMove);
+    
+        this._tetrimino = testedTetrimino;
         return true;
+    }
+
+    tryWallKick(rotatedTetrimino, originalTetrimino) {
+        const from = originalTetrimino.getOrientation(); // ex: 0
+        const to = rotatedTetrimino.getOrientation();   // ex: 1
+        const transitionKey = `${from}->${to}`;          // ex: '0->1'
+    
+        const kicksData = rotatedTetrimino.getType() === 'I' ? kicksI : kicksJLSTZ;
+        const kickTests = kicksData[transitionKey];
+    
+        if (!kickTests) {
+            // No kicks. Shouldn't happen.
+            return null;
+        }
+    
+        // Loop on all 5 kick for given transition.
+        for (const [dx, dy] of kickTests) {
+            const kicked = rotatedTetrimino.clone();
+            
+            kicked.offset(dx, dy);
+    
+            if (!this.isGivenTetriminoInCollisionState(kicked)) {
+                Logger.success(true, null,`Wall Kick succeeded with (${dx}, ${dy})`);
+                return kicked;
+            }
+        }
+    
+        // Wall kick failed
+        return null;
     }
 
     isGivenTetriminoInLockState(tetrimino) {

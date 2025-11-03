@@ -9,6 +9,10 @@ class GameTickHandler {
         this.onGameEndCallback = onGameEndCallback; // Callback to notify Game that it's over
     }
 
+    /**
+     * Handle game logic for each tick.
+     * (e.g. gravity, pieces locking, tetrimino spawn, collisions, etc.)
+     */
     tick() {
         this.handleGraceTicks();
 

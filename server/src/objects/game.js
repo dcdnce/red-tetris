@@ -88,11 +88,6 @@ class Game {
             this.getState() !== kStartedState ||
             this.gametickhandler === null
         ) {
-            Logger.warning(
-                true,
-                this.roomName,
-                "Attempted to end a game that is not running."
-            );
             return;
         }
 
@@ -104,14 +99,9 @@ class Game {
     }
 
     handleInput(player, input) {
-        let didMove = player.handleInput(input);
+        let inputIsValid = player.handleInput(input);
 
-        // // TODO not necessary ?? Other players will receive new state at game tick
-        // if (didMove) {
-        //     emitUpdateGameDataTo(player, this);
-        // }
-
-        if (didMove) {
+        if (inputIsValid) {
             emitUpdateGameData(this);
         }
     }
