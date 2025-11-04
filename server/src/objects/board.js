@@ -1,5 +1,9 @@
 import Logger from "../services/logger.js";
-import Tetrimino, { kMoveLeft, kRotateLeft, kRotateRight } from "./tetrimino.js";
+import Tetrimino, {
+    kMoveLeft,
+    kRotateLeft,
+    kRotateRight,
+} from "./tetrimino.js";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
 import { kicksI, kicksJLSTZ } from "./tetrimino.js";
 
@@ -34,7 +38,7 @@ class Board {
         return x < 0 || y < 0 || x >= 10 || y >= 20;
     }
 
-    isToppedOut() {
+    isBlockedOut() {
         if (this._tetrimino == null) return;
 
         const absoluteBlocksPosition =
@@ -66,9 +70,9 @@ class Board {
 
         this._tetrimino = new Tetrimino(id);
 
-        if (this.isToppedOut()) {
+        if (this.isBlockedOut()) {
             Logger.error(
-                false,
+                true,
                 "handleTetriminoSpawn spawn is locked, topping out."
             );
             throw new TetriminoOutOfBoundsException(
@@ -96,78 +100,89 @@ class Board {
 
     handleInput(input) {
         if (this._tetrimino == null) return;
-    
+
         let testedTetrimino = this._tetrimino.clone();
-        
+
         switch (input) {
             case "ArrowUp":
             case "x":
                 testedTetrimino.rotateRight();
                 break;
-        
+
             case "z":
                 testedTetrimino.rotateLeft();
                 break;
-        
+
             case "ArrowRight":
                 testedTetrimino.moveRight();
                 break;
-        
+
             case "ArrowLeft":
                 testedTetrimino.moveLeft();
                 break;
-        
+
             case "ArrowDown":
                 testedTetrimino.moveDown();
                 break;
-        
+
             default:
                 break;
         }
-    
+
         // TODO merge this code in the above switch
         if (this.isGivenTetriminoInCollisionState(testedTetrimino)) {
             // If rotation, we try a wall-kick
-            if (testedTetrimino.lastMove === kRotateLeft || testedTetrimino.lastMove === kRotateRight) {
-                const kickedTetrimino = this.tryWallKick(testedTetrimino, this._tetrimino);
+            if (
+                testedTetrimino.lastMove === kRotateLeft ||
+                testedTetrimino.lastMove === kRotateRight
+            ) {
+                const kickedTetrimino = this.tryWallKick(
+                    testedTetrimino,
+                    this._tetrimino
+                );
                 if (kickedTetrimino) {
                     this._tetrimino = kickedTetrimino;
                     return true;
                 }
             }
-    
+
             return false;
         }
-    
+
         this._tetrimino = testedTetrimino;
         return true;
     }
 
     tryWallKick(rotatedTetrimino, originalTetrimino) {
         const from = originalTetrimino.getOrientation(); // ex: 0
-        const to = rotatedTetrimino.getOrientation();   // ex: 1
-        const transitionKey = `${from}->${to}`;          // ex: '0->1'
-    
-        const kicksData = rotatedTetrimino.getType() === 'I' ? kicksI : kicksJLSTZ;
+        const to = rotatedTetrimino.getOrientation(); // ex: 1
+        const transitionKey = `${from}->${to}`; // ex: '0->1'
+
+        const kicksData =
+            rotatedTetrimino.getType() === "I" ? kicksI : kicksJLSTZ;
         const kickTests = kicksData[transitionKey];
-    
+
         if (!kickTests) {
             // No kicks. Shouldn't happen.
             return null;
         }
-    
+
         // Loop on all 5 kick for given transition.
         for (const [dx, dy] of kickTests) {
             const kicked = rotatedTetrimino.clone();
-            
+
             kicked.offset(dx, dy);
-    
+
             if (!this.isGivenTetriminoInCollisionState(kicked)) {
-                Logger.success(true, null,`Wall Kick succeeded with (${dx}, ${dy})`);
+                Logger.success(
+                    true,
+                    null,
+                    `Wall Kick succeeded with (${dx}, ${dy})`
+                );
                 return kicked;
             }
         }
-    
+
         // Wall kick failed
         return null;
     }
@@ -229,6 +244,16 @@ class Board {
             this._tetrimino.getAbsoluteBlocksPositionArray();
 
         absoluteBlocksPosition.forEach(([x, y]) => {
+            if (this.coordsAreOutOfBound(x, y)) {
+                // Lock Out
+                Logger.error(
+                    true,
+                    "Tried to lock a tetrimino out of bounds, lock out."
+                );
+                throw new TetriminoOutOfBoundsException(
+                    "Tried to lock a tetrimino out of bounds, lock out."
+                );
+            }
             this._board[y][x] = kLockedBlock;
         });
 

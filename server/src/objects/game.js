@@ -23,7 +23,6 @@ class Game {
         GameMapSingleton.set(roomName, this); // <roomName, Game>
     }
 
-
     startGame() {
         if (
             this.getState() !== kPendingState ||
@@ -34,7 +33,7 @@ class Game {
             );
         }
 
-        this.generatePiecesSequence()
+        this.generatePiecesSequence();
 
         this.setStarted();
 
@@ -83,19 +82,24 @@ class Game {
 
     generatePiecesSequence() {
         if (this.piecesSequence !== null) {
-            throw new Error("generatePiecesSequence called on a already generated pieces sequence.");
+            throw new Error(
+                "generatePiecesSequence called on a already generated pieces sequence."
+            );
         }
 
-        const baseBag = [1,2,3,4,5,6,7];
+        const baseBag = [1, 2, 3, 4, 5, 6, 7];
         this.piecesSequence = [];
 
         while (this.piecesSequence.length < PIECE_SEQUENCE_LENGTH) {
             let shuffledBag = [...baseBag];
 
             // Shuffle
-            for (let i = shuffledBag.length - 1 ; i > 0 ; i--) {
+            for (let i = shuffledBag.length - 1; i > 0; i--) {
                 let j = Math.floor(Math.random() * (i + 1));
-                [shuffledBag[i], shuffledBag[j]] = [shuffledBag[j], shuffledBag[i]];
+                [shuffledBag[i], shuffledBag[j]] = [
+                    shuffledBag[j],
+                    shuffledBag[i],
+                ];
             }
 
             this.piecesSequence.push(...shuffledBag);
@@ -137,7 +141,6 @@ class Game {
     getState() {
         return this.state.getState();
     }
-
 }
 
 export default Game;

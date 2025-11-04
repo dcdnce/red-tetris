@@ -39,13 +39,13 @@ class Player {
         this._graceTicks = null;
     }
 
-    setToppedOut() {
+    setLost() {
         this.didLost = true;
 
         Logger.info(
             true,
             this.currentGame.roomName,
-            `${this.username} just topped out.`
+            `${this.username} just lost.`
         );
     }
 
@@ -62,7 +62,8 @@ class Player {
         if (this.didLost) return;
         if (this.board.isTetriminoNull() === false) return;
 
-        const tetriminoId = this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
+        const tetriminoId =
+            this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
         this._piecesSequenceIndex += 1;
         this.board.handleTetriminoSpawn(tetriminoId);
     }

@@ -57,8 +57,9 @@ class GameTickHandler {
             try {
                 player.handleTetriminoSpawn();
             } catch (error) {
+                // Block out
                 if (error instanceof TetriminoOutOfBoundsException) {
-                    player.setToppedOut();
+                    player.setLost();
                 } else {
                     throw error;
                 }
@@ -67,7 +68,18 @@ class GameTickHandler {
     }
 
     handleGravityAndLock() {
-        this.players.forEach((player) => player.handleGravityAndLock());
+        this.players.forEach((player) => {
+            try {
+                player.handleGravityAndLock();
+            } catch (error) {
+                // Lock out
+                if (error instanceof TetriminoOutOfBoundsException) {
+                    player.setLost();
+                } else {
+                    throw error;
+                }
+            }
+        });
     }
 }
 

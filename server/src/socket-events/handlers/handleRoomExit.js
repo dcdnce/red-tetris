@@ -63,7 +63,9 @@ export default function handleRoomExit(socket) {
 
 export function endAndDeleteRoom(game) {
     game.endGame();
-    GameMapSingleton.delete(game.roomName);
+    if (GameMapSingleton.delete(game.roomName) == false) {
+        throw new Error(`Couldn't delete game room ${game.roomName}`);
+    }
     Logger.info(false, null, `Deleting game room ${game.roomName}`);
 }
 
