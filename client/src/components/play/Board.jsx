@@ -48,11 +48,13 @@ function Board({ playerNumber }) {
             templateColumns="repeat(10, 1fr)"
             templateRows="repeat(20, 1fr)"
             gap="1px"
-            bg="black"
             padding="0.5rem"
             borderRadius="5px"
             boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
             aspectRatio="10/20"
+            maxW={{ base: "150px", sm: "200px", md: "250px", lg: "300px" }}
+            w="100%"
+            bg="beige"
         >
             {allBlocks.map((block) => (
                 <Block
