@@ -21,6 +21,7 @@ class GameTickHandler {
             return;
         }
 
+        this.handleEPLLockDelay(); // check if lock delay expired
         this.handleGravityAndLock();
         this.handleTetriminoSpawn();
     }
@@ -79,6 +80,12 @@ class GameTickHandler {
                     throw error;
                 }
             }
+        });
+    }
+
+    handleEPLLockDelay() {
+        this.players.forEach((player) => {
+            player.handleEPLLockDelay();
         });
     }
 }

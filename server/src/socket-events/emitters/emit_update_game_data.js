@@ -2,7 +2,7 @@ import Logger from "../../services/logger.js";
 import { SocketManager } from "../../services/socketManager.js";
 
 export default function emitUpdateGameData(game) {
-    Logger.info(true, game.roomName, `Update game data`);
+    // Logger.info(true, game.roomName, `Update game data`);
 
     const io = SocketManager.getIO();
 

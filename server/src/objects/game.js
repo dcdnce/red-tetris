@@ -44,11 +44,11 @@ class Game {
         );
 
         this.loopIntervalId = setInterval(() => {
-            Logger.info(
-                true,
-                this.roomName,
-                `GameTickHandler.tick() called every ${GAME_TICK_RATE_MS}ms`
-            );
+            // Logger.info(
+            //     true,
+            //     this.roomName,
+            //     `GameTickHandler.tick() called every ${GAME_TICK_RATE_MS}ms`
+            // );
 
             this.gameTickHandler.tick();
             emitUpdateGameData(this);
@@ -121,6 +121,7 @@ class Game {
                 isConnected: playerData.isConnected,
                 didLost: playerData.didLost,
                 isLeader: playerData.token === this.leaderToken,
+                remainingEPLInputs: playerData.board.getRemainingEPLInputs(),
             });
         }
         return playerList;

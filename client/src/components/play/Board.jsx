@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Box, Grid } from "@chakra-ui/react";
+import { VStack, Box, Grid, Text } from "@chakra-ui/react";
 import { selectPlayers } from "../../store/gameSlice";
 
 function Block({ row, col, playerNumber }) {
@@ -33,7 +33,8 @@ function Board({ playerNumber }) {
     const { roomName } = useParams();
 
     const players = useSelector(selectPlayers(roomName));
-    const gameBoard = players[playerNumber].board;
+    const player = players[playerNumber];
+    const gameBoard = player.board;
 
     // Build blocks array
     const allBlocks = [];
@@ -44,27 +45,34 @@ function Board({ playerNumber }) {
     }
 
     return (
-        <Grid
-            templateColumns="repeat(10, 1fr)"
-            templateRows="repeat(20, 1fr)"
-            gap="1px"
-            padding="0.5rem"
-            borderRadius="5px"
-            boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
-            aspectRatio="10/20"
-            maxW={{ base: "150px", sm: "200px", md: "250px", lg: "300px" }}
-            w="100%"
-            bg="beige"
-        >
-            {allBlocks.map((block) => (
-                <Block
-                    key={`${block.row}-${block.col}`}
-                    row={block.row}
-                    col={block.col}
-                    playerNumber={playerNumber}
-                />
-            ))}
-        </Grid>
+        <VStack spacing={2} align="center">
+            <Text fontWeight="bold">{player.username}</Text>
+            <Text fontSize="sm" color="gray.600">
+                (debug) Remaining EPL Inputs: {player.remainingEPLInputs}
+            </Text>
+
+            <Grid
+                templateColumns="repeat(10, 1fr)"
+                templateRows="repeat(20, 1fr)"
+                gap="1px"
+                padding="0.5rem"
+                borderRadius="5px"
+                boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
+                aspectRatio="10/20"
+                maxW={{ base: "150px", sm: "200px", md: "250px", lg: "300px" }}
+                w="100%"
+                bg="beige"
+            >
+                {allBlocks.map((block) => (
+                    <Block
+                        key={`${block.row}-${block.col}`}
+                        row={block.row}
+                        col={block.col}
+                        playerNumber={playerNumber}
+                    />
+                ))}
+            </Grid>
+        </VStack>
     );
 }
 

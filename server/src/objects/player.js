@@ -77,6 +77,14 @@ class Player {
     handleInput(input) {
         return this.board.handleInput(input);
     }
+
+    handleEPLLockDelay() {
+        if (this.board.isInLockDelay() === true) {
+            if (this.board.isLockDelayExpired() === true) {
+                this.board.lockTetrimino();
+            }
+        }
+    }
 }
 
 export default Player;

@@ -9,10 +9,15 @@ import { kicksI, kicksJLSTZ } from "./tetrimino.js";
 
 export const kLockedBlock = 1;
 
+const LOCK_DELAY_MS = 500;
+const MAXIMUM_EPL_INPUTS = 15;
+
 class Board {
     constructor() {
         this._board = createEmptyBoard();
         this._tetrimino = null;
+        this._lockDelayTimer = null;
+        this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
     }
 
     getBoard() {
@@ -82,15 +87,16 @@ class Board {
     }
 
     handleGravityAndLock() {
-        if (this._tetrimino == null) return;
+        if (this._tetrimino === null) return;
+        if (this.isInLockDelay() === true) return;
 
         let testedTetrimino = this._tetrimino.clone();
 
         testedTetrimino.moveDown();
 
         // Lock tetrimino
-        if (this.isGivenTetriminoInLockState(testedTetrimino)) {
-            this._lockTetrimino();
+        if (this.isTetriminoInLockState(testedTetrimino)) {
+            this.lockTetrimino();
             return;
         }
 
@@ -130,8 +136,8 @@ class Board {
         }
 
         // TODO merge this code in the above switch
-        if (this.isGivenTetriminoInCollisionState(testedTetrimino)) {
-            // If rotation, we try a wall-kick
+        // Wall-Kick
+        if (this.isTetriminoInCollisionState(testedTetrimino)) {
             if (
                 testedTetrimino.lastMove === kRotateLeft ||
                 testedTetrimino.lastMove === kRotateRight
@@ -147,6 +153,30 @@ class Board {
             }
 
             return false;
+        }
+
+        // Lock delay shenanigans
+        if (this.isTetriminoInSurfaceState(testedTetrimino)) {
+            // Is there a block below ?
+            if (this.isInLockDelay() === true) {
+                if (
+                    this.isLockDelayExpired() === true ||
+                    this._remainingEPLInputs == 0
+                ) {
+                    // Lock, so do nothing
+                    // TODO normally lock is handled by next tick
+                    return false;
+                } else if (this.isLockDelayExpired() === false) {
+                    this.initLockDelay(); // reset lock delay
+                    this._remainingEPLInputs -= 1;
+                }
+            } else if (this.isInLockDelay() === false) {
+                this.initLockDelay();
+            }
+        } else {
+            if (this.isInLockDelay()) {
+                this.endLockDelay(); // end lock cause no surface below
+            }
         }
 
         this._tetrimino = testedTetrimino;
@@ -173,7 +203,7 @@ class Board {
 
             kicked.offset(dx, dy);
 
-            if (!this.isGivenTetriminoInCollisionState(kicked)) {
+            if (!this.isTetriminoInCollisionState(kicked)) {
                 Logger.success(
                     true,
                     null,
@@ -187,7 +217,7 @@ class Board {
         return null;
     }
 
-    isGivenTetriminoInLockState(tetrimino) {
+    isTetriminoInLockState(tetrimino) {
         let readyToLock = false;
         const absoluteBlocksPosition =
             tetrimino.getAbsoluteBlocksPositionArray();
@@ -205,7 +235,7 @@ class Board {
         return readyToLock;
     }
 
-    isGivenTetriminoInCollisionState(tetrimino) {
+    isTetriminoInCollisionState(tetrimino) {
         let isColliding = false;
 
         const absoluteBlocksPosition =
@@ -229,13 +259,18 @@ class Board {
         return isColliding;
     }
 
+    isTetriminoInSurfaceState(tetrimino) {
+        let testedTetrimino = tetrimino.clone();
+        testedTetrimino.moveDown();
+
+        return this.isTetriminoInCollisionState(testedTetrimino);
+    }
+
     isTetriminoNull() {
         return this._tetrimino === null;
     }
 
-    // Private
-
-    _lockTetrimino() {
+    lockTetrimino() {
         if (this._tetrimino == null) {
             throw new Error("lockTetrimino called without valid tetrimino");
         }
@@ -258,7 +293,34 @@ class Board {
         });
 
         this._tetrimino = null;
+        this.endLockDelay();
+        this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         Logger.success(true, null, "Applied lock");
+    }
+
+    initLockDelay() {
+        this._lockDelayTimer = Date.now();
+        Logger.info(true, null, `Lock Delay reset.`);
+    }
+
+    isLockDelayExpired() {
+        if (this._lockDelayTimer === null) return false;
+
+        return Date.now() - this._lockDelayTimer >= LOCK_DELAY_MS;
+    }
+
+    endLockDelay() {
+        this._lockDelayTimer = null;
+        Logger.info(true, null, `Lock Delay ended.`);
+    }
+
+    isInLockDelay() {
+        return this._lockDelayTimer !== null;
+    }
+
+    // SETTERS and GETTERS
+    getRemainingEPLInputs() {
+        return this._remainingEPLInputs;
     }
 }
 
