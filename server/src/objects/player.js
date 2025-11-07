@@ -79,8 +79,8 @@ class Player {
     }
 
     handleEPLLockDelay() {
-        if (this.board.isInLockDelay() === true) {
-            if (this.board.isLockDelayExpired() === true) {
+        if (this.board.lockDelay.isActive() === true) {
+            if (this.board.lockDelay.isExpired() === true) {
                 this.board.lockTetrimino();
             }
         }

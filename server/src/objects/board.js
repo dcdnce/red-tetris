@@ -1,23 +1,19 @@
 import Logger from "../services/logger.js";
-import Tetrimino, {
-    kMoveLeft,
-    kRotateLeft,
-    kRotateRight,
-} from "./tetrimino.js";
+import Tetrimino from "./tetrimino.js";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
 import { kicksI, kicksJLSTZ } from "./tetrimino.js";
+import { LockDelay } from "./lockdelay.js";
 
 export const kLockedBlock = 1;
 
-const LOCK_DELAY_MS = 500;
 const MAXIMUM_EPL_INPUTS = 15;
 
 class Board {
     constructor() {
         this._board = createEmptyBoard();
         this._tetrimino = null;
-        this._lockDelayTimer = null;
         this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
+        this.lockDelay = new LockDelay();
     }
 
     getBoard() {
@@ -88,7 +84,7 @@ class Board {
 
     handleGravityAndLock() {
         if (this._tetrimino === null) return;
-        if (this.isInLockDelay() === true) return;
+        if (this.lockDelay.isActive() === true) return;
 
         let testedTetrimino = this._tetrimino.clone();
 
@@ -109,6 +105,33 @@ class Board {
 
         let testedTetrimino = this._tetrimino.clone();
 
+        this.applyInputToTetrimino(testedTetrimino, input);
+
+        // Collision
+        if (this.isTetriminoInCollisionState(testedTetrimino)) {
+            if (testedTetrimino.isLastMoveARotation()) {
+                // try Wall-Kick
+                const kickedTetrimino = this.handleWallKick(
+                    testedTetrimino,
+                    this._tetrimino
+                );
+                if (kickedTetrimino === false) return false;
+                testedTetrimino = kickedTetrimino;
+            } else {
+                return false;
+            }
+        }
+
+        // Handle lock delay
+        if (this.handleLockDelay(testedTetrimino) == false) {
+            return false;
+        }
+
+        this._tetrimino = testedTetrimino;
+        return true;
+    }
+
+    applyInputToTetrimino(testedTetrimino, input) {
         switch (input) {
             case "ArrowUp":
             case "x":
@@ -134,56 +157,49 @@ class Board {
             default:
                 break;
         }
+    }
 
-        // TODO merge this code in the above switch
-        // Wall-Kick
-        if (this.isTetriminoInCollisionState(testedTetrimino)) {
-            if (
-                testedTetrimino.lastMove === kRotateLeft ||
-                testedTetrimino.lastMove === kRotateRight
-            ) {
-                const kickedTetrimino = this.tryWallKick(
-                    testedTetrimino,
-                    this._tetrimino
-                );
-                if (kickedTetrimino) {
-                    this._tetrimino = kickedTetrimino;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        // Lock delay shenanigans
+    /**
+     * Manages the lock delay mechanism when a Tetrimino touches the surface.
+     *
+     * @param {Tetrimino} testedTetrimino - The currently active Tetrimino being evaluated for locking behavior.
+     * @returns false if the piece should lock on the next tick.
+     */
+    handleLockDelay(testedTetrimino) {
+        // Is there a block below ?
         if (this.isTetriminoInSurfaceState(testedTetrimino)) {
-            // Is there a block below ?
-            if (this.isInLockDelay() === true) {
+            if (this.lockDelay.isActive() === true) {
                 if (
-                    this.isLockDelayExpired() === true ||
+                    this.lockDelay.isExpired() === true ||
                     this._remainingEPLInputs == 0
                 ) {
-                    // Lock, so do nothing
-                    // TODO normally lock is handled by next tick
+                    // Lock handled in next tick, so do nothing
                     return false;
-                } else if (this.isLockDelayExpired() === false) {
-                    this.initLockDelay(); // reset lock delay
+                } else if (this.lockDelay.isExpired() === false) {
+                    this.lockDelay.reset(); // reset lock delay
                     this._remainingEPLInputs -= 1;
                 }
-            } else if (this.isInLockDelay() === false) {
-                this.initLockDelay();
+            } else if (this.lockDelay.isActive() === false) {
+                this.lockDelay.init();
             }
         } else {
-            if (this.isInLockDelay()) {
-                this.endLockDelay(); // end lock cause no surface below
+            if (this.lockDelay.isActive()) {
+                this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
+                this.lockDelay.end(); // end lock cause no surface below
             }
         }
 
-        this._tetrimino = testedTetrimino;
         return true;
     }
 
-    tryWallKick(rotatedTetrimino, originalTetrimino) {
+    /**
+     * Handles wall kick logic when a Tetrimino is rotated and collides with obstacles.
+     *
+     * @param {Tetrimino} rotatedTetrimino - The Tetrimino after rotation, potentially in a collision state.
+     * @param {Tetrimino} originalTetrimino - The Tetrimino before rotation, used to determine rotation direction and orientation.
+     * @returns the kicked tetrimino.
+     */
+    handleWallKick(rotatedTetrimino, originalTetrimino) {
         const from = originalTetrimino.getOrientation(); // ex: 0
         const to = rotatedTetrimino.getOrientation(); // ex: 1
         const transitionKey = `${from}->${to}`; // ex: '0->1'
@@ -194,7 +210,7 @@ class Board {
 
         if (!kickTests) {
             // No kicks. Shouldn't happen.
-            return null;
+            throw Error("No kicks available.");
         }
 
         // Loop on all 5 kick for given transition.
@@ -293,29 +309,9 @@ class Board {
         });
 
         this._tetrimino = null;
-        this.endLockDelay();
+        this.lockDelay.end();
         this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         Logger.success(true, null, "Applied lock");
-    }
-
-    initLockDelay() {
-        this._lockDelayTimer = Date.now();
-        Logger.info(true, null, `Lock Delay reset.`);
-    }
-
-    isLockDelayExpired() {
-        if (this._lockDelayTimer === null) return false;
-
-        return Date.now() - this._lockDelayTimer >= LOCK_DELAY_MS;
-    }
-
-    endLockDelay() {
-        this._lockDelayTimer = null;
-        Logger.info(true, null, `Lock Delay ended.`);
-    }
-
-    isInLockDelay() {
-        return this._lockDelayTimer !== null;
     }
 
     // SETTERS and GETTERS

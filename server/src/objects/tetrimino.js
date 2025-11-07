@@ -301,6 +301,10 @@ class Tetrimino {
         );
     }
 
+    isLastMoveARotation() {
+        return this.lastMove === kRotateLeft || this.lastMove === kRotateRight;
+    }
+
     rotateRight() {
         this._orientation = (this._orientation + 1) % 4;
         this.lastMove = kRotateRight;

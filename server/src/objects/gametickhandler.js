@@ -27,7 +27,6 @@ class GameTickHandler {
     }
 
     // LOBBY RELATED METHODS
-
     allPlayersLost() {
         return Array.from(this.players.values()).every(
             (player) => player.didLost
