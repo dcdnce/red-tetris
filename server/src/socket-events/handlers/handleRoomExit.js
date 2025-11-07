@@ -24,7 +24,6 @@ export default function handleRoomExit(socket) {
             temporaryDisconnection(player);
         }
 
-        // emitUpdatePlayerList(game);
         emitUpdateGameData(game);
 
         Logger.info(

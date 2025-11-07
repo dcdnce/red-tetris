@@ -247,6 +247,7 @@ class Tetrimino {
         this._orientation = 0;
         this._type = kTetriminosTypes[id].type;
         this.lastMove = null;
+        this._lowestY = this._position[1];
     }
 
     offset(dx, dy) {
@@ -254,36 +255,14 @@ class Tetrimino {
         this._position[1] += dy;
     }
 
-    getOrientation() {
-        return this._orientation;
-    }
-
-    getType() {
-        return this._type;
-    }
-
     clone() {
         let newTetrimino = new Tetrimino(this.id);
         newTetrimino._orientation = this._orientation;
         newTetrimino._position = [...this._position];
         newTetrimino.lastMove = this.lastMove;
+        newTetrimino.setLowestY(this._lowestY);
 
         return newTetrimino;
-    }
-
-    getAbsoluteBlocksPositionArray() {
-        const posX = this._position[0];
-        const posY = this._position[1];
-        let rotatedRelativeBlocks = this._baseBlocks.map((block) => [...block]);
-
-        for (let i = 0; i < this._orientation; i++) {
-            rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [
-                -y,
-                x,
-            ]);
-        }
-
-        return rotatedRelativeBlocks.map(([x, y]) => [x + posX, y + posY]);
     }
 
     moveUp() {
@@ -350,6 +329,42 @@ class Tetrimino {
         if (move === kRotateLeft) {
             this.rotateLeft();
         }
+    }
+
+    // GETTERS and SETTERS
+    getY() {
+        return this._position[1];
+    }
+
+    getLowestY() {
+        return this._lowestY;
+    }
+
+    setLowestY(y) {
+        this._lowestY = y;
+    }
+
+    getAbsoluteBlocksPositionArray() {
+        const posX = this._position[0];
+        const posY = this._position[1];
+        let rotatedRelativeBlocks = this._baseBlocks.map((block) => [...block]);
+
+        for (let i = 0; i < this._orientation; i++) {
+            rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [
+                -y,
+                x,
+            ]);
+        }
+
+        return rotatedRelativeBlocks.map(([x, y]) => [x + posX, y + posY]);
+    }
+
+    getOrientation() {
+        return this._orientation;
+    }
+
+    getType() {
+        return this._type;
     }
 }
 

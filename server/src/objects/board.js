@@ -96,8 +96,11 @@ class Board {
             return;
         }
 
-        // Simple gravity
+        // Refresh lowest Y
+        this._tetrimino.setLowestY(testedTetrimino.getY());
         this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
+
+        // Simple gravity
         this._tetrimino.enforceMove(testedTetrimino.lastMove);
     }
 
@@ -126,6 +129,12 @@ class Board {
         // Handle lock delay
         if (this.handleLockDelay(testedTetrimino) == false) {
             return false;
+        }
+
+        // Refresh lowest Y only if tetrimino falls to its lowest line
+        if (this._tetrimino.getLowestY() < testedTetrimino.getY()) {
+            testedTetrimino.setLowestY(testedTetrimino.getY());
+            this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         }
 
         this._tetrimino = testedTetrimino;
@@ -310,7 +319,6 @@ class Board {
 
         this._tetrimino = null;
         this.lockDelay.end();
-        // this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         Logger.success(true, null, "Applied lock");
     }
 

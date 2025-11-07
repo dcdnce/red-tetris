@@ -72,7 +72,7 @@ class Game {
         // [US-47] Ensures all players are disconnected if game ends
         this.players.forEach((player) => {
             definitiveDisconnection(player);
-        })
+        });
 
         if (GameMapSingleton.delete(this.roomName) === true) {
             Logger.info(false, null, `Deleting game room ${this.roomName}`);
@@ -114,7 +114,6 @@ class Game {
     }
 
     // GETTERS / SETTERS
-
     getPiecesSequence() {
         return this.piecesSequence;
     }
