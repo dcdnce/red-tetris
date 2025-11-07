@@ -15,7 +15,7 @@ export default function handleRoomExit(socket) {
 
             // Last player ?
             if (!game.players.size) {
-                endAndDeleteRoom(game);
+                game.endAndDelete();
                 return;
             }
         }
@@ -61,25 +61,19 @@ export default function handleRoomExit(socket) {
     });
 }
 
-export function endAndDeleteRoom(game) {
-    game.endGame();
-    if (GameMapSingleton.delete(game.roomName) == false) {
-        throw new Error(`Couldn't delete game room ${game.roomName}`);
-    }
-    Logger.info(false, null, `Deleting game room ${game.roomName}`);
-}
-
 /**
  *
  * Either called by :
  *  - gameloop after x seconds disconnected
- *  - handleRoomExit if player quits a lobby being in waiting state
+ *  - handleRoomExit() if player quits a lobby being in waiting state
+ *  - gane.endAndDelete()
  * @param {Player} player
  */
 export function definitiveDisconnection(player) {
     let game = player.currentGame;
 
     player.socket.leave(game.roomName);
+    player.socket.player = null;
     game.players.delete(player.username);
 
     // Change room leader

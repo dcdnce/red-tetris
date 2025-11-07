@@ -1,10 +1,9 @@
-import { endAndDeleteRoom } from "../socket-events/handlers/handleRoomExit.js";
+import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 import Logger from "../services/logger.js";
 import GameMapSingleton from "../services/gameMapSingleton.js";
 import RoomState, { kStartedState, kPendingState } from "./roomstate.js";
 import GameTickHandler from "./gametickhandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
-import emitUpdateGameDataTo from "../socket-events/emitters/emit_update_game_data_to.js";
 
 const GAME_TICK_RATE_MS = 1000;
 const PIECE_SEQUENCE_LENGTH = 1000;
@@ -40,7 +39,7 @@ class Game {
         this.gameTickHandler = new GameTickHandler(
             this.roomName,
             this.players, // this is a reference
-            () => endAndDeleteRoom(this)
+            () => endAndDeleteGameCallback(this)
         );
 
         this.loopIntervalId = setInterval(() => {
@@ -57,7 +56,7 @@ class Game {
         Logger.info(true, this.roomName, "Room loop started");
     }
 
-    endGame() {
+    endAndDelete() {
         if (
             this.getState() !== kStartedState ||
             this.gameTickHandler === null
@@ -69,7 +68,15 @@ class Game {
         this.loopIntervalId = null;
         this.gameTickHandler = null;
         this.setFinished();
-        Logger.info(true, this.roomName, "Room loop ended");
+
+        // [US-47] Ensures all players are disconnected if game ends
+        this.players.forEach((player) => {
+            definitiveDisconnection(player);
+        })
+
+        if (GameMapSingleton.delete(this.roomName) === true) {
+            Logger.info(false, null, `Deleting game room ${this.roomName}`);
+        }
     }
 
     handleInput(player, input) {
@@ -142,6 +149,10 @@ class Game {
     getState() {
         return this.state.getState();
     }
+}
+
+function endAndDeleteGameCallback(game) {
+    game.endAndDelete();
 }
 
 export default Game;

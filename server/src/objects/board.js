@@ -97,6 +97,7 @@ class Board {
         }
 
         // Simple gravity
+        this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         this._tetrimino.enforceMove(testedTetrimino.lastMove);
     }
 
@@ -184,7 +185,6 @@ class Board {
             }
         } else {
             if (this.lockDelay.isActive()) {
-                this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
                 this.lockDelay.end(); // end lock cause no surface below
             }
         }
@@ -310,7 +310,7 @@ class Board {
 
         this._tetrimino = null;
         this.lockDelay.end();
-        this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
+        // this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         Logger.success(true, null, "Applied lock");
     }
 
@@ -326,7 +326,7 @@ function createEmptyBoard() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
