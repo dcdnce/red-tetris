@@ -42,12 +42,15 @@ class Player {
             this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
         this._piecesSequenceIndex += 1;
         this.board.handleTetriminoSpawn(tetriminoId);
+
+        // [US-48] Spawned tetrimino should immediately drop one row
+        this.board.handleGravityAndLock(true);
     }
 
     handleGravityAndLock() {
         if (this.didLost) return;
 
-        this.board.handleGravityAndLock();
+        this.board.handleGravityAndLock(false);
     }
 
     handleInput(input) {

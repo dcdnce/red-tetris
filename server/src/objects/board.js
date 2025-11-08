@@ -1,12 +1,13 @@
 import Logger from "../services/logger.js";
 import Tetrimino from "./tetrimino.js";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
-import { kicksI, kicksJLSTZ } from "./tetrimino.js";
 import { LockDelay } from "./lockdelay.js";
-
+import { kicksI, kicksJLSTZ } from "../constants/tetriminos_constants.js";
 export const kLockedBlock = 1;
 
 const MAXIMUM_EPL_INPUTS = 15;
+export const BOARD_WIDTH = 10;
+export const BOARD_HEIGHT = 22;
 
 class Board {
     constructor() {
@@ -17,7 +18,11 @@ class Board {
     }
 
     coordsAreOutOfBound(x, y) {
-        return x < 0 || y < 0 || x >= 10 || y >= 20;
+        return x < 0 || y < 0 || x >= BOARD_WIDTH || y >= BOARD_HEIGHT;
+    }
+
+    coordsAreBelowSkyline(x, y) {
+        return y >= 2;
     }
 
     isBlockedOut() {
@@ -28,7 +33,7 @@ class Board {
 
         // Will touch locked piece at spawn
         let willTouchLockedPieceAtSpawn = false;
-        let lowestY = 20;
+        let lowestY = BOARD_HEIGHT;
 
         absoluteBlocksPosition.forEach(([x, y]) => {
             if (this._board[y][x] == kLockedBlock) {
@@ -36,13 +41,6 @@ class Board {
                 lowestY = Math.min(lowestY, y);
             }
         });
-
-        // Readjust tetrimino spawn if topping out
-        if (willTouchLockedPieceAtSpawn) {
-            for (; lowestY < this._tetrimino._baseHeight; lowestY++) {
-                this._tetrimino.moveUp();
-            }
-        }
 
         return willTouchLockedPieceAtSpawn;
     }
@@ -53,17 +51,14 @@ class Board {
         this._tetrimino = new Tetrimino(id);
 
         if (this.isBlockedOut()) {
-            Logger.error(
-                true,
-                "handleTetriminoSpawn spawn is locked, topping out."
-            );
+            Logger.error(true, "Spawn is partially locked, BLOCK OUT.");
             throw new TetriminoOutOfBoundsException(
-                "handleTetriminoSpawn spawn is locked, topping out."
+                "Spawn is partially locked, BLOCK OUT."
             );
         }
     }
 
-    handleGravityAndLock() {
+    handleGravityAndLock(justSpawned) {
         if (this._tetrimino === null) return;
         if (this.lockDelay.isActive() === true) return;
 
@@ -73,7 +68,9 @@ class Board {
 
         // Lock tetrimino
         if (this.isTetriminoInLockState(testedTetrimino)) {
-            this.lockTetrimino();
+            if (!justSpawned) {
+                this.lockTetrimino();
+            }
             return;
         }
 
@@ -91,14 +88,6 @@ class Board {
         let testedTetrimino = this._tetrimino.clone();
 
         this.applyInputToTetrimino(testedTetrimino, input);
-
-        // O tetrimino cannot rotate
-        if (
-            testedTetrimino.isLastMoveARotation() &&
-            testedTetrimino.getType() === "O"
-        ) {
-            return false;
-        }
 
         // Collision
         if (this.isTetriminoInCollisionState(testedTetrimino)) {
@@ -236,7 +225,7 @@ class Board {
         const absoluteBlocksPosition =
             tetrimino.getAbsoluteBlocksPositionArray();
 
-        // y > 20
+        // y > 22
         readyToLock |= tetrimino.isVerticallyOutOfBoundsBottom();
 
         // Touch locked piece
@@ -292,19 +281,23 @@ class Board {
         const absoluteBlocksPosition =
             this._tetrimino.getAbsoluteBlocksPositionArray();
 
+        let willLockBelowSkyline = false;
+
         absoluteBlocksPosition.forEach(([x, y]) => {
-            if (this.coordsAreOutOfBound(x, y)) {
-                // Lock Out
-                Logger.error(
-                    true,
-                    "Tried to lock a tetrimino out of bounds, lock out."
-                );
-                throw new TetriminoOutOfBoundsException(
-                    "Tried to lock a tetrimino out of bounds, lock out."
-                );
-            }
+            willLockBelowSkyline |= this.coordsAreBelowSkyline(x, y);
             this._board[y][x] = kLockedBlock;
         });
+
+        if (willLockBelowSkyline == false) {
+            // Lock Out
+            Logger.error(
+                true,
+                "Tried to lock a whole tetrimino out of bounds, LOCK OUT."
+            );
+            throw new TetriminoOutOfBoundsException(
+                "Tried to lock a whole tetrimino out of bounds, LOCK OUT."
+            );
+        }
 
         this._tetrimino = null;
         this.lockDelay.end();
@@ -342,6 +335,8 @@ class Board {
 
 function createEmptyBoard() {
     return [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

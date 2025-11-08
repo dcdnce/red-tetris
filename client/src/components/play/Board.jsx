@@ -18,6 +18,11 @@ function Block({ row, col, playerNumber }) {
         bgColor = "red.600";
     }
 
+    // Override: first two rows black
+    if (row < 2) {
+        bgColor = "black.500";
+    }
+
     return (
         <Box
             gridRow={row + 1}
@@ -38,7 +43,7 @@ function Board({ playerNumber }) {
 
     // Build blocks array
     const allBlocks = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 22; i++) {
         for (let j = 0; j < 10; j++) {
             if (gameBoard[i][j] != 0) allBlocks.push({ row: i, col: j });
         }
@@ -56,7 +61,7 @@ function Board({ playerNumber }) {
 
             <Grid
                 templateColumns="repeat(10, 1fr)"
-                templateRows="repeat(20, 1fr)"
+                templateRows="repeat(22, 1fr)"
                 gap="1px"
                 padding="0.5rem"
                 borderRadius="5px"

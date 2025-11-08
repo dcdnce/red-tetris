@@ -1,5 +1,4 @@
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
-import Logger from "../services/logger.js";
 import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 
 class GameTickHandler {
@@ -22,7 +21,7 @@ class GameTickHandler {
         }
 
         this.handleEPLLockDelay(); // check if lock delay expired
-        this.handleGravityAndLock();
+        this.handleGravityAndLock(false);
         this.handleTetriminoSpawn();
     }
 
@@ -84,7 +83,16 @@ class GameTickHandler {
 
     handleEPLLockDelay() {
         this.players.forEach((player) => {
-            player.handleEPLLockDelay();
+            try {
+                player.handleEPLLockDelay();
+            } catch (error) {
+                // Lock out
+                if (error instanceof TetriminoOutOfBoundsException) {
+                    player.setLost();
+                } else {
+                    throw error;
+                }
+            }
         });
     }
 }
