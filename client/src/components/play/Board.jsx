@@ -50,6 +50,9 @@ function Board({ playerNumber }) {
             <Text fontSize="sm" color="gray.600">
                 (debug) Remaining EPL Inputs: {player.remainingEPLInputs}
             </Text>
+            <Text fontSize="sm" color="gray.600">
+                (debug) Current tetrimino: {player.tetriminoType}
+            </Text>
 
             <Grid
                 templateColumns="repeat(10, 1fr)"

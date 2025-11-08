@@ -13,6 +13,7 @@ const initialState = {
         //     {
         //         username: null,
         //         board: null,
+        //         tetriminoType: null,
         //         isConnected: null,
         //         didLost: null,
         //         isLeader: null,
@@ -47,7 +48,7 @@ const gameSlice = createSlice({
             const roomName = action.payload.roomName;
             state.rooms[roomName].roomState = action.payload.roomState;
             state.rooms[roomName].players = action.payload.players;
-            console.log(action.payload.players);
+            // console.log(action.payload.players);
         },
         joinRoomFailed: (state, action) => {
             const roomName = action.payload.roomName;

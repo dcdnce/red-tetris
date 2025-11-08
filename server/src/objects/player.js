@@ -29,33 +29,9 @@ class Player {
         this.socket.join(roomName); // socketio room
     }
 
-    setDisconnected() {
-        this.isConnected = false;
-        this._graceTicks = GRACE_TICK_AMOUNT;
-    }
-
-    setConnected() {
-        this.isConnected = true;
-        this._graceTicks = null;
-    }
-
-    setLost() {
-        this.didLost = true;
-
-        Logger.info(
-            true,
-            this.currentGame.roomName,
-            `${this.username} just lost.`
-        );
-    }
-
     decrementGraceTicks() {
         this._graceTicks -= 1;
         return this._graceTicks;
-    }
-
-    getBoard() {
-        return this.board.getBoard();
     }
 
     handleTetriminoSpawn() {
@@ -84,6 +60,31 @@ class Player {
                 this.board.lockTetrimino();
             }
         }
+    }
+
+    //GETTERS and SETTERS
+    setDisconnected() {
+        this.isConnected = false;
+        this._graceTicks = GRACE_TICK_AMOUNT;
+    }
+
+    setConnected() {
+        this.isConnected = true;
+        this._graceTicks = null;
+    }
+
+    setLost() {
+        this.didLost = true;
+
+        Logger.info(
+            true,
+            this.currentGame.roomName,
+            `${this.username} just lost.`
+        );
+    }
+
+    getBoard() {
+        return this.board.getBoard();
     }
 }
 

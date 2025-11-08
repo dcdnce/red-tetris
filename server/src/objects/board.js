@@ -16,25 +16,6 @@ class Board {
         this.lockDelay = new LockDelay();
     }
 
-    getBoard() {
-        let board = this._board.map((row) => [...row]);
-
-        // Add tetrimino if it exists
-        if (this._tetrimino != null) {
-            const absoluteBlocksPosition =
-                this._tetrimino.getAbsoluteBlocksPositionArray();
-            const id = this._tetrimino.id;
-
-            absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!this.coordsAreOutOfBound(x, y)) {
-                    board[y][x] = id;
-                }
-            });
-        }
-
-        return board;
-    }
-
     coordsAreOutOfBound(x, y) {
         return x < 0 || y < 0 || x >= 10 || y >= 20;
     }
@@ -110,6 +91,14 @@ class Board {
         let testedTetrimino = this._tetrimino.clone();
 
         this.applyInputToTetrimino(testedTetrimino, input);
+
+        // O tetrimino cannot rotate
+        if (
+            testedTetrimino.isLastMoveARotation() &&
+            testedTetrimino.getType() === "O"
+        ) {
+            return false;
+        }
 
         // Collision
         if (this.isTetriminoInCollisionState(testedTetrimino)) {
@@ -325,6 +314,29 @@ class Board {
     // SETTERS and GETTERS
     getRemainingEPLInputs() {
         return this._remainingEPLInputs;
+    }
+
+    getBoard() {
+        let board = this._board.map((row) => [...row]);
+
+        // Add tetrimino if it exists
+        if (this._tetrimino != null) {
+            const absoluteBlocksPosition =
+                this._tetrimino.getAbsoluteBlocksPositionArray();
+            const id = this._tetrimino.id;
+
+            absoluteBlocksPosition.forEach(([x, y]) => {
+                if (!this.coordsAreOutOfBound(x, y)) {
+                    board[y][x] = id;
+                }
+            });
+        }
+
+        return board;
+    }
+
+    getTetrimino() {
+        return this._tetrimino;
     }
 }
 

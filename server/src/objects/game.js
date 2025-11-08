@@ -120,14 +120,15 @@ class Game {
 
     getPlayerListForClient() {
         const playerList = [];
-        for (const [username, playerData] of this.players) {
+        for (const [username, player] of this.players) {
             playerList.push({
                 username: username,
-                board: playerData.getBoard(),
-                isConnected: playerData.isConnected,
-                didLost: playerData.didLost,
-                isLeader: playerData.token === this.leaderToken,
-                remainingEPLInputs: playerData.board.getRemainingEPLInputs(),
+                board: player.getBoard(),
+                tetriminoType: player.board.getTetrimino()?.getType(),
+                isConnected: player.isConnected,
+                didLost: player.didLost,
+                isLeader: player.token === this.leaderToken,
+                remainingEPLInputs: player.board.getRemainingEPLInputs(),
             });
         }
         return playerList;
