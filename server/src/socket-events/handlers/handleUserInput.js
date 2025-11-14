@@ -1,4 +1,3 @@
-import { socket } from "../../../../client/src/socket.js";
 import Logger from "../../services/logger.js";
 import Token from "../../services/token.js";
 import GameMapSingleton from "../../services/gameMapSingleton.js";

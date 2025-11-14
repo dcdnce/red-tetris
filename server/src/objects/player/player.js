@@ -1,6 +1,6 @@
-import Token from "../services/token.js";
-import Logger from "../services/logger.js";
-import Board from "./board.js";
+import Token from "../../services/token.js";
+import Logger from "../../services/logger.js";
+import Board from "../board/board.js";
 
 const GRACE_TICK_AMOUNT = 10;
 
@@ -86,8 +86,8 @@ class Player {
         );
     }
 
-    getBoard() {
-        return this.board.getBoard();
+    getFullBoard() {
+        return this.board.getFullBoard();
     }
 }
 

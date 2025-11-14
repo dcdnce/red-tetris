@@ -1,4 +1,4 @@
-import Logger from "../services/logger.js";
+import Logger from "../../services/logger.js";
 
 const LOCK_DELAY_MS = 500;
 

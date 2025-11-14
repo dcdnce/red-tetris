@@ -1,5 +1,5 @@
-import { kTetriminosTypes } from "../constants/tetriminos_constants.js";
-import { BOARD_HEIGHT, BOARD_WIDTH } from "./board.js";
+import { kTetriminosTypes } from "../../constants/tetriminos_constants.js";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "../../constants/board_constants.js";
 
 export const kRotateRight = "rotateright";
 export const kRotateLeft = "rotateleft";
@@ -7,12 +7,11 @@ export const kMoveRight = "moveright";
 export const kMoveLeft = "moveleft";
 export const kMoveDown = "movedown";
 
-class Tetrimino {
+export class Tetrimino {
     constructor(id) {
         if (id == 0) {
             throw new Error("New tetrimino id must be different from 0");
         }
-
         this.id = id;
         this._baseBlocks = kTetriminosTypes[id].baseBlocks.map((coord) => [
             ...coord,
@@ -142,5 +141,3 @@ class Tetrimino {
         return this._type;
     }
 }
-
-export default Tetrimino;

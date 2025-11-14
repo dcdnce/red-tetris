@@ -1,14 +1,17 @@
-import Logger from "../services/logger.js";
-import Tetrimino from "./tetrimino.js";
-import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
+import Logger from "../../services/logger.js";
+import { TetriminoOutOfBoundsException } from "../../services/exceptions.js";
 import { LockDelay } from "./lockdelay.js";
-import { kicksI, kicksJLSTZ } from "../constants/tetriminos_constants.js";
-export const kLockedBlock = 1;
+import { BoardRules } from "./boardrules.js";
+import { kLockedBlock } from "../../constants/board_constants.js";
+import { Tetrimino } from "./tetrimino.js";
 
 const MAXIMUM_EPL_INPUTS = 15;
-export const BOARD_WIDTH = 10;
-export const BOARD_HEIGHT = 22;
 
+/**
+ * Class holding the board object (and tetrimino),
+ *  inherent to each player.
+ * Holds board tick handlers (spawn, gravity, lock delay, etc).
+ */
 class Board {
     constructor() {
         this._board = createEmptyBoard();
@@ -17,40 +20,12 @@ class Board {
         this.lockDelay = new LockDelay();
     }
 
-    coordsAreOutOfBound(x, y) {
-        return x < 0 || y < 0 || x >= BOARD_WIDTH || y >= BOARD_HEIGHT;
-    }
-
-    coordsAreBelowSkyline(x, y) {
-        return y >= 2;
-    }
-
-    isBlockedOut() {
-        if (this._tetrimino == null) return;
-
-        const absoluteBlocksPosition =
-            this._tetrimino.getAbsoluteBlocksPositionArray();
-
-        // Will touch locked piece at spawn
-        let willTouchLockedPieceAtSpawn = false;
-        let lowestY = BOARD_HEIGHT;
-
-        absoluteBlocksPosition.forEach(([x, y]) => {
-            if (this._board[y][x] == kLockedBlock) {
-                willTouchLockedPieceAtSpawn = true;
-                lowestY = Math.min(lowestY, y);
-            }
-        });
-
-        return willTouchLockedPieceAtSpawn;
-    }
-
     handleTetriminoSpawn(id) {
         if (this._tetrimino != null) return;
 
         this._tetrimino = new Tetrimino(id);
 
-        if (this.isBlockedOut()) {
+        if (BoardRules.isBlockedOut(this)) {
             Logger.error(true, "Spawn is partially locked, BLOCK OUT.");
             throw new TetriminoOutOfBoundsException(
                 "Spawn is partially locked, BLOCK OUT."
@@ -67,7 +42,7 @@ class Board {
         testedTetrimino.moveDown();
 
         // Lock tetrimino
-        if (this.isTetriminoInLockState(testedTetrimino)) {
+        if (BoardRules.isTetriminoInLockState(this, testedTetrimino)) {
             if (!justSpawned) {
                 this.lockTetrimino();
             }
@@ -90,10 +65,11 @@ class Board {
         this.applyInputToTetrimino(testedTetrimino, input);
 
         // Collision
-        if (this.isTetriminoInCollisionState(testedTetrimino)) {
+        if (BoardRules.isTetriminoInCollisionState(this, testedTetrimino)) {
             if (testedTetrimino.isLastMoveARotation()) {
                 // try Wall-Kick
-                const kickedTetrimino = this.handleWallKick(
+                const kickedTetrimino = BoardRules.handleWallKick(
+                    this,
                     testedTetrimino,
                     this._tetrimino
                 );
@@ -155,7 +131,7 @@ class Board {
      */
     handleLockDelay(testedTetrimino) {
         // Is there a block below ?
-        if (this.isTetriminoInSurfaceState(testedTetrimino)) {
+        if (BoardRules.isTetriminoInSurfaceState(this, testedTetrimino)) {
             if (this.lockDelay.isActive() === true) {
                 if (
                     this.lockDelay.isExpired() === true ||
@@ -179,96 +155,6 @@ class Board {
         return true;
     }
 
-    /**
-     * Handles wall kick logic when a Tetrimino is rotated and collides with obstacles.
-     *
-     * @param {Tetrimino} rotatedTetrimino - The Tetrimino after rotation, potentially in a collision state.
-     * @param {Tetrimino} originalTetrimino - The Tetrimino before rotation, used to determine rotation direction and orientation.
-     * @returns the kicked tetrimino.
-     */
-    handleWallKick(rotatedTetrimino, originalTetrimino) {
-        const from = originalTetrimino.getOrientation(); // ex: 0
-        const to = rotatedTetrimino.getOrientation(); // ex: 1
-        const transitionKey = `${from}->${to}`; // ex: '0->1'
-
-        const kicksData =
-            rotatedTetrimino.getType() === "I" ? kicksI : kicksJLSTZ;
-        const kickTests = kicksData[transitionKey];
-
-        if (!kickTests) {
-            // No kicks. Shouldn't happen.
-            throw Error("No kicks available.");
-        }
-
-        // Loop on all 5 kick for given transition.
-        for (const [dx, dy] of kickTests) {
-            const kicked = rotatedTetrimino.clone();
-
-            kicked.offset(dx, dy);
-
-            if (!this.isTetriminoInCollisionState(kicked)) {
-                Logger.success(
-                    true,
-                    null,
-                    `Wall Kick succeeded with (${dx}, ${dy})`
-                );
-                return kicked;
-            }
-        }
-
-        // Wall kick failed
-        return null;
-    }
-
-    isTetriminoInLockState(tetrimino) {
-        let readyToLock = false;
-        const absoluteBlocksPosition =
-            tetrimino.getAbsoluteBlocksPositionArray();
-
-        // y > 22
-        readyToLock |= tetrimino.isVerticallyOutOfBoundsBottom();
-
-        // Touch locked piece
-        if (readyToLock == false) {
-            absoluteBlocksPosition.forEach(([x, y]) => {
-                readyToLock |= this._board[y][x] == kLockedBlock;
-            });
-        }
-
-        return readyToLock;
-    }
-
-    isTetriminoInCollisionState(tetrimino) {
-        let isColliding = false;
-
-        const absoluteBlocksPosition =
-            tetrimino.getAbsoluteBlocksPositionArray();
-
-        // y
-        isColliding |= tetrimino.isVerticallyOutOfBoundsBottom();
-
-        // x
-        isColliding |= tetrimino.isHorizontallyOutOfBounds();
-
-        // Touching locked piece
-        if (isColliding == false) {
-            absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!this.coordsAreOutOfBound(x, y)) {
-                    isColliding |= this._board[y][x] == kLockedBlock;
-                }
-            });
-        }
-
-        return isColliding;
-    }
-
-    isTetriminoInSurfaceState(tetrimino) {
-        let testedTetrimino = tetrimino.clone();
-        testedTetrimino.moveDown();
-
-        return this.isTetriminoInCollisionState(testedTetrimino);
-    }
-
     isTetriminoNull() {
         return this._tetrimino === null;
     }
@@ -284,7 +170,7 @@ class Board {
         let willLockBelowSkyline = false;
 
         absoluteBlocksPosition.forEach(([x, y]) => {
-            willLockBelowSkyline |= this.coordsAreBelowSkyline(x, y);
+            willLockBelowSkyline |= BoardRules.coordsAreBelowSkyline(x, y);
             this._board[y][x] = kLockedBlock;
         });
 
@@ -305,11 +191,25 @@ class Board {
     }
 
     // SETTERS and GETTERS
+    /**
+     * Get inner board WITHOUT current tetrimino.
+     */
+    getBoard() {
+        return this._board; // should be a reference
+    }
+
+    getTetrimino() {
+        return this._tetrimino; // should be a reference
+    }
+
     getRemainingEPLInputs() {
         return this._remainingEPLInputs;
     }
 
-    getBoard() {
+    /**
+     * Get inner board WITH current tetrimino.
+     */
+    getFullBoard() {
         let board = this._board.map((row) => [...row]);
 
         // Add tetrimino if it exists
@@ -319,7 +219,7 @@ class Board {
             const id = this._tetrimino.id;
 
             absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!this.coordsAreOutOfBound(x, y)) {
+                if (!BoardRules.coordsAreOutOfBound(x, y)) {
                     board[y][x] = id;
                 }
             });

@@ -8,6 +8,10 @@ import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.
 const GAME_TICK_RATE_MS = 1000;
 const PIECE_SEQUENCE_LENGTH = 1000;
 
+/**
+ * Class handling game room responsabilities.
+ * Contains room info, can start game and game tick handler, etc.
+ */
 class Game {
     constructor(roomName) {
         Logger.info(false, null, `Creating game room: ${roomName}`);
@@ -123,7 +127,7 @@ class Game {
         for (const [username, player] of this.players) {
             playerList.push({
                 username: username,
-                board: player.getBoard(),
+                board: player.getFullBoard(),
                 tetriminoType: player.board.getTetrimino()?.getType(),
                 isConnected: player.isConnected,
                 didLost: player.didLost,

@@ -1,4 +1,4 @@
-import Player from "../../objects/player.js";
+import Player from "../../objects/player/player.js";
 import GameMapSingleton from "../../services/gameMapSingleton.js";
 import Game from "../../objects/game.js";
 import Logger from "../../services/logger.js";
