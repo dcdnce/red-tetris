@@ -13,9 +13,7 @@ export class Tetrimino {
             throw new Error("New tetrimino id must be different from 0");
         }
         this.id = id;
-        this._baseBlocks = kTetriminosTypes[id].baseBlocks.map((coord) => [
-            ...coord,
-        ]);
+        this._rotationStates = kTetriminosTypes[id].rotationStates;
         this._position = [...kTetriminosTypes[id].basePosition];
         this._orientation = 0;
         this._type = kTetriminosTypes[id].type;
@@ -119,18 +117,18 @@ export class Tetrimino {
     }
 
     getAbsoluteBlocksPositionArray() {
-        const posX = this._position[0];
-        const posY = this._position[1];
-        let rotatedRelativeBlocks = this._baseBlocks.map((block) => [...block]);
+        // 1. Récupérer les coordonnées relatives pour l'orientation ACTUELLE
+        const relativeBlocks = this._rotationStates[this._orientation];
 
-        for (let i = 0; i < this._orientation; i++) {
-            rotatedRelativeBlocks = rotatedRelativeBlocks.map(([x, y]) => [
-                -y,
-                x,
-            ]);
+        if (!relativeBlocks) {
+            throw Error(
+                `Invalid orientation: ${this._orientation} for type ${this._type}`
+            );
         }
 
-        return rotatedRelativeBlocks.map(([x, y]) => [x + posX, y + posY]);
+        // 2. Ajouter la position absolue du pivot
+        const [posX, posY] = this._position;
+        return relativeBlocks.map(([x, y]) => [x + posX, y + posY]);
     }
 
     getOrientation() {

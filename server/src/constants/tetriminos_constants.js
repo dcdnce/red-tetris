@@ -131,13 +131,32 @@ export const kTetriminosTypes = [
         // Spawns with its flat side up, leaning left.
         id: 1,
         type: "T",
-        baseBlocks: [
-            [0, 0], // Pivot block
-            [-1, 0], // Left arm
-            [+1, 0], // Right arm
-            [0, -1], // Top spike (negative Y is up)
+        rotationStates: [
+            [
+                [-1, 0],
+                [0, 0],
+                [+1, 0],
+                [0, -1],
+            ],
+            [
+                [0, -1],
+                [0, 0],
+                [0, +1],
+                [+1, 0],
+            ],
+            [
+                [+1, 0],
+                [0, 0],
+                [-1, 0],
+                [0, +1],
+            ],
+            [
+                [0, +1],
+                [0, 0],
+                [0, -1],
+                [-1, 0],
+            ],
         ],
-        baseHeight: 2,
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
     {
@@ -145,24 +164,64 @@ export const kTetriminosTypes = [
         // Spawns horizontally, centered.
         id: 2,
         type: "I",
-        baseBlocks: [
-            [0, 0], // Pivot block (slightly left of center)
-            [-1, 0],
-            [+1, 0],
-            [+2, 0],
+        rotationStates: [
+            [
+                [0, +1],
+                [+1, +1],
+                [+2, +1],
+                [+3, +1],
+            ],
+            [
+                [+2, 0],
+                [+2, +1],
+                [+2, +2],
+                [+2, +3],
+            ],
+            [
+                [0, +2],
+                [+1, +2],
+                [+2, +2],
+                [+3, +2],
+            ],
+            [
+                [+1, 0],
+                [+1, +1],
+                [+1, +2],
+                [+1, +3],
+            ],
         ],
-        basePosition: [4, 0], // Spawns in row 0, centered
+        basePosition: [3, 0], // Spawns in row 0, centered
     },
     {
         // O-piece (square)
         // Spawns centered.
         id: 3,
         type: "O",
-        baseBlocks: [
-            [0, 0],
-            [+1, 0],
-            [0, +1],
-            [+1, +1],
+        rotationStates: [
+            [
+                [0, 0],
+                [+1, 0],
+                [0, +1],
+                [+1, +1],
+            ],
+            [
+                [0, 0],
+                [+1, 0],
+                [0, +1],
+                [+1, +1],
+            ],
+            [
+                [0, 0],
+                [+1, 0],
+                [0, +1],
+                [+1, +1],
+            ],
+            [
+                [0, 0],
+                [+1, 0],
+                [0, +1],
+                [+1, +1],
+            ],
         ],
         basePosition: [4, 0], // Spawns in row 0, centered
     },
@@ -171,11 +230,31 @@ export const kTetriminosTypes = [
         // Spawns with its flat side up, leaning left.
         id: 4,
         type: "L",
-        baseBlocks: [
-            [0, 0], // Pivot block
-            [-1, 0],
-            [+1, 0],
-            [+1, -1], // Top-right corner
+        rotationStates: [
+            [
+                [-1, 0],
+                [0, 0],
+                [+1, 0],
+                [+1, -1],
+            ],
+            [
+                [0, -1],
+                [0, 0],
+                [0, +1],
+                [+1, +1],
+            ],
+            [
+                [+1, 0],
+                [0, 0],
+                [-1, 0],
+                [-1, +1],
+            ],
+            [
+                [0, +1],
+                [0, 0],
+                [0, -1],
+                [-1, -1],
+            ],
         ],
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
@@ -184,11 +263,31 @@ export const kTetriminosTypes = [
         // Spawns with its flat side up, leaning left.
         id: 5,
         type: "J",
-        baseBlocks: [
-            [0, 0], // Pivot block
-            [-1, 0],
-            [+1, 0],
-            [-1, -1], // Top-left corner
+        rotationStates: [
+            [
+                [-1, 0],
+                [0, 0],
+                [+1, 0],
+                [-1, -1],
+            ],
+            [
+                [0, -1],
+                [0, 0],
+                [0, +1],
+                [+1, -1],
+            ],
+            [
+                [+1, 0],
+                [0, 0],
+                [-1, 0],
+                [+1, +1],
+            ],
+            [
+                [0, +1],
+                [0, 0],
+                [0, -1],
+                [-1, +1],
+            ],
         ],
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
@@ -197,11 +296,31 @@ export const kTetriminosTypes = [
         // Spawns horizontally, leaning left.
         id: 6,
         type: "S",
-        baseBlocks: [
-            [0, 0], // Pivot block
-            [+1, 0],
-            [0, -1],
-            [-1, -1],
+        rotationStates: [
+            [
+                [-1, +1],
+                [0, +1],
+                [0, 0],
+                [+1, 0],
+            ],
+            [
+                [0, +1],
+                [0, 0],
+                [+1, 0],
+                [+1, -1],
+            ],
+            [
+                [+1, -1],
+                [0, -1],
+                [0, 0],
+                [-1, 0],
+            ],
+            [
+                [0, -1],
+                [0, 0],
+                [-1, 0],
+                [-1, +1],
+            ],
         ],
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
@@ -210,11 +329,31 @@ export const kTetriminosTypes = [
         // Spawns horizontally, leaning left.
         id: 7,
         type: "Z",
-        baseBlocks: [
-            [0, 0], // Pivot block
-            [-1, 0],
-            [0, -1],
-            [+1, -1],
+        rotationStates: [
+            [
+                [+1, +1],
+                [0, +1],
+                [0, 0],
+                [-1, 0],
+            ],
+            [
+                [0, -1],
+                [0, 0],
+                [-1, 0],
+                [-1, +1],
+            ],
+            [
+                [-1, -1],
+                [0, -1],
+                [0, 0],
+                [+1, 0],
+            ],
+            [
+                [0, +1],
+                [0, 0],
+                [+1, 0],
+                [+1, -1],
+            ],
         ],
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
