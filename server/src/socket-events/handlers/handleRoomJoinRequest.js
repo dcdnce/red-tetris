@@ -6,6 +6,7 @@ import emitUpdatePlayerList from "../emitters/emit_update_player_list.js";
 import emitJoinRoomFail from "../emitters/emit_join_room_fail.js";
 import emitJoinRoomSuccess from "../emitters/emit_join_room_success.js";
 import { kStartedState } from "../../objects/roomstate.js";
+import Token from "../../services/token.js";
 
 export default function handleRoomJoinRequest(socket) {
     socket.on("room_join", (params) => {
@@ -33,6 +34,7 @@ export default function handleRoomJoinRequest(socket) {
                 player = game.players.get(username);
             } else {
                 throwIfGameStarted(game);
+                throwIfGameIsFull(game);
                 player = new Player(username, game);
             }
 
@@ -78,44 +80,48 @@ function playerIsReconnecting(game, username, token, socket) {
         //exists in room
         let player = game.players.get(username);
 
-        if (
-            token === player.token &&
-            player.socket !== socket &&
-            !player.isConnected
-        ) {
-            // reconnection
-            Logger.info(true, game.roomName, `Reconnection👌`);
-            // Reconnect player
-            return true;
-        }
+        try {
+            Token.verify(token, player);
 
-        if (
-            token === player.token &&
-            player.socket === socket &&
-            player.isConnected
-        ) {
-            // second room join, confirmation
-            Logger.info(true, game.roomName, `Room join confirmation 👌`);
-            return true;
-        }
+            if (player.socket !== socket && !player.isConnected) {
+                // reconnection
+                Logger.info(true, game.roomName, `Reconnection👌`);
+                // Reconnect player
+                return true;
+            }
 
-        if (
-            token === player.token &&
-            player.socket === socket &&
-            !player.isConnected
-        ) {
-            // second room join, confirmation when react strict mode is slow
-            Logger.info(
-                true,
-                game.roomName,
-                `Room join confirmation - room_exit arrived meantime 👌`
-            );
-            return true;
-        }
+            if (player.socket === socket && player.isConnected) {
+                // second room join, confirmation
+                Logger.info(true, game.roomName, `Room join confirmation 👌`);
+                return true;
+            }
 
-        throw new Error(
-            `A player with '${username}' is already registered in this room.`
-        );
+            if (player.socket === socket && !player.isConnected) {
+                // second room join, confirmation when react strict mode is slow
+                Logger.info(
+                    true,
+                    game.roomName,
+                    `Room join confirmation - room_exit arrived meantime 👌`
+                );
+                return true;
+            }
+        } catch (err) {
+            if (
+                err.name === "JsonWebTokenError" &&
+                err.message === "jwt must be provided"
+            ) {
+                throw new Error(
+                    `A player with username '${username}' is already registered in this room.`
+                );
+            }
+            if (
+                err.name === "JsonWebTokenError" &&
+                err.message === "invalid signature"
+            ) {
+                throw new Error(`Invalid token signature.`);
+            }
+            throw err;
+        }
     }
 
     return false;
@@ -123,6 +129,12 @@ function playerIsReconnecting(game, username, token, socket) {
 
 function throwIfGameStarted(game) {
     if (game.getState() == kStartedState) {
-        throw new Error("Cannot join, the game started");
+        throw new Error("Cannot join, the game started.");
+    }
+}
+
+function throwIfGameIsFull(game) {
+    if (game.players.size == 2) {
+        throw new Error("Cannot join, the lobby is full.");
     }
 }

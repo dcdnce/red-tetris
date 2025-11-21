@@ -20,11 +20,6 @@ export default function handleRoomLaunch(socket) {
                 `Cannot launch game: room already in started state.`
             );
         }
-
-        // Verify there is at least 2 players
-        if (game.players.size < 2) {
-            throw new Error(`Cannot launch game: not enough players.`);
-        }
     };
 
     socket.on("room_launch", (params) => {

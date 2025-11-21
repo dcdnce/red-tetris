@@ -61,13 +61,6 @@ class Game {
     }
 
     endAndDelete() {
-        if (
-            this.getState() !== kStartedState ||
-            this.gameTickHandler === null
-        ) {
-            return;
-        }
-
         clearInterval(this.loopIntervalId);
         this.loopIntervalId = null;
         this.gameTickHandler = null;
