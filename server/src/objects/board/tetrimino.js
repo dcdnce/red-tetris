@@ -117,7 +117,6 @@ export class Tetrimino {
     }
 
     getAbsoluteBlocksPositionArray() {
-        // 1. Récupérer les coordonnées relatives pour l'orientation ACTUELLE
         const relativeBlocks = this._rotationStates[this._orientation];
 
         if (!relativeBlocks) {
@@ -126,7 +125,6 @@ export class Tetrimino {
             );
         }
 
-        // 2. Ajouter la position absolue du pivot
         const [posX, posY] = this._position;
         return relativeBlocks.map(([x, y]) => [x + posX, y + posY]);
     }

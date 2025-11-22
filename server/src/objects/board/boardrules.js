@@ -1,8 +1,4 @@
-import {
-    BOARD_HEIGHT,
-    BOARD_WIDTH,
-    kLockedBlock,
-} from "../../constants/board_constants.js";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "../../constants/board_constants.js";
 import { kicksI, kicksJLSTZ } from "../../constants/tetriminos_constants.js";
 import Logger from "../../services/logger.js";
 
@@ -34,7 +30,7 @@ export class BoardRules {
         let lowestY = BOARD_HEIGHT;
 
         absoluteBlocksPosition.forEach(([x, y]) => {
-            if (innerBoard[y][x] == kLockedBlock) {
+            if (BoardRules.isBlockLocked(innerBoard[y][x])) {
                 willTouchLockedPieceAtSpawn = true;
                 lowestY = Math.min(lowestY, y);
             }
@@ -55,7 +51,7 @@ export class BoardRules {
         const innerBoard = board.getBoard();
         if (readyToLock == false) {
             absoluteBlocksPosition.forEach(([x, y]) => {
-                readyToLock |= innerBoard[y][x] == kLockedBlock;
+                readyToLock |= BoardRules.isBlockLocked(innerBoard[y][x]);
             });
         }
 
@@ -79,7 +75,7 @@ export class BoardRules {
         if (isColliding == false) {
             absoluteBlocksPosition.forEach(([x, y]) => {
                 if (!BoardRules.coordsAreOutOfBound(x, y)) {
-                    isColliding |= innerBoard[y][x] == kLockedBlock;
+                    isColliding |= BoardRules.isBlockLocked(innerBoard[y][x]);
                 }
             });
         }
@@ -133,5 +129,9 @@ export class BoardRules {
 
         // Wall kick failed
         return null;
+    }
+
+    static isBlockLocked(block) {
+        return block >= 1 && block <= 7;
     }
 }

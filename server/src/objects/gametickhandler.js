@@ -34,6 +34,8 @@ class GameTickHandler {
 
     handleGraceTicks() {
         this.players.forEach((player) => {
+            if (player.didLost) return;
+
             if (!player.isConnected) {
                 const ticksRemaining = player.decrementGraceTicks();
                 if (!ticksRemaining) {
@@ -53,6 +55,8 @@ class GameTickHandler {
      */
     handleTetriminoSpawn() {
         this.players.forEach((player) => {
+            if (player.didLost) return;
+
             try {
                 player.handleTetriminoSpawn();
             } catch (error) {
@@ -68,6 +72,8 @@ class GameTickHandler {
 
     handleGravityAndLock() {
         this.players.forEach((player) => {
+            if (player.didLost) return;
+
             try {
                 player.handleGravityAndLock();
             } catch (error) {
@@ -83,6 +89,8 @@ class GameTickHandler {
 
     handleEPLLockDelay() {
         this.players.forEach((player) => {
+            if (player.didLost) return;
+
             try {
                 player.handleEPLLockDelay();
             } catch (error) {

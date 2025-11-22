@@ -4,23 +4,36 @@ import { useSelector } from "react-redux";
 import { VStack, Box, Grid, Text } from "@chakra-ui/react";
 import { selectPlayers } from "../../store/gameSlice";
 
-function Block({ row, col, playerNumber }) {
+const blockColors = {
+    0: "beige",
+    1: "purple.50",
+    2: "cyan.50",
+    3: "yellow.50",
+    4: "orange.50",
+    5: "blue.50",
+    6: "red.50",
+    7: "green.50",
+};
+
+function Block({ row, col, id, playerNumber }) {
     const { roomName } = useParams();
     const players = useSelector(selectPlayers(roomName));
     const isPlayerConnected = players[playerNumber].isConnected;
     const didPlayerLost = players[playerNumber].didLost;
 
-    let bgColor = "brand.500";
-    if (!isPlayerConnected) {
-        bgColor = "gray.400";
-    }
-    if (didPlayerLost) {
-        bgColor = "red.600";
-    }
+    let bgColor = blockColors[id];
 
-    // Override: first two rows black
-    if (row < 2) {
-        bgColor = "black.500";
+    // Overrides
+    if (id) {
+        if (!isPlayerConnected) {
+            bgColor = "gray.400";
+        }
+        if (didPlayerLost) {
+            bgColor = "red.600";
+        }
+        if (row < 2) {
+            bgColor = "black.500";
+        }
     }
 
     return (
@@ -28,9 +41,20 @@ function Block({ row, col, playerNumber }) {
             gridRow={row + 1}
             gridColumn={col + 1}
             bg={bgColor}
-            borderRadius="2px"
-            boxShadow="inset 0 0 2px rgba(0,0,0,0.3)"
-        />
+            textAlign="center"
+            boxShadow="inset 0 0 0 0.05px rgba(0,0,0,1)"
+        >
+            {id ? (
+                <Box
+                    border="5px solid rgba(0, 0, 0, 0.05)"
+                    width="24%"
+                    height="25%"
+                    margin="auto"
+                    position="relative"
+                    top="35%"
+                ></Box>
+            ) : null}
+        </Box>
     );
 }
 
@@ -45,7 +69,7 @@ function Board({ playerNumber }) {
     const allBlocks = [];
     for (let i = 0; i < 22; i++) {
         for (let j = 0; j < 10; j++) {
-            if (gameBoard[i][j] != 0) allBlocks.push({ row: i, col: j });
+            allBlocks.push({ row: i, col: j, id: gameBoard[i][j] });
         }
     }
 
@@ -62,20 +86,18 @@ function Board({ playerNumber }) {
             <Grid
                 templateColumns="repeat(10, 1fr)"
                 templateRows="repeat(22, 1fr)"
-                gap="1px"
-                padding="0.5rem"
-                borderRadius="5px"
-                boxShadow="1px 2px 4px rgba(0, 0, 0, 0.1)"
-                aspectRatio="10/20"
+                borderRadius="2px"
+                d
+                aspectRatio="10/22"
                 maxW={{ base: "150px", sm: "200px", md: "250px", lg: "300px" }}
                 w="100%"
-                bg="beige"
             >
                 {allBlocks.map((block) => (
                     <Block
                         key={`${block.row}-${block.col}`}
                         row={block.row}
                         col={block.col}
+                        id={block.id}
                         playerNumber={playerNumber}
                     />
                 ))}

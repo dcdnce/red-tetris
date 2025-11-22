@@ -23,6 +23,10 @@ export const colors = {
         500: rawColors.cyan,
         600: rawColors.cyanDark,
     },
+    cyan: {
+        50: rawColors.cyan,
+        500: rawColors.cyan,
+    },
     orange: {
         50: rawColors.orange,
         500: rawColors.orange,

@@ -2,7 +2,6 @@ import Logger from "../../services/logger.js";
 import { TetriminoOutOfBoundsException } from "../../services/exceptions.js";
 import { LockDelay } from "./lockdelay.js";
 import { BoardRules } from "./boardrules.js";
-import { kLockedBlock } from "../../constants/board_constants.js";
 import { Tetrimino } from "./tetrimino.js";
 
 const MAXIMUM_EPL_INPUTS = 15;
@@ -171,7 +170,7 @@ class Board {
 
         absoluteBlocksPosition.forEach(([x, y]) => {
             willLockBelowSkyline |= BoardRules.coordsAreBelowSkyline(x, y);
-            this._board[y][x] = kLockedBlock;
+            this._board[y][x] = this._tetrimino.id; // locking with id
         });
 
         if (willLockBelowSkyline == false) {
