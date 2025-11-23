@@ -9,7 +9,8 @@ const isTetrisInput = (key) => {
         key === "ArrowLeft" ||
         key === "ArrowDown" ||
         key === "z" ||
-        key === "x"
+        key === "x" ||
+        key === " "
     );
 };
 

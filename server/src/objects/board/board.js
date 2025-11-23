@@ -2,9 +2,10 @@ import Logger from "../../services/logger.js";
 import { TetriminoOutOfBoundsException } from "../../services/exceptions.js";
 import { LockDelay } from "./lockdelay.js";
 import { BoardRules } from "./boardrules.js";
-import { Tetrimino } from "./tetrimino.js";
+import { kHardDrop, Tetrimino } from "./tetrimino.js";
 
 const MAXIMUM_EPL_INPUTS = 15;
+const kGhostBlock = 8;
 
 /**
  * Class holding the board object (and tetrimino),
@@ -91,6 +92,12 @@ class Board {
         }
 
         this._tetrimino = testedTetrimino;
+
+        // Handle hard drop
+        if (this._tetrimino.lastMove === kHardDrop) {
+            this.lockTetrimino();
+        }
+
         return true;
     }
 
@@ -116,6 +123,9 @@ class Board {
             case "ArrowDown":
                 testedTetrimino.moveDown();
                 break;
+
+            case " ":
+                testedTetrimino.hardDrop(this);
 
             default:
                 break;
@@ -191,7 +201,7 @@ class Board {
 
     // SETTERS and GETTERS
     /**
-     * Get inner board WITHOUT current tetrimino.
+     * Get inner board WITHOUT current tetrimino and ghost.
      */
     getBoard() {
         return this._board; // should be a reference
@@ -206,13 +216,29 @@ class Board {
     }
 
     /**
-     * Get inner board WITH current tetrimino.
+     * Get inner board WITH current tetrimino and ghost.
      */
     getFullBoard() {
         let board = this._board.map((row) => [...row]);
 
-        // Add tetrimino if it exists
         if (this._tetrimino != null) {
+            // Add ghost
+            let ghost = this._tetrimino.clone();
+            while (!BoardRules.isTetriminoInLockState(this, ghost)) {
+                ghost.moveDown();
+            }
+            ghost.moveUp();
+
+            const ghostAbsoluteBlocksPosition =
+                ghost.getAbsoluteBlocksPositionArray();
+
+            ghostAbsoluteBlocksPosition.forEach(([x, y]) => {
+                if (!BoardRules.coordsAreOutOfBound(x, y)) {
+                    board[y][x] = kGhostBlock;
+                }
+            });
+
+            // Add tetrimino
             const absoluteBlocksPosition =
                 this._tetrimino.getAbsoluteBlocksPositionArray();
             const id = this._tetrimino.id;

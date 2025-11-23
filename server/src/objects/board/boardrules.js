@@ -39,6 +39,15 @@ export class BoardRules {
         return willTouchLockedPieceAtSpawn;
     }
 
+    /**
+     * Check wether a tetrimino is ready to lock or not.
+     * Ready to lock : out of bounds or touching a lock piece.
+     *
+     * @param {Board} board - The board to test the tetrimino onto.
+     * @param {Tetrimino} tetrimino - The tetrimino to test;
+     * @returns bool - If the tetrimino is ready to be lock.
+     */
+
     static isTetriminoInLockState(board, tetrimino) {
         let readyToLock = false;
         const absoluteBlocksPosition =

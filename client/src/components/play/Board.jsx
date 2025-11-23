@@ -13,6 +13,7 @@ const blockColors = {
     5: "blue.50",
     6: "red.50",
     7: "green.50",
+    8: "beige",
 };
 
 function Block({ row, col, id, playerNumber }) {

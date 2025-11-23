@@ -121,7 +121,7 @@ class Game {
             playerList.push({
                 username: username,
                 board: player.getFullBoard(),
-                tetriminoType: player.board.getTetrimino()?.getType(), // TODO delete this and send the tetrimino in board with id, actually ?
+                tetriminoType: player.board.getTetrimino()?.getType(), // TODO delete it's a debug
                 isConnected: player.isConnected,
                 didLost: player.didLost,
                 isLeader: player.token === this.leaderToken,

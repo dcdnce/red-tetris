@@ -1,11 +1,13 @@
 import { kTetriminosTypes } from "../../constants/tetriminos_constants.js";
 import { BOARD_HEIGHT, BOARD_WIDTH } from "../../constants/board_constants.js";
+import { BoardRules } from "./boardrules.js";
 
 export const kRotateRight = "rotateright";
 export const kRotateLeft = "rotateleft";
 export const kMoveRight = "moveright";
 export const kMoveLeft = "moveleft";
 export const kMoveDown = "movedown";
+export const kHardDrop = "harddrop";
 
 export class Tetrimino {
     constructor(id) {
@@ -79,6 +81,14 @@ export class Tetrimino {
     moveDown() {
         this._position[1] += 1;
         this.lastMove = kMoveDown;
+    }
+
+    hardDrop(board) {
+        while (!BoardRules.isTetriminoInLockState(board, this)) {
+            this.moveDown();
+        }
+        this.moveUp();
+        this.lastMove = kHardDrop;
     }
 
     enforceMove(move) {
