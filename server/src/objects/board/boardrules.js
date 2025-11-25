@@ -30,7 +30,7 @@ export class BoardRules {
         let lowestY = BOARD_HEIGHT;
 
         absoluteBlocksPosition.forEach(([x, y]) => {
-            if (BoardRules.isBlockLocked(innerBoard[y][x])) {
+            if (BoardRules.#isBlockLocked(innerBoard[y][x])) {
                 willTouchLockedPieceAtSpawn = true;
                 lowestY = Math.min(lowestY, y);
             }
@@ -60,7 +60,7 @@ export class BoardRules {
         const innerBoard = board.getBoard();
         if (readyToLock == false) {
             absoluteBlocksPosition.forEach(([x, y]) => {
-                readyToLock |= BoardRules.isBlockLocked(innerBoard[y][x]);
+                readyToLock |= BoardRules.#isBlockLocked(innerBoard[y][x]);
             });
         }
 
@@ -84,7 +84,7 @@ export class BoardRules {
         if (isColliding == false) {
             absoluteBlocksPosition.forEach(([x, y]) => {
                 if (!BoardRules.coordsAreOutOfBound(x, y)) {
-                    isColliding |= BoardRules.isBlockLocked(innerBoard[y][x]);
+                    isColliding |= BoardRules.#isBlockLocked(innerBoard[y][x]);
                 }
             });
         }
@@ -140,7 +140,47 @@ export class BoardRules {
         return null;
     }
 
-    static isBlockLocked(block) {
+    static #isBlockLocked(block) {
         return block >= 1 && block <= 7;
+    }
+
+    static clearLines(board) {
+        if (board === null) {
+            throw new Error("clearLines called without valid board object");
+        }
+
+        let innerBoard = board.getBoard();
+        let linesToClear = [];
+
+        for (let i = 2; i < BOARD_HEIGHT; i++) {
+            if (BoardRules.#isLineFull(innerBoard[i])) {
+                linesToClear.push(i);
+            }
+        }
+
+        const ln = linesToClear.length;
+        if (ln) {
+            for (let j = linesToClear.pop(); j >= 0; j--) {
+                let newLine =
+                    j - ln >= 0 ? innerBoard[j - ln] : Array(10).fill(0);
+                innerBoard[j] = newLine;
+            }
+        }
+
+        return ln;
+    }
+
+    static #isLineFull(line) {
+        if (line === null || line.length !== BOARD_WIDTH) {
+            throw new Error("isLineFull called without valid line array");
+        }
+
+        for (let i = 0; i < BOARD_WIDTH; i++) {
+            if (line[i] === 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

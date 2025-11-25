@@ -44,13 +44,13 @@ class Player {
         this.board.handleTetriminoSpawn(tetriminoId);
 
         // [US-48] Spawned tetrimino should immediately drop one row
-        this.board.handleGravityAndLock(true);
+        this.board.handleFallOrLock(true);
     }
 
-    handleGravityAndLock() {
+    handleFallOrLock() {
         if (this.didLost) return;
 
-        this.board.handleGravityAndLock(false);
+        this.board.handleFallOrLock(false);
     }
 
     handleInput(input) {

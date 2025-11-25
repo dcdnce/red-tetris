@@ -9,12 +9,12 @@ export class LockDelay {
 
     init() {
         this._timer = Date.now();
-        Logger.info(true, null, `Lock Delay init.`);
+        // Logger.info(true, null, `Lock Delay init.`);
     }
 
     reset() {
         this._timer = Date.now();
-        Logger.info(true, null, `Lock Delay reset.`);
+        // Logger.info(true, null, `Lock Delay reset.`);
     }
 
     isExpired() {
@@ -25,7 +25,7 @@ export class LockDelay {
 
     end() {
         this._timer = null;
-        Logger.info(true, null, `Lock Delay ended.`);
+        // Logger.info(true, null, `Lock Delay ended.`);
     }
 
     isActive() {

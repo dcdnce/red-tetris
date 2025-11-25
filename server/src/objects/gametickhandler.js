@@ -10,7 +10,7 @@ class GameTickHandler {
 
     /**
      * Handle game logic for each tick.
-     * (e.g. gravity, pieces locking, tetrimino spawn, collisions, etc.)
+     * (e.g. fall, pieces locking, tetrimino spawn, collisions, etc.)
      */
     tick() {
         this.handleGraceTicks();
@@ -21,7 +21,7 @@ class GameTickHandler {
         }
 
         this.handleEPLLockDelay(); // check if lock delay expired
-        this.handleGravityAndLock(false);
+        this.handleFallOrLock(false);
         this.handleTetriminoSpawn();
     }
 
@@ -70,12 +70,12 @@ class GameTickHandler {
         });
     }
 
-    handleGravityAndLock() {
+    handleFallOrLock() {
         this.players.forEach((player) => {
             if (player.didLost) return;
 
             try {
-                player.handleGravityAndLock();
+                player.handleFallOrLock();
             } catch (error) {
                 // Lock out
                 if (error instanceof TetriminoOutOfBoundsException) {

@@ -10,7 +10,7 @@ const kGhostBlock = 8;
 /**
  * Class holding the board object (and tetrimino),
  *  inherent to each player.
- * Holds board tick handlers (spawn, gravity, lock delay, etc).
+ * Holds board tick handlers (spawn, fall, lock delay, etc).
  */
 class Board {
     constructor() {
@@ -33,7 +33,7 @@ class Board {
         }
     }
 
-    handleGravityAndLock(justSpawned) {
+    handleFallOrLock(justSpawned) {
         if (this._tetrimino === null) return;
         if (this.lockDelay.isActive() === true) return;
 
@@ -53,7 +53,7 @@ class Board {
         this._tetrimino.setLowestY(testedTetrimino.getY());
         this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
 
-        // Simple gravity
+        // Simple fall
         this._tetrimino.enforceMove(testedTetrimino.lastMove);
     }
 
@@ -168,8 +168,11 @@ class Board {
         return this._tetrimino === null;
     }
 
+    /**
+     * Lock a tetrimino. And check for lines clear.
+     */
     lockTetrimino() {
-        if (this._tetrimino == null) {
+        if (this._tetrimino === null) {
             throw new Error("lockTetrimino called without valid tetrimino");
         }
 
@@ -196,7 +199,8 @@ class Board {
 
         this._tetrimino = null;
         this.lockDelay.end();
-        Logger.success(true, null, "Applied lock");
+        BoardRules.clearLines(this);
+        // Logger.success(true, null, "Applied lock");
     }
 
     // SETTERS and GETTERS
@@ -258,6 +262,7 @@ class Board {
     }
 }
 
+// TODO create this object dynamically with BOARD_WIDTH and BOARD_HEIGHT
 function createEmptyBoard() {
     return [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -266,7 +271,6 @@ function createEmptyBoard() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -282,6 +286,7 @@ function createEmptyBoard() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
     ];
 }
 
