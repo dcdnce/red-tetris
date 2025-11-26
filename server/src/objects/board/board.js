@@ -14,10 +14,11 @@ const kGhostBlock = 8;
  */
 class Board {
     constructor() {
+        this.lockDelay = new LockDelay();
         this._board = createEmptyBoard();
         this._tetrimino = null;
         this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
-        this.lockDelay = new LockDelay();
+        this._clearedLinesNumber = 0;
     }
 
     handleTetriminoSpawn(id) {
@@ -199,7 +200,7 @@ class Board {
 
         this._tetrimino = null;
         this.lockDelay.end();
-        BoardRules.clearLines(this);
+        this._clearedLinesNumber = BoardRules.clearLines(this);
         // Logger.success(true, null, "Applied lock");
     }
 
@@ -259,6 +260,14 @@ class Board {
 
     getTetrimino() {
         return this._tetrimino;
+    }
+
+    getClearedLinesNumber() {
+        return this._clearedLinesNumber;
+    }
+
+    resetClearedLinesNumber() {
+        this._clearedLinesNumber = 0;
     }
 }
 

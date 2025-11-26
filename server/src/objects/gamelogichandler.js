@@ -1,7 +1,8 @@
+import { keyframes } from "framer-motion";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
 import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 
-class GameTickHandler {
+class GameLogicHandler {
     constructor(roomName, players, onGameEndCallback) {
         this.roomName = roomName;
         this.players = players;
@@ -23,6 +24,7 @@ class GameTickHandler {
         this.handleEPLLockDelay(); // check if lock delay expired
         this.handleFallOrLock(false);
         this.handleTetriminoSpawn();
+        this.handleNewIndestructibleLines();
     }
 
     // LOBBY RELATED METHODS
@@ -103,6 +105,34 @@ class GameTickHandler {
             }
         });
     }
+
+    handleNewIndestructibleLines() {
+        let linesClearedFrom = {};
+
+        // Searching for number of lines
+        this.players.forEach((player) => {
+            if (player.didLost) return; // TODO just delete the player from the list if he lost ?
+
+            linesClearedFrom[player.username] = player
+                .getBoardObject()
+                .getClearedLinesNumber();
+            player.getBoardObject().resetClearedLinesNumber();
+        });
+
+        // Adding the lines
+        this.players.forEach((player) => {
+            if (player.didLost) return;
+
+            let totalLinesToAdd = 0;
+            for (const [key, value] of Object.entries(linesClearedFrom)) {
+                if (key != player.username) {
+                    totalLinesToAdd += value;
+                }
+            }
+
+            player.addIndestructibleLines(totalLinesToAdd);
+        });
+    }
 }
 
-export default GameTickHandler;
+export default GameLogicHandler;

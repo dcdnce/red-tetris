@@ -105,6 +105,11 @@ function playerIsReconnecting(game, username, token, socket) {
                 );
                 return true;
             }
+
+            // [US-51] [bug] Can connect again with same username and token
+            throw new Error(
+                `You're already connected to this game.` // player.socket === socket && player.isConnected
+            );
         } catch (err) {
             if (
                 err.name === "JsonWebTokenError" &&
@@ -120,7 +125,7 @@ function playerIsReconnecting(game, username, token, socket) {
             ) {
                 throw new Error(`Invalid token signature.`);
             }
-            throw err;
+            throw new Error(err);
         }
     }
 

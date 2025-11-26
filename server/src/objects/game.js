@@ -2,7 +2,7 @@ import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExi
 import Logger from "../services/logger.js";
 import GameMapSingleton from "../services/gameMapSingleton.js";
 import RoomState, { kStartedState, kPendingState } from "./roomstate.js";
-import GameTickHandler from "./gametickhandler.js";
+import GameLogicHandler from "./gamelogichandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
 
 const GAME_TICK_RATE_MS = 1000;
@@ -19,7 +19,7 @@ class Game {
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
         this.state = new RoomState();
-        this.gameTickHandler = null;
+        this.gameLogicHandler = null;
         this.loopIntervalId = null;
         this.piecesSequence = null;
 
@@ -29,7 +29,7 @@ class Game {
     startGame() {
         if (
             this.getState() !== kPendingState ||
-            this.gameTickHandler !== null
+            this.gameLogicHandler !== null
         ) {
             throw new Error(
                 "Attempted to start a game that is already running or not pending."
@@ -40,7 +40,7 @@ class Game {
 
         this.setStarted();
 
-        this.gameTickHandler = new GameTickHandler(
+        this.gameLogicHandler = new GameLogicHandler(
             this.roomName,
             this.players, // this is a reference
             () => endAndDeleteGameCallback(this)
@@ -50,10 +50,10 @@ class Game {
             // Logger.info(
             //     true,
             //     this.roomName,
-            //     `GameTickHandler.tick() called every ${GAME_TICK_RATE_MS}ms`
+            //     `GameLogicHandler.tick() called every ${GAME_TICK_RATE_MS}ms`
             // );
 
-            this.gameTickHandler.tick();
+            this.gameLogicHandler.tick();
             emitUpdateGameData(this);
         }, GAME_TICK_RATE_MS);
 
@@ -63,7 +63,7 @@ class Game {
     endAndDelete() {
         clearInterval(this.loopIntervalId);
         this.loopIntervalId = null;
-        this.gameTickHandler = null;
+        this.gameLogicHandler = null;
         this.setFinished();
 
         // [US-47] Ensures all players are disconnected if game ends
@@ -120,12 +120,17 @@ class Game {
         for (const [username, player] of this.players) {
             playerList.push({
                 username: username,
-                board: player.getFullBoard(),
-                tetriminoType: player.board.getTetrimino()?.getType(), // TODO delete it's a debug
+                board: player.getBoardObject().getFullBoard(),
+                tetriminoType: player
+                    .getBoardObject()
+                    .getTetrimino()
+                    ?.getType(), // TODO delete it's a debug
                 isConnected: player.isConnected,
                 didLost: player.didLost,
                 isLeader: player.token === this.leaderToken,
-                remainingEPLInputs: player.board.getRemainingEPLInputs(),
+                remainingEPLInputs: player
+                    .getBoardObject()
+                    .getRemainingEPLInputs(),
             });
         }
         return playerList;

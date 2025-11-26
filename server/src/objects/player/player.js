@@ -12,8 +12,8 @@ class Player {
         this.didLost = false;
         this.currentGame = game;
         this.currentGame.players.set(username, this);
-        this.board = new Board();
         this.token = Token.sign(username, game.roomName);
+        this._board = new Board();
         this._graceTicks = null;
         this._piecesSequenceIndex = 0;
 
@@ -36,33 +36,41 @@ class Player {
 
     handleTetriminoSpawn() {
         if (this.didLost) return;
-        if (this.board.isTetriminoNull() === false) return;
+        if (this._board.isTetriminoNull() === false) return;
 
         const tetriminoId =
             this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
         this._piecesSequenceIndex += 1;
-        this.board.handleTetriminoSpawn(tetriminoId);
+        this._board.handleTetriminoSpawn(tetriminoId);
 
         // [US-48] Spawned tetrimino should immediately drop one row
-        this.board.handleFallOrLock(true);
+        this._board.handleFallOrLock(true);
     }
 
     handleFallOrLock() {
         if (this.didLost) return;
 
-        this.board.handleFallOrLock(false);
+        this._board.handleFallOrLock(false);
     }
 
     handleInput(input) {
-        return this.board.handleInput(input);
+        return this._board.handleInput(input);
     }
 
     handleEPLLockDelay() {
-        if (this.board.lockDelay.isActive() === true) {
-            if (this.board.lockDelay.isExpired() === true) {
-                this.board.lockTetrimino();
+        if (this._board.lockDelay.isActive() === true) {
+            if (this._board.lockDelay.isExpired() === true) {
+                this._board.lockTetrimino();
             }
         }
+    }
+
+    addIndestructibleLines(totalLinesToAdd) {
+        Logger.info(
+            true,
+            `${this.username}`,
+            `Should receives ${totalLinesToAdd} indestructible lines.`
+        );
     }
 
     //GETTERS and SETTERS
@@ -86,8 +94,8 @@ class Player {
         );
     }
 
-    getFullBoard() {
-        return this.board.getFullBoard();
+    getBoardObject() {
+        return this._board;
     }
 }
 
