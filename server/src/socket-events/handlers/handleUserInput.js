@@ -10,8 +10,6 @@ export default function handleUserInput(socket) {
             const username = params.username;
             const token = params.token;
             const input = params.key;
-            const game = GameMapSingleton.get(roomName);
-            const player = game.players.get(username);
 
             if (!roomName || !username || !input) {
                 Logger.warning(
@@ -22,13 +20,16 @@ export default function handleUserInput(socket) {
                 return;
             }
 
-            // Verify game started
-            if (game.getState() !== kStartedState) {
-                Logger.warning(
-                    false,
-                    null,
-                    "Cannot register input, game's not running"
-                );
+            const game = GameMapSingleton.get(roomName);
+            const player = game?.players.get(username);
+
+            // Verify input is eligible
+            if (
+                !game ||
+                !player ||
+                player.didLost ||
+                game.getState() !== kStartedState
+            ) {
                 return;
             }
 

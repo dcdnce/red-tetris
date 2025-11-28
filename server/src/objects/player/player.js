@@ -66,11 +66,15 @@ class Player {
     }
 
     addIndestructibleLines(totalLinesToAdd) {
-        Logger.info(
-            true,
-            `${this.username}`,
-            `Should receives ${totalLinesToAdd} indestructible lines.`
-        );
+        if (totalLinesToAdd) {
+            Logger.info(
+                true,
+                `${this.username}`,
+                `Should receives ${totalLinesToAdd} indestructible lines.`
+            );
+        }
+
+        this._board.addIndestructibleLines(totalLinesToAdd);
     }
 
     //GETTERS and SETTERS

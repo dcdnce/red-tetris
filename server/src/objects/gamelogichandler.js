@@ -1,4 +1,3 @@
-import { keyframes } from "framer-motion";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
 import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 
@@ -130,7 +129,16 @@ class GameLogicHandler {
                 }
             }
 
-            player.addIndestructibleLines(totalLinesToAdd);
+            try {
+                player.addIndestructibleLines(totalLinesToAdd);
+            } catch (error) {
+                // Top out
+                if (error instanceof TetriminoOutOfBoundsException) {
+                    player.setLost();
+                } else {
+                    throw error;
+                }
+            }
         });
     }
 }

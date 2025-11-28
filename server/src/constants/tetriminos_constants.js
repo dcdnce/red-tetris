@@ -357,4 +357,8 @@ export const kTetriminosTypes = [
         ],
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
+    {
+        id: 8,
+        type: "INDESTRUCTIBLE",
+    },
 ];

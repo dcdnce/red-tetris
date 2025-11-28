@@ -3,9 +3,14 @@ import { TetriminoOutOfBoundsException } from "../../services/exceptions.js";
 import { LockDelay } from "./lockdelay.js";
 import { BoardRules } from "./boardrules.js";
 import { kHardDrop, Tetrimino } from "./tetrimino.js";
+import {
+    BOARD_HEIGHT,
+    kEmptyBlock,
+    kGhostBlock,
+    kIndestructibleBlock,
+} from "../../constants/board_constants.js";
 
 const MAXIMUM_EPL_INPUTS = 15;
-const kGhostBlock = 8;
 
 /**
  * Class holding the board object (and tetrimino),
@@ -200,8 +205,58 @@ class Board {
 
         this._tetrimino = null;
         this.lockDelay.end();
-        this._clearedLinesNumber = BoardRules.clearLines(this);
+        this._clearedLinesNumber = this.clearLines();
         // Logger.success(true, null, "Applied lock");
+    }
+
+    clearLines() {
+        let innerBoard = this._board;
+        let linesToClear = [];
+
+        for (let i = 2; i < BOARD_HEIGHT; i++) {
+            // TODO maybe we can clear above the skyline ?
+            if (BoardRules.isLineFullAndDestructible(innerBoard[i])) {
+                linesToClear.push(i);
+            }
+        }
+
+        const ln = linesToClear.length;
+        if (ln) {
+            for (let j = linesToClear.pop(); j >= 0; j--) {
+                let newLine =
+                    j - ln >= 0
+                        ? innerBoard[j - ln]
+                        : Array(10).fill(kEmptyBlock);
+                innerBoard[j] = newLine;
+            }
+        }
+
+        return ln;
+    }
+
+    addIndestructibleLines(totalLinesToAdd) {
+        let innerBoard = this._board;
+
+        while (totalLinesToAdd--) {
+            const voidedLine = innerBoard[0];
+
+            // Shift up
+            for (let i = 0; i < BOARD_HEIGHT - 1; i++) {
+                innerBoard[i] = innerBoard[i + 1];
+            }
+            innerBoard[BOARD_HEIGHT - 1] = Array(10).fill(kIndestructibleBlock); // Add indestructible line
+
+            // Check eventual top out
+            if (!BoardRules.isLineEmpty(voidedLine)) {
+                Logger.error(
+                    true,
+                    "Line shift exceeding buffer contains blocks, TOP OUT."
+                );
+                throw new TetriminoOutOfBoundsException(
+                    "Line shift exceeding buffer contains blocks, TOP OUT."
+                );
+            }
+        }
     }
 
     // SETTERS and GETTERS
@@ -274,7 +329,7 @@ class Board {
 // TODO create this object dynamically with BOARD_WIDTH and BOARD_HEIGHT
 function createEmptyBoard() {
     return [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

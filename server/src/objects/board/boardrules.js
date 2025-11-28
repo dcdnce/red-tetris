@@ -1,4 +1,9 @@
-import { BOARD_HEIGHT, BOARD_WIDTH } from "../../constants/board_constants.js";
+import {
+    BOARD_HEIGHT,
+    BOARD_WIDTH,
+    kEmptyBlock,
+    kIndestructibleBlock,
+} from "../../constants/board_constants.js";
 import { kicksI, kicksJLSTZ } from "../../constants/tetriminos_constants.js";
 import Logger from "../../services/logger.js";
 
@@ -74,7 +79,7 @@ export class BoardRules {
             tetrimino.getAbsoluteBlocksPositionArray();
 
         // y
-        isColliding |= tetrimino.isVerticallyOutOfBoundsBottom();
+        isColliding |= tetrimino.isVerticallyOutOfBounds();
 
         // x
         isColliding |= tetrimino.isHorizontallyOutOfBounds();
@@ -144,39 +149,29 @@ export class BoardRules {
         return block >= 1 && block <= 7;
     }
 
-    static clearLines(board) {
-        if (board === null) {
-            throw new Error("clearLines called without valid board object");
-        }
-
-        let innerBoard = board.getBoard();
-        let linesToClear = [];
-
-        for (let i = 2; i < BOARD_HEIGHT; i++) {
-            if (BoardRules.#isLineFull(innerBoard[i])) {
-                linesToClear.push(i);
-            }
-        }
-
-        const ln = linesToClear.length;
-        if (ln) {
-            for (let j = linesToClear.pop(); j >= 0; j--) {
-                let newLine =
-                    j - ln >= 0 ? innerBoard[j - ln] : Array(10).fill(0);
-                innerBoard[j] = newLine;
-            }
-        }
-
-        return ln;
-    }
-
-    static #isLineFull(line) {
+    static isLineFullAndDestructible(line) {
         if (line === null || line.length !== BOARD_WIDTH) {
-            throw new Error("isLineFull called without valid line array");
+            throw new Error(
+                "isLineFullAndDestructible called without valid line array"
+            );
         }
 
         for (let i = 0; i < BOARD_WIDTH; i++) {
-            if (line[i] === 0) {
+            if (line[i] === kEmptyBlock || line[i] === kIndestructibleBlock) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static isLineEmpty(line) {
+        if (line === null || line.length !== BOARD_WIDTH) {
+            throw new Error("isLineEmpty called without valid line array");
+        }
+
+        for (let i = 0; i < BOARD_WIDTH; i++) {
+            if (line[i] !== kEmptyBlock) {
                 return false;
             }
         }

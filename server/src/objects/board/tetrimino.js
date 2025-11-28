@@ -48,6 +48,12 @@ export class Tetrimino {
         );
     }
 
+    isVerticallyOutOfBounds() {
+        return this.getAbsoluteBlocksPositionArray().some(
+            ([x, y]) => y >= BOARD_HEIGHT || y < 0
+        );
+    }
+
     isHorizontallyOutOfBounds() {
         return this.getAbsoluteBlocksPositionArray().some(
             ([x, y]) => x >= BOARD_WIDTH || x < 0
