@@ -50,6 +50,7 @@ export function Block({ row, col, id, playerNumber }) {
                 <Box
                     border="5px solid rgba(0, 0, 0, 0.05)"
                     width="24%"
+                    borderRadius="100%"
                     height="25%"
                     margin="auto"
                     position="relative"

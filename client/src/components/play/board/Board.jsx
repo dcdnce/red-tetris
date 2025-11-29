@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { VStack, Grid, Text } from "@chakra-ui/react";
+import { VStack, Grid, Text, Badge, HStack } from "@chakra-ui/react";
 import { selectPlayers } from "../../../store/gameSlice";
 import { Block } from "./Block";
 
@@ -21,23 +21,25 @@ function Board({ playerNumber }) {
     }
 
     return (
-        <VStack spacing={2} align="center">
-            <Text fontWeight="bold">{player.username}</Text>
-            <Text fontSize="sm" color="gray.600">
-                (debug) Remaining EPL Inputs: {player.remainingEPLInputs}
-            </Text>
-            <Text fontSize="sm" color="gray.600">
-                (debug) Current tetrimino: {player.tetriminoType}
-            </Text>
+        <VStack width={{ base: "200px", md: "250px", lg: "300px" }} align="stretch">
+            <HStack display="flex" justifyContent="space-between">
+                <Badge colorScheme="purple" variant="solid" fontSize="lg">
+                    {player.username}
+                </Badge>
+                {/* <Text fontSize="sm" color="gray.600">
+                    (debug) Remaining EPL Inputs: {player.remainingEPLInputs}
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                    (debug) Current tetrimino: {player.tetriminoType}
+                </Text> */}
+            </HStack>
 
             <Grid
                 templateColumns="repeat(10, 1fr)"
                 templateRows="repeat(22, 1fr)"
-                borderRadius="2px"
-                d
                 aspectRatio="10/22"
-                maxW={{ base: "150px", sm: "200px", md: "250px", lg: "300px" }}
-                w="100%"
+                width="100%"
+                boxShadow="0px 0px 2px "
             >
                 {allBlocks.map((block) => (
                     <Block

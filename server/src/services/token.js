@@ -10,6 +10,8 @@ class Token {
     static verify(token, player) {
         jwt.verify(token, process.env.TOKEN_SECRET);
 
+        // console.log(`token : ${token}\n player.token: ${player.token}`);
+
         if (token !== player.token) {
             throw new Error("Token is valid but not bind to this player.");
         }

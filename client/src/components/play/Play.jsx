@@ -1,7 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Box, Heading, Text, VStack, SimpleGrid } from "@chakra-ui/react";
+import {
+    Box,
+    Heading,
+    Text,
+    VStack,
+    SimpleGrid,
+    HStack,
+    Flex,
+} from "@chakra-ui/react";
 import Board from "./board/Board";
 import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
 import {
@@ -47,13 +55,16 @@ function Play() {
 
     return (
         <VStack spacing={4} align="stretch">
-            <Heading>Room: {roomName}</Heading>
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+            <HStack display="flex" justifyContent="space-between">
+                <Heading>Room: {roomName}</Heading>
+                <RoomLeaderDashBoard />
+            </HStack>
+
+            <Flex justifyContent="space-evenly">
                 {players?.map((_, index) => (
                     <Board key={index} playerNumber={index} />
                 ))}
-            </SimpleGrid>
-            <RoomLeaderDashBoard />
+            </Flex>
         </VStack>
     );
 }
