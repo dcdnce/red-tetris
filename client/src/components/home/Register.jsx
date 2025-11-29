@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Box, VStack, Input, Button, Text, Tag } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Flex, VStack, Input, Button, Text, Tag } from "@chakra-ui/react";
 import { showToast } from "../utils/Toast";
+import { ArrowRightIcon } from "@chakra-ui/icons";
 
 function Register() {
     const [username, setUsername] = useState(localStorage.getItem("username"));
@@ -10,8 +11,6 @@ function Register() {
         if (!input)
             return showToast("Error", "Enter an username please", "error");
         localStorage.setItem("username", input);
-        setUsername(input);
-        setInput("");
     }
 
     function disconnect() {
@@ -20,34 +19,16 @@ function Register() {
         setInput("");
     }
 
-    if (username === null) {
-        return (
-            <Tag variant="blueW100">
-                <VStack spacing={3}>
-                    <Input
-                        placeholder="Type your username"
-                        value={input}
-                        onChange={(event) => setInput(event.target.value)}
-                    />
-                    <Button onClick={sendUsername} variant="molle">
-                        Register
-                    </Button>
-                </VStack>
-            </Tag>
-        );
-    }
+    useEffect(() => {
+        sendUsername();
+    }, [input]);
 
     return (
-        <Tag variant="blueW100">
-            <VStack spacing={3}>
-                <Text fontSize="1.2rem" fontWeight="bold">
-                    Hello <strong>{username}</strong>
-                </Text>
-                <Button variant="molle" onClick={disconnect}>
-                    Disconnect
-                </Button>
-            </VStack>
-        </Tag>
+        <Input
+            placeholder="Type your username"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+        />
     );
 }
 

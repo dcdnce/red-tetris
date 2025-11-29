@@ -9,9 +9,9 @@ import {
     VStack,
     HStack,
     Text,
-    Divider,
     Flex,
     Card,
+    Link,
 } from "@chakra-ui/react";
 import { RepeatIcon } from "@chakra-ui/icons";
 import { Peoples } from "../../styles/Icons/icons";
@@ -21,6 +21,7 @@ export default function AllRoom() {
     const [refresh, setRefresh] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();
+    const [isDisplay, setIsDisplay] = useState(false);
     const username = localStorage.getItem("username");
 
     useEffect(() => {
@@ -50,9 +51,14 @@ export default function AllRoom() {
         navigate(`/${room.roomName}/${username}`);
     };
 
+    if (!isDisplay)
+        return (
+            <Link onClick={() => setIsDisplay(true)}>See Available room</Link>
+        );
+
     return (
         <VStack spacing={4} width="100%" align="flex-start">
-            <HStack spacing={2} width="28%">
+            <HStack>
                 <Input
                     placeholder="Search a room"
                     value={searchValue}
@@ -67,7 +73,7 @@ export default function AllRoom() {
                 <SimpleGrid
                     columns={{ base: 1, md: 2, lg: 3 }}
                     spacing={4}
-                    width="60%"
+                    width="100%"
                 >
                     {allRoom.map((room, index) => (
                         <Card key={index} variant={"outline"}>
@@ -90,7 +96,11 @@ export default function AllRoom() {
                     ))}
                 </SimpleGrid>
             ) : (
-                <Flex alignItems="center" justifyContent="center" height="100%">
+                <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    height="100%"
+                >
                     <Text textAlign="center" fontSize="1.1rem">
                         No room available
                     </Text>

@@ -6,6 +6,7 @@ import {
     HStack,
     InputRightElement,
     InputGroup,
+    Flex,
 } from "@chakra-ui/react";
 import { showToast } from "../utils/Toast";
 
@@ -28,21 +29,25 @@ export default function JoinButton() {
     }
 
     return (
-        <HStack spacing={2}>
+        <Flex width={"100%"} gap="3px">
             <Input
-                placeholder="Room Name"
+                placeholder="Room"
                 value={roomName}
+                maxW={"33%"}
                 onChange={(e) => setRoomName(e.target.value)}
                 autoFocus
             />
             <Button
-                bg="brand.500"
+                bg="green.500"
                 padding={"1rem"}
                 color="white"
                 onClick={joinRoom}
+                w={"100%"}
+                fontWeight={"900"}
+                color={"dark"}
             >
-                Join
+                PLAY
             </Button>
-        </HStack>
+        </Flex>
     );
 }
