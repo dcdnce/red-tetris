@@ -1,0 +1,61 @@
+import React from "react";
+import { Box } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectPlayers } from "../../../store/gameSlice";
+
+const blockColors = {
+    0: "beige",
+    1: "purple.50",
+    2: "cyan.50",
+    3: "yellow.50",
+    4: "orange.50",
+    5: "blue.50",
+    6: "red.50",
+    7: "green.50",
+    8: "gray",
+    9: "beige",
+};
+
+export function Block({ row, col, id, playerNumber }) {
+    const { roomName } = useParams();
+    const players = useSelector(selectPlayers(roomName));
+    const isPlayerConnected = players[playerNumber].isConnected;
+    const didPlayerLost = players[playerNumber].didLost;
+
+    let bgColor = blockColors[id];
+
+    // Overrides
+    if (id) {
+        if (!isPlayerConnected) {
+            bgColor = "gray.400";
+        }
+        if (didPlayerLost) {
+            bgColor = "red.600";
+        }
+        if (row < 2) {
+            bgColor = "black.500";
+        }
+    }
+
+    return (
+        <Box
+            gridRow={row + 1}
+            gridColumn={col + 1}
+            bg={bgColor}
+            textAlign="center"
+            boxShadow="inset 0 0 0 0.05px rgba(0,0,0,1)"
+        >
+            {id ? (
+                <Box
+                    border="5px solid rgba(0, 0, 0, 0.05)"
+                    width="24%"
+                    height="25%"
+                    margin="auto"
+                    position="relative"
+                    top="35%"
+                ></Box>
+            ) : null}
+        </Box>
+    );
+}

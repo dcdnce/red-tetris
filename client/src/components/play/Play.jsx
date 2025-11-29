@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Box, Heading, Text, VStack, SimpleGrid } from "@chakra-ui/react";
-import Board from "./Board";
+import Board from "./board/Board";
 import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
 import {
     selectRoomState,

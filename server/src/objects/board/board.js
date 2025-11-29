@@ -329,7 +329,7 @@ class Board {
 // TODO create this object dynamically with BOARD_WIDTH and BOARD_HEIGHT
 function createEmptyBoard() {
     return [
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
