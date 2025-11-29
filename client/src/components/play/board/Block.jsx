@@ -1,8 +1,5 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectPlayers } from "../../../store/gameSlice";
 
 const blockColors = {
     0: "beige",
@@ -25,9 +22,6 @@ export function Block({ row, col, id, player }) {
 
     // Overrides
     if (id) {
-        if (!isPlayerConnected) {
-            bgColor = "gray.400";
-        }
         if (didPlayerLost) {
             bgColor = "red.600";
         }

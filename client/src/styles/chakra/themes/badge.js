@@ -5,6 +5,7 @@ export const badgeTheme = {
         py: 1,
         fontWeight: "bold",
         textTransform: "none",
+        cursor: "default",
     },
     variants: {
         logo: {

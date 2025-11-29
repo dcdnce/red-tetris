@@ -1,9 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { VStack, Grid, Text, Badge, HStack } from "@chakra-ui/react";
+import { VStack, Grid, Text, Badge, HStack, Flex } from "@chakra-ui/react";
 import { selectPlayers } from "../../../store/gameSlice";
 import { Block } from "./Block";
+import { Keys } from "./Keys";
 
 function Board({ player, isLocalPlayer }) {
     const { roomName } = useParams();
@@ -26,12 +27,27 @@ function Board({ player, isLocalPlayer }) {
             <VStack
                 width={{ base: "100px", md: "120px", lg: "150px" }}
                 align="stretch"
-                spacing={2}
+                spacing={1}
             >
-                <HStack display="flex" justifyContent="space-between">
-                    <Badge variant="solid" fontSize="xs" p="1">
+                <HStack
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="flex-end"
+                    px="0.4"
+                >
+                    <Badge variant="solid" fontSize="xx-small" p="1">
                         {player.username}
                     </Badge>
+                    {player.isConnected && (
+                        <Badge p="1" colorScheme="green" fontSize="xx-small">
+                            ✅
+                        </Badge>
+                    )}
+                    {!player.isConnected && (
+                        <Badge p="1" colorScheme="red" fontSize="xx-small">
+                            ❌
+                        </Badge>
+                    )}
                 </HStack>
 
                 <Grid
@@ -62,10 +78,24 @@ function Board({ player, isLocalPlayer }) {
             width={{ base: "200px", md: "250px", lg: "300px" }}
             align="stretch"
         >
-            <HStack display="flex" justifyContent="space-between">
+            <HStack
+                display="flex"
+                justifyContent="space-between"
+                alignItems="flex-end"
+            >
                 <Badge colorScheme="purple" variant="solid" fontSize="lg">
                     {player.username}
                 </Badge>
+                {player.isConnected && (
+                    <Badge colorScheme="green" fontSize="xx-small">
+                        Connected ✅
+                    </Badge>
+                )}
+                {!player.isConnected && (
+                    <Badge colorScheme="red" fontSize="xx-small">
+                        Disconnected ❌
+                    </Badge>
+                )}
                 {/* Affichez ici toutes les infos de debug ou de jeu pour le joueur local */}
                 {/* <Text>Score: {player.score}</Text> */}
             </HStack>
@@ -87,6 +117,10 @@ function Board({ player, isLocalPlayer }) {
                     />
                 ))}
             </Grid>
+
+            <Flex justifyContent="space-between" flexDirection="row-reverse">
+                <Keys></Keys>
+            </Flex>
         </VStack>
     );
 }
