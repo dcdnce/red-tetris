@@ -17,11 +17,9 @@ const blockColors = {
     9: "beige",
 };
 
-export function Block({ row, col, id, playerNumber }) {
-    const { roomName } = useParams();
-    const players = useSelector(selectPlayers(roomName));
-    const isPlayerConnected = players[playerNumber].isConnected;
-    const didPlayerLost = players[playerNumber].didLost;
+export function Block({ row, col, id, player }) {
+    const isPlayerConnected = player.isConnected;
+    const didPlayerLost = player.didLost;
 
     let bgColor = blockColors[id];
 
