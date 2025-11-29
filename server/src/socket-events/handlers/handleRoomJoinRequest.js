@@ -32,6 +32,7 @@ export default function handleRoomJoinRequest(socket) {
 
             if (playerIsReconnecting(game, username, token, socket)) {
                 player = game.players.get(username);
+                if (!player) return;
             } else {
                 throwIfGameStarted(game);
                 throwIfGameIsFull(game);
@@ -83,33 +84,39 @@ function playerIsReconnecting(game, username, token, socket) {
         try {
             Token.verify(token, player);
 
-            if (player.socket !== socket && !player.isConnected) {
-                // reconnection
+            const oldSocket = player.socket;
+
+            // Reconnection
+            if (!player.isConnected) {
                 Logger.info(true, game.roomName, `Reconnection👌`);
                 // Reconnect player
                 return true;
             }
 
-            if (player.socket === socket && player.isConnected) {
-                // second room join, confirmation
-                Logger.info(true, game.roomName, `Room join confirmation 👌`);
-                return true;
-            }
-
-            if (player.socket === socket && !player.isConnected) {
-                // second room join, confirmation when react strict mode is slow
+            // Second room join, confirmation
+            if (oldSocket.id === socket.id && player.isConnected) {
                 Logger.info(
                     true,
                     game.roomName,
-                    `Room join confirmation - room_exit arrived meantime 👌`
+                    `Room join confirmation on the same socket 👌`
                 );
                 return true;
             }
 
-            // [US-51] [bug] Can connect again with same username and token
-            throw new Error(
-                `You're already connected to this game.` // player.socket === socket && player.isConnected
-            );
+            // Takeover
+            if (oldSocket.id !== socket.id && player.isConnected) {
+                Logger.warning(
+                    true,
+                    game.roomName,
+                    `Player '${username}' is taking over session. Old socket (${oldSocket.id}) will be disconnected.`
+                );
+
+                oldSocket.leave(game.roomName);
+                oldSocket.disconnect(true);
+                return true;
+            }
+
+            throw new Error(`You're already connected to this game.`);
         } catch (err) {
             if (
                 err.name === "JsonWebTokenError" &&

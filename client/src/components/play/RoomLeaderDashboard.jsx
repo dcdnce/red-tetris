@@ -20,11 +20,10 @@ function RoomLeaderDashboard() {
     }
 
     return (
-        <Box textAlign="center" py={4}>
+        <Box textAlign="center">
             <Button
                 bg="orange.500"
                 color="white"
-                size="lg"
                 _hover={{ bg: "orange.600" }}
                 onClick={handleClick}
             >

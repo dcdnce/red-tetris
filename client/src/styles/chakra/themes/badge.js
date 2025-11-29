@@ -1,6 +1,11 @@
 export const badgeTheme = {
     baseStyle: {
-        borderRadius: "5px",
+        borderRadius: "md",
+        px: 3,
+        py: 1,
+        fontWeight: "bold",
+        textTransform: "none",
+        cursor: "default",
     },
     variants: {
         logo: {
