@@ -1,17 +1,18 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { VStack, Grid, Text, Badge, HStack, Flex } from "@chakra-ui/react";
-import { selectPlayers } from "../../../store/gameSlice";
+import { VStack, Grid, Badge, HStack, Flex, Tooltip } from "@chakra-ui/react";
 import { Block } from "./Block";
 import { Keys } from "./Keys";
+import RoomLeaderDashboard from "../RoomLeaderDashboard";
+import { ConnexionStatusBadge, RoomLeaderBadge } from "./RoomBadges";
+import { useAsyncError } from "react-router-dom";
 
 function Board({ player, isLocalPlayer }) {
-    const { roomName } = useParams();
     if (!player) {
         return null;
     }
+
     const gameBoard = player.board;
+    const username = player.username;
 
     // Build blocks array
     const allBlocks = [];
@@ -36,27 +37,16 @@ function Board({ player, isLocalPlayer }) {
                     px="0.4"
                 >
                     <Badge variant="solid" fontSize="xx-small" p="1">
-                        {player.username}
+                        {username}
                     </Badge>
-                    {player.isConnected && (
-                        <Badge p="1" colorScheme="green" fontSize="xx-small">
-                            ✅
-                        </Badge>
-                    )}
-                    {!player.isConnected && (
-                        <Badge p="1" colorScheme="red" fontSize="xx-small">
-                            ❌
-                        </Badge>
-                    )}
+                    <RoomLeaderBadge username={username} />
+                    <ConnexionStatusBadge isConnected={player.isConnected} />
                 </HStack>
 
                 <Grid
                     templateColumns="repeat(10, 1fr)"
                     templateRows="repeat(22, 1fr)"
                     aspectRatio="10/22"
-                    width="100%"
-                    boxShadow="0px 0px 1px"
-                    opacity={0.8}
                 >
                     {allBlocks.map((block) => (
                         <Block
@@ -84,18 +74,11 @@ function Board({ player, isLocalPlayer }) {
                 alignItems="flex-end"
             >
                 <Badge colorScheme="purple" variant="solid" fontSize="lg">
-                    {player.username}
+                    {username}
                 </Badge>
-                {player.isConnected && (
-                    <Badge colorScheme="green" fontSize="xx-small">
-                        Connected ✅
-                    </Badge>
-                )}
-                {!player.isConnected && (
-                    <Badge colorScheme="red" fontSize="xx-small">
-                        Disconnected ❌
-                    </Badge>
-                )}
+                <RoomLeaderDashboard />
+                <RoomLeaderBadge username={username} />
+                <ConnexionStatusBadge isConnected={player.isConnected} />
                 {/* Affichez ici toutes les infos de debug ou de jeu pour le joueur local */}
                 {/* <Text>Score: {player.score}</Text> */}
             </HStack>
@@ -104,8 +87,6 @@ function Board({ player, isLocalPlayer }) {
                 templateColumns="repeat(10, 1fr)"
                 templateRows="repeat(22, 1fr)"
                 aspectRatio="10/22"
-                width="100%"
-                boxShadow="0px 0px 2px "
             >
                 {allBlocks.map((block) => (
                     <Block

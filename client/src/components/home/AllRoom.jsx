@@ -96,11 +96,7 @@ export default function AllRoom() {
                     ))}
                 </SimpleGrid>
             ) : (
-                <Flex
-                    alignItems="center"
-                    justifyContent="center"
-                    height="100%"
-                >
+                <Flex alignItems="center" justifyContent="center" height="100%">
                     <Text textAlign="center" fontSize="1.1rem">
                         No room available
                     </Text>

@@ -38,6 +38,8 @@ const gameSlice = createSlice({
                 roomState: kPendingState,
                 error: null,
             };
+
+            console.log(action.payload.players);
         },
         updatePlayerList: (state, action) => {
             const roomName = action.payload.roomName;

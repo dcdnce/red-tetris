@@ -1,6 +1,6 @@
 import { Tag } from "@chakra-ui/react";
 
-function Header() {
+function Header(px) {
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);
     }
@@ -23,6 +23,7 @@ function Header() {
             fontSize={"4rem"}
             fontWeight={"900"}
             backgroundColor={`${colors[getRandomInt(colors.length)]}`}
+            px="2rem"
         >
             red tetris
         </Tag>

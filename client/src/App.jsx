@@ -6,7 +6,7 @@ import Play from "./components/play/Play";
 
 function App() {
     return (
-        <Box >
+        <Box>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/:roomName/:username" element={<Play />} />

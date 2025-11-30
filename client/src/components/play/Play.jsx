@@ -6,13 +6,10 @@ import {
     Heading,
     Text,
     VStack,
-    SimpleGrid,
     HStack,
     Flex,
     useBreakpointValue,
     Badge,
-    Spacer,
-    Divider,
 } from "@chakra-ui/react";
 import Board from "./board/Board";
 import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
@@ -24,7 +21,7 @@ import {
 import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js";
 import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
 import { useUserInput } from "../../hooks/play/useUserInput.js";
-import { Keys } from "./board/Keys.jsx";
+import Header from "../ui/Header.jsx";
 
 function Play() {
     const { roomName, username } = useParams();
@@ -76,8 +73,7 @@ function Play() {
     return (
         <VStack spacing={8} align="stretch" p={4}>
             <HStack display="flex" justifyContent="space-between">
-                <Heading>Room: {roomName}</Heading>
-                <RoomLeaderDashBoard />
+                <Header></Header>
             </HStack>
 
             <Flex

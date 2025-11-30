@@ -16,9 +16,9 @@ export function useRoomSocketHandlers(roomName, username) {
 
     useEffect(() => {
         const handleJoinSuccess = (data) => {
-            dispatch(joinRoomSuccess(data));
             const token = data.token;
             localStorage.setItem(`${data.username}${data.roomName}`, token);
+            dispatch(joinRoomSuccess(data));
 
             if (!initialJoinSentRef.current) {
                 socket.emit("room_join", { roomName, username, token });
