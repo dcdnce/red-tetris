@@ -1,10 +1,8 @@
 import React from "react";
-import { VStack, Grid, Badge, HStack, Flex, Tooltip } from "@chakra-ui/react";
+import { VStack, Grid, Flex, HStack } from "@chakra-ui/react";
 import { Block } from "./Block";
 import { Keys } from "./Keys";
-import RoomLeaderDashboard from "../RoomLeaderDashboard";
-import { ConnexionStatusBadge, RoomLeaderBadge } from "./RoomBadges";
-import { useAsyncError } from "react-router-dom";
+import { BoardHeader } from "./BoardHeader";
 
 function Board({ player, isLocalPlayer }) {
     if (!player) {
@@ -12,7 +10,6 @@ function Board({ player, isLocalPlayer }) {
     }
 
     const gameBoard = player.board;
-    const username = player.username;
 
     // Build blocks array
     const allBlocks = [];
@@ -30,18 +27,7 @@ function Board({ player, isLocalPlayer }) {
                 align="stretch"
                 spacing={1}
             >
-                <HStack
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="flex-end"
-                    px="0.4"
-                >
-                    <Badge variant="solid" fontSize="xx-small" p="1">
-                        {username}
-                    </Badge>
-                    <RoomLeaderBadge username={username} />
-                    <ConnexionStatusBadge isConnected={player.isConnected} />
-                </HStack>
+                <BoardHeader player={player} isLocalPlayer={isLocalPlayer} />
 
                 <Grid
                     templateColumns="repeat(10, 1fr)"
@@ -68,20 +54,7 @@ function Board({ player, isLocalPlayer }) {
             width={{ base: "200px", md: "250px", lg: "300px" }}
             align="stretch"
         >
-            <HStack
-                display="flex"
-                justifyContent="space-between"
-                alignItems="flex-end"
-            >
-                <Badge colorScheme="purple" variant="solid" fontSize="lg">
-                    {username}
-                </Badge>
-                <RoomLeaderDashboard />
-                <RoomLeaderBadge username={username} />
-                <ConnexionStatusBadge isConnected={player.isConnected} />
-                {/* Affichez ici toutes les infos de debug ou de jeu pour le joueur local */}
-                {/* <Text>Score: {player.score}</Text> */}
-            </HStack>
+            <BoardHeader player={player} isLocalPlayer={isLocalPlayer} />
 
             <Grid
                 templateColumns="repeat(10, 1fr)"

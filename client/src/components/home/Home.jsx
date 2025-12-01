@@ -8,7 +8,7 @@ function Home() {
         <>
             <Flex justifyContent={"center"} alignItems={"center"} minH={"80vh"}>
                 <VStack>
-                    <Header />
+                    <Header dynamicColor={true} />
                     <VStack
                         border={"solid 2px white"}
                         borderRadius={"5px"}

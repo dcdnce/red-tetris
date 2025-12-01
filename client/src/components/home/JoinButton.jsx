@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    Button,
-    Input,
-    HStack,
-    InputRightElement,
-    InputGroup,
-    Flex,
-} from "@chakra-ui/react";
+import { Button, Input, Flex } from "@chakra-ui/react";
 import { showToast } from "../utils/Toast";
 
 export default function JoinButton() {
@@ -37,15 +30,7 @@ export default function JoinButton() {
                 onChange={(e) => setRoomName(e.target.value)}
                 autoFocus
             />
-            <Button
-                bg="green.500"
-                padding={"1rem"}
-                color="white"
-                onClick={joinRoom}
-                w={"100%"}
-                fontWeight={"900"}
-                color={"dark"}
-            >
+            <Button onClick={joinRoom} variant="red_tetris_default">
                 PLAY
             </Button>
         </Flex>

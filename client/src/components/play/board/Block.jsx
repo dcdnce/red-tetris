@@ -15,7 +15,6 @@ const blockColors = {
 };
 
 export function Block({ row, col, id, player }) {
-    const isPlayerConnected = player.isConnected;
     const didPlayerLost = player.didLost;
 
     let bgColor = blockColors[id];
@@ -26,7 +25,7 @@ export function Block({ row, col, id, player }) {
             bgColor = "red.600";
         }
         if (row < 2) {
-            bgColor = "black.500";
+            bgColor = "gray.100";
         }
     }
 

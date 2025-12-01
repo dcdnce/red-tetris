@@ -1,18 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-    Box,
-    Heading,
-    Text,
-    VStack,
-    HStack,
-    Flex,
-    useBreakpointValue,
-    Badge,
-} from "@chakra-ui/react";
+import { Box, VStack, HStack, Flex } from "@chakra-ui/react";
 import Board from "./board/Board";
-import RoomLeaderDashBoard from "./RoomLeaderDashboard.jsx";
 import {
     selectRoomState,
     selectRoomError,
@@ -22,6 +12,8 @@ import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js
 import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
 import { useUserInput } from "../../hooks/play/useUserInput.js";
 import Header from "../ui/Header.jsx";
+import { Error } from "../ui/Error.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 
 function Play() {
     const { roomName, username } = useParams();
@@ -30,50 +22,34 @@ function Play() {
     const players = useSelector(selectPlayers(roomName));
     const localPlayer = players?.find((p) => p.username === username);
     const opponents = players?.filter((p) => p.username !== username);
-    const isMobile = useBreakpointValue({ base: true, md: false });
+    const isMobile = useIsMobile();
 
     useRoomSocketHandlers(roomName, username);
     useRoomJoin(roomName, username);
     useUserInput(roomName, username, roomState);
 
-    if (roomState === "loading") {
-        return (
-            <Box textAlign="center" py={10}>
-                <Heading>Loading Game...</Heading>
-            </Box>
-        );
-    }
-
     if (roomState === "error") {
         return (
-            <VStack spacing={4} align="center" py={10}>
-                <Badge variant="subtle" fontSize="24px" colorScheme="red">
-                    Error joining room '{roomName}'
-                </Badge>
-                <Text fontSize="16px" textAlign="center">
-                    {errorMessage}
-                </Text>
-            </VStack>
+            <Error
+                errorTitle={`Error joining room "${roomName}"`}
+                errorMessage={errorMessage}
+            />
         );
-    }
-
-    if (isMobile && roomState !== "error") {
+    } else if (isMobile) {
         return (
-            <VStack spacing={4} align="center" py={10}>
-                <Badge variant="subtle" fontSize="24px" colorScheme="red">
-                    Unsupported Screen Size
-                </Badge>
-                <Text fontSize="16px" textAlign="center">
-                    This game is best experienced on a larger screen.
-                </Text>
-            </VStack>
+            <Error
+                errorTitle={"Unsupported Screen Size"}
+                errorMessage={
+                    "This game is best experienced on a larger screen."
+                }
+            />
         );
     }
 
     return (
         <VStack spacing={8} align="stretch" p={4}>
             <HStack display="flex" justifyContent="space-between">
-                <Header></Header>
+                <Header />
             </HStack>
 
             <Flex

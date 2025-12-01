@@ -8,6 +8,7 @@ export const buttonTheme = {
         },
     },
     variants: {
+        no_style: {},
         solid: {
             bg: "brand.500",
             color: "white",
@@ -23,6 +24,14 @@ export const buttonTheme = {
             _hover: {
                 opacity: "0.95",
             },
+        },
+        red_tetris_default: {
+            bg: "green.500",
+            padding: "1rem",
+            color: "white",
+            w: "100%",
+            fontWeight: "900",
+            color: "dark",
         },
     },
     defaultProps: {

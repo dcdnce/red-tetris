@@ -1,7 +1,6 @@
 import { createSlice, isPending } from "@reduxjs/toolkit";
 import {
     kErrorState,
-    kLoadingState,
     kPendingState,
     kStartedState,
 } from "../services/constants";
@@ -20,7 +19,7 @@ const initialState = {
         //         remainingEPLInputs: null,
         //     },
         // ],
-        // roomState: kLoadingState,
+        // roomState: kPendingState,
         // error: null,
     },
 };

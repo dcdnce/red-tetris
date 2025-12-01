@@ -1,4 +1,4 @@
-// hooks/useRoomJoinijs.
+// hooks/useRoomJoin.js
 import { useEffect } from "react";
 import { socket } from "../../socket";
 
