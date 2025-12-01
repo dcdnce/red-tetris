@@ -72,7 +72,7 @@ function RoomLeaderBadge({ username }) {
     return (
         <>
             {isRoomLeader && (
-                <Tooltip label="Room leader.">
+                <Tooltip label="Room leader">
                     <Badge p="1" fontSize="xx-small">
                         👑
                     </Badge>

@@ -5,19 +5,49 @@ import { Keys } from "./Keys";
 import { BoardHeader } from "./BoardHeader";
 
 function Board({ player, isLocalPlayer }) {
+    const gameBoard = player.board;
+    const allBlocks = [];
+
     if (!player) {
         return null;
     }
 
-    const gameBoard = player.board;
+    // if (!isLocalPlayer) {
+    //     let colHi = Array(10).fill(23);
+
+    //     // Craft spectrum
+    //     for (let x = 0; x < 10; x++) {
+    //         for (let y = 0; y < 22; y++) {
+    //             if (gameBoard[y][x] != 0) {
+    //                 colHi[x] = y;
+    //                 break;
+    //             }
+    //         }
+    //     }
+
+    //     // Build blocks array
+    //     for (let x = 0; x < 10; x++) {
+    //         for (let y = 0; y < 22; y++) {
+    //             let currentBlock = y >= colHi[x] ? 8 : 0;
+    //             allBlocks.push({ row: y, col: x, id: currentBlock });
+    //         }
+    //     }
+    // } else {
+    //     // Build blocks array
+    //     for (let i = 0; i < 22; i++) {
+    //         for (let j = 0; j < 10; j++) {
+    //             allBlocks.push({ row: i, col: j, id: gameBoard[i][j] });
+    //         }
+    //     }
+    // }
 
     // Build blocks array
-    const allBlocks = [];
     for (let i = 0; i < 22; i++) {
         for (let j = 0; j < 10; j++) {
             allBlocks.push({ row: i, col: j, id: gameBoard[i][j] });
         }
     }
+
 
     // Opponent
     if (!isLocalPlayer) {

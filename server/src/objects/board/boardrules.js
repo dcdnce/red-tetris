@@ -146,7 +146,7 @@ export class BoardRules {
     }
 
     static #isBlockLocked(block) {
-        return block >= 1 && block <= 7;
+        return block >= 1 && block <= 8;
     }
 
     static isLineFullAndDestructible(line) {

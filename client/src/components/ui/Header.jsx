@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-function Header({ dynamicColor }) {
+function Header({ isHome }) {
     const navigate = useNavigate();
 
     async function navigateHome() {
@@ -19,18 +19,22 @@ function Header({ dynamicColor }) {
         "#FF9FF3", // Rose
     ];
 
-    const currentColor = dynamicColor
+    const currentColor = isHome
         ? colors[getRandomInt(colors.length)]
         : "gray.100";
+
+    const currentFontSize = isHome ? "4rem" : "2rem";
+
+    const currentPy = isHome ? "3rem" : "2rem";
 
     return (
         <Button
             variant={"no_style"}
-            fontSize={"4rem"}
+            fontSize={currentFontSize}
             fontWeight={"900"}
             backgroundColor={currentColor}
             px="2rem"
-            py="3rem"
+            py={currentPy}
             onClick={navigateHome}
         >
             red tetris

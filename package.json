@@ -6,7 +6,7 @@
     "main": "server/src/index.js",
     "scripts": {
         "dev:server": "nodemon server/src/index.js",
-        "dev:client": "vite client --config client/vite.config.js dev",
+        "dev:client": "vite client --config client/vite.config.js --host",
         "dev": "concurrently --kill-others-on-fail \"npm:dev:server\" \"npm:dev:client\"",
         "build:client": "vite build --config client/vite.config.js",
         "build": "npm run build:client",

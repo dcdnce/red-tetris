@@ -25,7 +25,9 @@ function RoomLeaderDashboard() {
             color="black"
             _hover={{ bg: "gray.100" }}
             onClick={handleClick}
-            p="3"
+            p="2"
+            h={"23px"}
+            fontSize={"x-small"}
         >
             Start ▶️
         </Button>
