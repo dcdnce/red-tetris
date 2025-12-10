@@ -5,7 +5,6 @@ import { socket } from "../../socket";
 import {
     joinRoomSuccess,
     joinRoomFailed,
-    updatePlayerList,
     updateGameData,
     roomLaunchSuccess,
 } from "../../store/gameSlice";
@@ -30,10 +29,6 @@ export function useRoomSocketHandlers(roomName, username) {
             dispatch(joinRoomFailed(data));
         };
 
-        const handleUpdatePlayerList = (data) => {
-            dispatch(updatePlayerList(data));
-        };
-
         const handleUpdateGameData = (data) => {
             dispatch(updateGameData(data));
         };
@@ -48,7 +43,6 @@ export function useRoomSocketHandlers(roomName, username) {
 
         socket.on("join_room_success", handleJoinSuccess);
         socket.on("join_room_failed", handleJoinFailed);
-        socket.on("update_player_list", handleUpdatePlayerList);
         socket.on("update_game_data", handleUpdateGameData);
         socket.on("room_launch_failed", handleRoomLaunchFailed);
         socket.on("room_launch_success", handleRoomLaunchSuccess);
@@ -57,7 +51,6 @@ export function useRoomSocketHandlers(roomName, username) {
         return () => {
             socket.off("join_room_success", handleJoinSuccess);
             socket.off("join_room_failed", handleJoinFailed);
-            socket.off("update_player_list", handleUpdatePlayerList);
             socket.off("room_launch_failed", handleRoomLaunchFailed);
             socket.off("room_launch_success", handleRoomLaunchSuccess);
         };

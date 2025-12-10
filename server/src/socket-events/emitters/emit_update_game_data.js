@@ -7,7 +7,7 @@ export default function emitUpdateGameData(game) {
     const io = SocketManager.getIO();
 
     io.to(game.roomName).emit("update_game_data", {
-        message: `Update game data list for room ${game.roomName}`,
+        message: `Update game data for room ${game.roomName}`,
         roomName: game.roomName,
         roomState: game.getState(),
         players: game.getPlayerListForClient(),

@@ -4,7 +4,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import handleRoomJoinRequest from "../../src/socket-events/handlers/handleRoomJoinRequest.js";
 import GameMapSingleton from "../../src/services/gameMapSingleton.js";
 import Game from "../../src/objects/game.js";
-import * as emitUpdatePlayerListModule from "../../src/socket-events/emitters/emit_update_player_list.js";
 import * as emitJoinRoomFailModule from "../../src/socket-events/emitters/emit_join_room_fail.js";
 import * as emitJoinRoomSuccessModule from "../../src/socket-events/emitters/emit_join_room_success.js";
 import * as emitUpdateGameDataModule from "../../src/socket-events/emitters/emit_update_game_data.js";
@@ -72,8 +71,8 @@ describe("Lobby", () => {
 
     // --- TESTS ---
     it("should create a new game and add a player when a room does not exist", () => {
-        const emitUpdatePlayerListSpy = vi.spyOn(
-            emitUpdatePlayerListModule,
+        const emitUpdateGameDataSpy = vi.spyOn(
+            emitUpdateGameDataModule,
             "default"
         );
         const emitJoinRoomFailSpy = vi.spyOn(emitJoinRoomFailModule, "default");
@@ -95,7 +94,7 @@ describe("Lobby", () => {
         expect(game.players.has("Paul")).toBe(true);
 
         expect(emitJoinRoomSuccessSpy).toHaveBeenCalled();
-        expect(emitUpdatePlayerListSpy).toHaveBeenCalled();
+        expect(emitUpdateGameDataSpy).toHaveBeenCalled();
         expect(emitJoinRoomFailSpy).not.toHaveBeenCalled();
     });
 
@@ -112,8 +111,8 @@ describe("Lobby", () => {
     });
 
     it("should add a second player when a room already exist", () => {
-        const emitUpdatePlayerListSpy = vi.spyOn(
-            emitUpdatePlayerListModule,
+        const emitUpdateGameDataSpy = vi.spyOn(
+            emitUpdateGameDataModule,
             "default"
         );
 
@@ -132,7 +131,7 @@ describe("Lobby", () => {
         expect(game.players.has("Paul")).toBe(true);
         expect(game.players.has("Eric")).toBe(true);
 
-        expect(emitUpdatePlayerListSpy).toHaveBeenCalled();
+        expect(emitUpdateGameDataSpy).toHaveBeenCalled();
     });
 
     it("should fail to connect if the game is full", () => {

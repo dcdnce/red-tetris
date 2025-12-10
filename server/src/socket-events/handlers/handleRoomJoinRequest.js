@@ -2,11 +2,11 @@ import Player from "../../objects/player/player.js";
 import GameMapSingleton from "../../services/gameMapSingleton.js";
 import Game from "../../objects/game.js";
 import Logger from "../../services/logger.js";
-import emitUpdatePlayerList from "../emitters/emit_update_player_list.js";
 import emitJoinRoomFail from "../emitters/emit_join_room_fail.js";
 import emitJoinRoomSuccess from "../emitters/emit_join_room_success.js";
 import { kStartedState } from "../../objects/roomstate.js";
 import Token from "../../services/token.js";
+import emitUpdateGameData from "../emitters/emit_update_game_data.js";
 
 export default function handleRoomJoinRequest(socket) {
     socket.on("room_join", (params) => {
@@ -44,7 +44,7 @@ export default function handleRoomJoinRequest(socket) {
 
             emitJoinRoomSuccess(socket, player);
 
-            emitUpdatePlayerList(player.currentGame);
+            emitUpdateGameData(player.currentGame);
         } catch (error) {
             Logger.error(false, error.stack);
             emitJoinRoomFail(socket, roomName, error);
