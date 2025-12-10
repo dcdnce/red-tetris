@@ -120,11 +120,14 @@ class Game {
         for (const [username, player] of this.players) {
             playerList.push({
                 username: username,
-                board: player.getBoardObject().getFullBoard(),
-                tetriminoType: player
-                    .getBoardObject()
-                    .getTetrimino()
-                    ?.getType(), // TODO delete it's a debug
+                board: player.getBoardObject().getBoard(),
+                boardFull: player.getBoardObject().getFullBoard(),
+                // tetrimino: player.getBoardObject().getTetriminoCoords(),
+                // ghost: player.getBoardObject().getGhostCoords(),
+                // tetriminoType: player
+                //     .getBoardObject()
+                //     .getTetrimino()
+                //     ?.getType(), // TODO delete it's a debug
                 isConnected: player.isConnected,
                 didLost: player.didLost,
                 isLeader: player.token === this.leaderToken,

@@ -11,8 +11,8 @@ const initialState = {
         // players: [
         //     {
         //         username: null,
-        //         board: null,
-        //         tetriminoType: null,
+        //         board: null, [array]
+        //         boardFull: null, [array]
         //         isConnected: null,
         //         didLost: null,
         //         isLeader: null,
