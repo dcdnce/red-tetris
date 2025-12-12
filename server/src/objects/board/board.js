@@ -260,9 +260,7 @@ class Board {
     }
 
     // SETTERS and GETTERS
-    /**
-     * Get inner board WITHOUT current tetrimino and ghost.
-     */
+    /** Get inner board */
     getBoard() {
         return this._board; // should be a reference
     }
@@ -273,97 +271,6 @@ class Board {
 
     getRemainingEPLInputs() {
         return this._remainingEPLInputs;
-    }
-
-    /**
-     * Get ghost coords.
-     *
-     * @returns an array of array [0=y, 1=x, 2=id].
-     */
-    getGhostCoords() {
-        let extraCoords = [];
-
-        if (this._tetrimino != null) {
-            // Add ghost
-            let ghost = this._tetrimino.clone();
-            while (!BoardRules.isTetriminoInLockState(this, ghost)) {
-                ghost.moveDown();
-            }
-            ghost.moveUp();
-
-            const ghostAbsoluteBlocksPosition =
-                ghost.getAbsoluteBlocksPositionArray();
-
-            ghostAbsoluteBlocksPosition.forEach(([x, y]) => {
-                if (!BoardRules.coordsAreOutOfBound(x, y)) {
-                    extraCoords.push([y, x, kGhostBlock]);
-                }
-            });
-        }
-
-        return extraCoords;
-    }
-
-    /**
-     * Get tetrimino coords.
-     *
-     * @returns an array of array [0=y, 1=x, 2=id].
-     */
-    getTetriminoCoords() {
-        let extraCoords = [];
-
-        if (this._tetrimino != null) {
-            // Add tetrimino
-            const absoluteBlocksPosition =
-                this._tetrimino.getAbsoluteBlocksPositionArray();
-            const id = this._tetrimino.id;
-
-            absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!BoardRules.coordsAreOutOfBound(x, y)) {
-                    extraCoords.push([y, x, id]);
-                }
-            });
-        }
-
-        return extraCoords;
-    }
-
-    /**
-     * Get inner board WITH current tetrimino and ghost.
-     */
-    getFullBoard() {
-        let board = this._board.map((row) => [...row]);
-
-        if (this._tetrimino != null) {
-            // Add ghost
-            let ghost = this._tetrimino.clone();
-            while (!BoardRules.isTetriminoInLockState(this, ghost)) {
-                ghost.moveDown();
-            }
-            ghost.moveUp();
-
-            const ghostAbsoluteBlocksPosition =
-                ghost.getAbsoluteBlocksPositionArray();
-
-            ghostAbsoluteBlocksPosition.forEach(([x, y]) => {
-                if (!BoardRules.coordsAreOutOfBound(x, y)) {
-                    board[y][x] = kGhostBlock;
-                }
-            });
-
-            // Add tetrimino
-            const absoluteBlocksPosition =
-                this._tetrimino.getAbsoluteBlocksPositionArray();
-            const id = this._tetrimino.id;
-
-            absoluteBlocksPosition.forEach(([x, y]) => {
-                if (!BoardRules.coordsAreOutOfBound(x, y)) {
-                    board[y][x] = id;
-                }
-            });
-        }
-
-        return board;
     }
 
     getClearedLinesNumber() {

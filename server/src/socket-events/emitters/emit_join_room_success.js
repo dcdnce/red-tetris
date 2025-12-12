@@ -1,4 +1,5 @@
 import Logger from "../../services/logger.js";
+import { GameMapper } from "../../services/mappers/GameMapper.js";
 
 export default function emitJoinRoomSuccess(socket, player) {
     Logger.info(
@@ -12,7 +13,7 @@ export default function emitJoinRoomSuccess(socket, player) {
         // initialGameState
         username: player.username,
         roomName: player.currentGame.roomName,
-        players: player.currentGame.getPlayerListForClient(),
+        players: GameMapper.getPlayerList(player.currentGame),
         token: player.token,
     });
 }

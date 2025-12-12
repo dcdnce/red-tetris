@@ -1,4 +1,5 @@
 import Logger from "../../services/logger.js";
+import { GameMapper } from "../../services/mappers/GameMapper.js";
 import { SocketManager } from "../../services/socketManager.js";
 
 export default function emitUpdateGameData(game) {
@@ -10,6 +11,6 @@ export default function emitUpdateGameData(game) {
         message: `Update game data for room ${game.roomName}`,
         roomName: game.roomName,
         roomState: game.getState(),
-        players: game.getPlayerListForClient(),
+        players: GameMapper.getPlayerList(game),
     });
 }

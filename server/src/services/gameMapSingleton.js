@@ -1,4 +1,5 @@
 import Logger from "./logger.js";
+import { GameMapper } from "./mappers/GameMapper.js";
 
 class GameMapSingleton {
     constructor() {
@@ -18,7 +19,7 @@ class GameMapSingleton {
                 playerCount: gameInstance.players
                     ? gameInstance.players.size
                     : 0,
-                players: gameInstance.getPlayerListForClient(),
+                players: GameMapper.getPlayerList(gameInstance),
             });
         }
         return allRooms;
@@ -34,7 +35,7 @@ class GameMapSingleton {
                     playerCount: gameInstance.players
                         ? gameInstance.players.size
                         : 0,
-                    players: gameInstance.getPlayerListForClient(),
+                    players: GameMapper.getPlayerList(gameInstance),
                 });
             }
         }
