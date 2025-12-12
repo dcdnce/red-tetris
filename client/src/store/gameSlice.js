@@ -13,6 +13,7 @@ const initialState = {
         //         username: null,
         //         board: null, [array]
         //         boardFull: null, [array]
+        //         nextPiece: null, [array]
         //         isConnected: null,
         //         didLost: null,
         //         isLeader: null,

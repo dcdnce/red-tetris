@@ -1,12 +1,14 @@
 import React from "react";
-import { VStack, Grid, Flex, HStack } from "@chakra-ui/react";
+import { VStack, Grid, Flex, Box } from "@chakra-ui/react";
 import { Block } from "./Block";
 import { Keys } from "./Keys";
 import { BoardHeader } from "./BoardHeader";
+import { NextPiece } from "./NextPiece";
 
 function Board({ player, isLocalPlayer }) {
     const board = player.board;
     const boardFull = player.boardFull;
+    const nextPiece = player.nextPiece;
     const allBlocks = [];
 
     if (!player) {
@@ -68,6 +70,7 @@ function Board({ player, isLocalPlayer }) {
                             col={block.col}
                             id={block.id}
                             player={player}
+                            variant={"Board"}
                         />
                     ))}
                 </Grid>
@@ -77,32 +80,44 @@ function Board({ player, isLocalPlayer }) {
 
     // Local player
     return (
-        <VStack
-            width={{ base: "200px", md: "250px", lg: "300px" }}
-            align="stretch"
-        >
-            <BoardHeader player={player} isLocalPlayer={isLocalPlayer} />
+        <Flex direction="row" align="flex-start">
+            {/* NextPiece stays outside and does not affect the width */}
+            <Box ml={4}>
+                <NextPiece nextPiece={nextPiece} />
+            </Box>
 
-            <Grid
-                templateColumns="repeat(10, 1fr)"
-                templateRows="repeat(22, 1fr)"
-                aspectRatio="10/22"
+            {/* Fixed-width game column */}
+            <VStack
+                width={{ base: "200px", md: "250px", lg: "300px" }}
+                align="stretch"
+                flexShrink={0} // prevents it from shrinking when NextPiece is present
             >
-                {allBlocks.map((block) => (
-                    <Block
-                        key={`${block.row}-${block.col}`}
-                        row={block.row}
-                        col={block.col}
-                        id={block.id}
-                        player={player}
-                    />
-                ))}
-            </Grid>
+                <BoardHeader player={player} isLocalPlayer={isLocalPlayer} />
 
-            <Flex justifyContent="space-between" flexDirection="row-reverse">
-                <Keys></Keys>
-            </Flex>
-        </VStack>
+                <Grid
+                    templateColumns="repeat(10, 1fr)"
+                    templateRows="repeat(22, 1fr)"
+                    aspectRatio="10/22"
+                >
+                    {allBlocks.map((block) => (
+                        <Block
+                            key={`${block.row}-${block.col}`}
+                            row={block.row}
+                            col={block.col}
+                            id={block.id}
+                            player={player}
+                        />
+                    ))}
+                </Grid>
+
+                <Flex
+                    justifyContent="space-between"
+                    flexDirection="row-reverse"
+                >
+                    <Keys />
+                </Flex>
+            </VStack>
+        </Flex>
     );
 }
 

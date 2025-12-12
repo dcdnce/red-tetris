@@ -101,6 +101,12 @@ class Player {
     getBoardObject() {
         return this._board;
     }
+
+    getNextPieceId() {
+        if (this.currentGame.getPiecesSequence() === null) return null;
+
+        return this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
+    }
 }
 
 export default Player;

@@ -6,7 +6,6 @@ import { kHardDrop, Tetrimino } from "./tetrimino.js";
 import {
     BOARD_HEIGHT,
     kEmptyBlock,
-    kGhostBlock,
     kIndestructibleBlock,
 } from "../../constants/board_constants.js";
 

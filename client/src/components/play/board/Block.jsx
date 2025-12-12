@@ -14,14 +14,12 @@ const blockColors = {
     9: "beige",
 };
 
-export function Block({ row, col, id, player }) {
-    const didPlayerLost = player.didLost;
-
+export function Block({ row, col, id, player, variant }) {
     let bgColor = blockColors[id];
 
-    // Overrides
-    if (id) {
-        if (didPlayerLost) {
+    // Variant
+    if (variant === "Board" && id) {
+        if (player?.didLost) {
             bgColor = "red.600";
         }
         if (row < 2) {
