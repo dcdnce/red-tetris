@@ -65,7 +65,7 @@ export default function handleRoomExit(socket) {
  * Either called by :
  *  - gameloop after x seconds disconnected
  *  - handleRoomExit() if player quits a lobby being in waiting state
- *  - gane.endAndDelete()
+ *  - game.endAndDelete()
  * @param {Player} player
  */
 export function definitiveDisconnection(player) {

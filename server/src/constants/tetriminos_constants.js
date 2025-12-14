@@ -166,31 +166,31 @@ export const kTetriminosTypes = [
         type: "I",
         rotationStates: [
             [
+                [0, 0],
+                [+1, 0],
+                [+2, 0],
+                [+3, 0],
+            ],
+            [
+                [+2, -1],
+                [+2, 0],
+                [+2, +1],
+                [+2, +2],
+            ],
+            [
                 [0, +1],
                 [+1, +1],
                 [+2, +1],
                 [+3, +1],
             ],
             [
-                [+2, 0],
-                [+2, +1],
-                [+2, +2],
-                [+2, +3],
-            ],
-            [
-                [0, +2],
-                [+1, +2],
-                [+2, +2],
-                [+3, +2],
-            ],
-            [
+                [+1, -1],
                 [+1, 0],
                 [+1, +1],
                 [+1, +2],
-                [+1, +3],
             ],
         ],
-        basePosition: [3, 0], // Spawns in row 0, centered
+        basePosition: [3, 1], // Spawns in row 1, centered
     },
     {
         // O-piece (square)
@@ -292,32 +292,32 @@ export const kTetriminosTypes = [
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
     {
-        // S-piece
+        // Z-piece
         // Spawns horizontally, leaning left.
         id: 6,
-        type: "S",
+        type: "Z",
         rotationStates: [
             [
-                [-1, +1],
-                [0, +1],
                 [0, 0],
                 [+1, 0],
-            ],
-            [
-                [0, +1],
-                [0, 0],
-                [+1, 0],
-                [+1, -1],
-            ],
-            [
-                [+1, -1],
                 [0, -1],
+                [-1, -1],
+            ],
+            [
+                [0, 0],
+                [0, +1],
+                [+1, 0],
+                [+1, -1],
+            ],
+            [
                 [0, 0],
                 [-1, 0],
+                [0, +1],
+                [+1, +1],
             ],
             [
-                [0, -1],
                 [0, 0],
+                [0, -1],
                 [-1, 0],
                 [-1, +1],
             ],
@@ -325,32 +325,32 @@ export const kTetriminosTypes = [
         basePosition: [4, 1], // Spawns in row 1, column 4
     },
     {
-        // Z-piece
+        // S-piece
         // Spawns horizontally, leaning left.
         id: 7,
-        type: "Z",
+        type: "S",
         rotationStates: [
             [
-                [+1, -1],
-                [0, -1],
                 [0, 0],
                 [-1, 0],
+                [0, -1],
+                [+1, -1],
             ],
             [
-                [0, -1],
                 [0, 0],
+                [0, -1],
                 [+1, 0],
                 [+1, +1],
             ],
             [
-                [-1, +1],
-                [0, +1],
                 [0, 0],
                 [+1, 0],
+                [0, +1],
+                [-1, +1],
             ],
             [
-                [0, +1],
                 [0, 0],
+                [0, +1],
                 [-1, 0],
                 [-1, -1],
             ],

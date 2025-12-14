@@ -9,6 +9,7 @@ import Logger from "./services/logger.js";
 /* --- Configuration initiale --- */
 const PORT = process.env.SERVER_PORT || 3001; // Récupère le port depuis les variables d'environnement ou utilise 3001 par défaut
 
+Logger.warning(false, null, `Create .env if not already done.`);
 Logger.info(false, null, `Server is in debug mode : ${process.env.DEBUG}`);
 
 // Calcule les chemins __dirname et __filename pour les modules ES

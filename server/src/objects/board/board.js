@@ -268,6 +268,10 @@ class Board {
         return this._tetrimino; // should be a reference
     }
 
+    clearTetrimino() {
+        this._tetrimino = null;
+    }
+
     getRemainingEPLInputs() {
         return this._remainingEPLInputs;
     }

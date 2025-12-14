@@ -1,12 +1,12 @@
 import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 import Logger from "../services/logger.js";
 import GameMapSingleton from "../services/gameMapSingleton.js";
-import RoomState, { kStartedState, kPendingState } from "./roomstate.js";
+import RoomState, { kPendingState } from "./roomstate.js";
 import GameLogicHandler from "./gamelogichandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
 
 const GAME_TICK_RATE_MS = 1000;
-const PIECE_SEQUENCE_LENGTH = 1000;
+export const PIECE_SEQUENCE_LENGTH = 1000;
 
 /**
  * Class handling game room responsabilities.
