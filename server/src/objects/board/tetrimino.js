@@ -152,4 +152,8 @@ export class Tetrimino {
     getType() {
         return this._type;
     }
+
+    getPosition() {
+        return [...this._position];
+    }
 }

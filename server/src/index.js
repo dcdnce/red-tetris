@@ -26,13 +26,17 @@ const httpServer = createServer(appExpress);
 // Sert les fichiers statiques generes par le build de Vite
 const clientBuildPath = path.join(ROOT_DIR, "dist", "client");
 appExpress.use(express.static(clientBuildPath));
-console.log(`Serving static files from: ${clientBuildPath}`);
+Logger.info(true, null, `Serving static files from: ${clientBuildPath}`);
 
 /* --- Route Catch All --- */
 appExpress.get(/^\/(?!api|socket.io).*/, (req, res) => {
     // Regex pour capturer tout sauf /api et /socket.io
     const indexPath = path.join(clientBuildPath, "index.html");
-    console.log(`Serving index.html for route: ${req.path} from ${indexPath}`); // Debug
+    Logger.info(
+        true,
+        null,
+        `Serving index.html for route: ${req.path} from ${indexPath}`
+    );
     res.sendFile(indexPath, (err) => {
         if (err) {
             console.error("Error sending index.html:", err);
@@ -46,9 +50,19 @@ initializeSocketIO(httpServer);
 
 /* --- Demarrage serveur --- */
 httpServer.listen(PORT, () => {
-    console.log(`--- Server listening on http://localhost:${PORT} ---`);
-    console.log(`--- Access the app in dev at http://localhost:5173 ---`);
-    console.log(
+    Logger.info(
+        false,
+        null,
+        `--- Server listening on http://localhost:${PORT} ---`
+    );
+    Logger.info(
+        false,
+        null,
+        `--- Access the app in dev at http://localhost:5173 ---`
+    );
+    Logger.info(
+        false,
+        null,
         `--- Access the app in production (after build) at http://localhost:${PORT} ---`
     );
 });

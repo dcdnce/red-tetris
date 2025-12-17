@@ -13,6 +13,7 @@ export default defineConfig({
 
         // 3. Configuration de la couverture de code
         coverage: {
+            enabled: "true",
             provider: "v8", // Utiliser le provider v8
             reporter: ["text", "json", "html"], // Formats de rapport
             reportsDirectory: "./coverage", // Dossier de sortie

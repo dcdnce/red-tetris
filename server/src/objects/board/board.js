@@ -9,7 +9,7 @@ import {
     kIndestructibleBlock,
 } from "../../constants/board_constants.js";
 
-const MAXIMUM_EPL_INPUTS = 15;
+export const MAXIMUM_EPL_INPUTS = 15;
 
 /**
  * Class holding the board object (and tetrimino),

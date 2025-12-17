@@ -21,8 +21,6 @@ export class GameMapper {
             nextPiece[y][x] = id;
         }
 
-        // console.log(nextPiece);
-
         return nextPiece;
     }
 
