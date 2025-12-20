@@ -53,7 +53,7 @@ function Play() {
             </HStack>
 
             <Flex
-                direction={{ base: "column", md: "row" }}
+                direction="row"
                 justifyContent="center"
                 align="center"
             >

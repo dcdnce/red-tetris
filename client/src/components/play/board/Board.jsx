@@ -88,7 +88,6 @@ function Board({ player, isLocalPlayer }) {
 
             {/* Fixed-width game column */}
             <VStack
-                width={{ base: "200px", md: "250px", lg: "300px" }}
                 align="stretch"
                 flexShrink={0} // prevents it from shrinking when NextPiece is present
             >
@@ -98,6 +97,7 @@ function Board({ player, isLocalPlayer }) {
                     templateColumns="repeat(10, 1fr)"
                     templateRows="repeat(22, 1fr)"
                     aspectRatio="10/22"
+                    width="200px"
                 >
                     {allBlocks.map((block) => (
                         <Block
