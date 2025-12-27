@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Badge, Flex, HStack, Tooltip } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -30,14 +30,29 @@ export function BoardHeader({ player, isLocalPlayer }) {
 }
 
 function UsernameBadge({ username, isLocalPlayer }) {
-    const size = isLocalPlayer ? "lg" : "xx-small";
-    const p = isLocalPlayer ? null : "1";
+    const baseSize = isLocalPlayer ? 18 : 14;
+    const minSize = 8;
+    let displayedUsername = username;
+
+    // Adapt fontsize and truncate if needed
+    let fontSize = baseSize - username.length * 0.6;
+    if (fontSize < minSize) {
+        displayedUsername = username.substring(0, 10) + "...";
+        fontSize = baseSize - displayedUsername.length * 0.6;
+    }
 
     return (
-        <Badge colorScheme="purple" variant="solid" fontSize={size} p={p}>
-            {username}
-        </Badge>
-    );
+        <Tooltip label={username}>
+            <Badge
+                colorScheme="purple"
+                variant="solid"
+                fontSize={`${fontSize}px`}
+                px={2}
+            >
+                {displayedUsername}
+            </Badge>
+        </Tooltip>
+    ); 
 }
 
 function ConnexionStatusBadge({ isConnected }) {
