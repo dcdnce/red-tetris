@@ -24,7 +24,7 @@ function Play() {
     const opponents = players?.filter((p) => p.username !== username);
     const isMobile = useIsMobile();
 
-    useRoomSocketHandlers(roomName, username);
+    useRoomSocketHandlers();
     useRoomJoin(roomName, username);
     useUserInput(roomName, username, roomState);
 
@@ -52,11 +52,7 @@ function Play() {
                 <Header />
             </HStack>
 
-            <Flex
-                direction="row"
-                justifyContent="center"
-                align="center"
-            >
+            <Flex direction="row" justifyContent="center" align="center">
                 {/* --- Player zone --- */}
                 <Box flex={2} display="flex" justifyContent="center">
                     {localPlayer && (

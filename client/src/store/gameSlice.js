@@ -39,7 +39,7 @@ const gameSlice = createSlice({
                 error: null,
             };
 
-            console.log(action.payload.players);
+            // console.log(action.payload.players);
         },
         updateGameData: (state, action) => {
             const roomName = action.payload.roomName;
@@ -59,7 +59,7 @@ const gameSlice = createSlice({
         roomLaunchSuccess: (state, action) => {
             const roomName = action.payload.roomName;
             state.rooms[roomName].roomState = kStartedState;
-            console.log(action.payload.message);
+            // console.log(action.payload.message);
         },
     },
 });

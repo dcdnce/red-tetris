@@ -6,6 +6,7 @@ export function useRoomJoin(roomName, username) {
     useEffect(() => {
         const token = localStorage.getItem(`${username}${roomName}`) || null;
 
+        console.log("room join emitted");
         socket.emit("room_join", { roomName, username, token });
 
         return () => {

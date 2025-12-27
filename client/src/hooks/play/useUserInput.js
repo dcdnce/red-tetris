@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback, useRef } from "react"; // Importer useRef et useCallback
 import { socket } from "../../socket.js";
 import { kStartedState } from "../../services/constants.js";
 
@@ -15,16 +15,25 @@ const isTetrisInput = (key) => {
 };
 
 export function useUserInput(roomName, username, roomState) {
-    const emitUserInput = (event) => {
-        const key = event.key;
+    const roomStateRef = useRef(roomState);
 
-        if (isTetrisInput(key) && roomState === kStartedState) {
-            const token =
-                localStorage.getItem(`${username}${roomName}`) || null;
+    useEffect(() => {
+        // RoomState ref
+        roomStateRef.current = roomState;
+    }, [roomState]);
 
-            socket.emit("user_input", { roomName, username, token, key });
-        }
-    };
+    const emitUserInput = useCallback(
+        (event) => {
+            const key = event.key;
+
+            if (isTetrisInput(key) && roomStateRef.current === kStartedState) {
+                const token =
+                    localStorage.getItem(`${username}${roomName}`) || null;
+                socket.emit("user_input", { roomName, username, token, key });
+            }
+        },
+        [roomName, username]
+    ); // [US-54] Stable values
 
     useEffect(() => {
         window.addEventListener("keydown", emitUserInput);
@@ -32,5 +41,5 @@ export function useUserInput(roomName, username, roomState) {
         return () => {
             window.removeEventListener("keydown", emitUserInput);
         };
-    }, [roomName, username, roomState]);
+    }, [emitUserInput]);
 }
