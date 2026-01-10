@@ -107,6 +107,18 @@ class Player {
 
         return this.currentGame.getPiecesSequence()[this._piecesSequenceIndex];
     }
+
+    startBoardStats() {
+        this._board.boardStats.startTimer();
+    }
+
+    getPiecesDropped() {
+        return this._board.boardStats.getPiecesDropped();
+    }
+
+    getLinesCleared() {
+        return this._board.boardStats.getLinesCleared();
+    }
 }
 
 export default Player;

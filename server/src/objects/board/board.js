@@ -3,6 +3,7 @@ import { TetriminoOutOfBoundsException } from "../../services/exceptions.js";
 import { LockDelay } from "./lockdelay.js";
 import { BoardRules } from "./boardrules.js";
 import { kHardDrop, Tetrimino } from "./tetrimino.js";
+import { BoardStats } from "./BoardStats.js";
 import {
     BOARD_HEIGHT,
     kEmptyBlock,
@@ -18,6 +19,7 @@ export const MAXIMUM_EPL_INPUTS = 15;
  */
 class Board {
     constructor() {
+        this.boardStats = new BoardStats();
         this.lockDelay = new LockDelay();
         this._board = createEmptyBoard();
         this._tetrimino = null;
@@ -205,6 +207,8 @@ class Board {
         this._tetrimino = null;
         this.lockDelay.end();
         this._clearedLinesNumber = this.clearLines();
+        this.boardStats.addToLinesCleared(this._clearedLinesNumber);
+        this.boardStats.incrementPiecesDropped();
         // Logger.success(true, null, "Applied lock");
     }
 

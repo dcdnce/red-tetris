@@ -1,8 +1,8 @@
 import { Block } from "./Block.jsx";
 import React from "react";
-import { Grid } from "@chakra-ui/react";
+import { Box, Grid, VStack } from "@chakra-ui/react";
 
-export function NextPiece({ nextPiece }) {
+function NextPiece({ nextPiece }) {
     if (nextPiece === null || nextPiece === undefined) {
         return <></>;
     }
@@ -21,6 +21,11 @@ export function NextPiece({ nextPiece }) {
             templateColumns="repeat(3, 1fr)"
             templateRows="repeat(4, 1fr)"
             aspectRatio="3/4"
+            bg="whiteAlpha.400"
+            borderRadius={3}
+            p={1}
+            pl={4}
+            pt={3}
         >
             {nextPiece &&
                 allBlocks.map((block) => (
@@ -34,5 +39,32 @@ export function NextPiece({ nextPiece }) {
                     />
                 ))}
         </Grid>
+    );
+}
+
+function Stats({ piecesDropped, linesCleared }) {
+    return (
+        <Box bg="whiteAlpha.100" borderRadius="md" p={3}>
+            {piecesDropped} <br />
+            {linesCleared}
+        </Box>
+    );
+}
+
+export function BoardSidebar({ player }) {
+    const nextPiece = player.nextPiece;
+    const piecesDropped = player.piecesDropped;
+    const linesCleared = player.linesCleared;
+
+    return (
+        <Box ml={4}>
+            <VStack mt={10} mr={2} spacing={2}>
+                <NextPiece nextPiece={nextPiece} />
+                <Stats
+                    piecesDropped={piecesDropped}
+                    linesCleared={linesCleared}
+                />
+            </VStack>
+        </Box>
     );
 }

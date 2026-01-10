@@ -3,12 +3,11 @@ import { VStack, Grid, Flex, Box } from "@chakra-ui/react";
 import { Block } from "./Block";
 import { Keys } from "./Keys";
 import { BoardHeader } from "./BoardHeader";
-import { NextPiece } from "./NextPiece";
+import { BoardSidebar } from "./BoardSidebar";
 
 function Board({ player, isLocalPlayer }) {
     const board = player.board;
     const boardFull = player.boardFull;
-    const nextPiece = player.nextPiece;
     const allBlocks = [];
 
     if (!player) {
@@ -81,10 +80,7 @@ function Board({ player, isLocalPlayer }) {
     // Local player
     return (
         <Flex direction="row" align="flex-start">
-            {/* NextPiece stays outside and does not affect the width */}
-            <Box ml={4}>
-                <NextPiece nextPiece={nextPiece} />
-            </Box>
+            <BoardSidebar player={player} />
 
             {/* Fixed-width game column */}
             <VStack

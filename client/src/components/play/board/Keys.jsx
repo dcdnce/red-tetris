@@ -37,8 +37,8 @@ const tooltipLabel = (
 export function Keys() {
     return (
         <Tooltip label={tooltipLabel}>
-            <Badge cursor="help" fontSize="xx-small">
-                How to play
+            <Badge cursor="help" fontSize="xx-small" bg="whiteAlpha.400">
+                ?
             </Badge>
         </Tooltip>
     );

@@ -39,6 +39,7 @@ class Game {
         this.generatePiecesSequence();
 
         this.setStarted();
+        this.startBoardStats();
 
         this.gameLogicHandler = new GameLogicHandler(
             this.roomName,
@@ -121,6 +122,12 @@ class Game {
 
     setStarted() {
         this.state.setStarted();
+    }
+
+    startBoardStats() {
+        this.players.forEach((player) => {
+            player.startBoardStats();
+        });
     }
 
     setFinished() {

@@ -52,7 +52,7 @@ function UsernameBadge({ username, isLocalPlayer }) {
                 {displayedUsername}
             </Badge>
         </Tooltip>
-    ); 
+    );
 }
 
 function ConnexionStatusBadge({ isConnected }) {
@@ -64,7 +64,7 @@ function ConnexionStatusBadge({ isConnected }) {
         <>
             {isConnected && (
                 <Tooltip label="Connected">
-                    <Badge p="1" fontSize="xx-small">
+                    <Badge p="1" fontSize="xx-small" bg="whiteAlpha.400">
                         🔗
                     </Badge>
                 </Tooltip>
@@ -88,7 +88,7 @@ function RoomLeaderBadge({ username }) {
         <>
             {isRoomLeader && (
                 <Tooltip label="Room leader">
-                    <Badge p="1" fontSize="xx-small">
+                    <Badge p="1" fontSize="xx-small" bg="whiteAlpha.400">
                         👑
                     </Badge>
                 </Tooltip>

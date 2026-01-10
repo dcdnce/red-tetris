@@ -1,5 +1,3 @@
-import Logger from "../../services/logger.js";
-
 const LOCK_DELAY_MS = 500;
 
 export class LockDelay {

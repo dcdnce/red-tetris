@@ -32,6 +32,8 @@ export class GameMapper {
                 board: player.getBoardObject().getBoard(),
                 boardFull: BoardMapper.getFullBoard(player.getBoardObject()),
                 nextPiece: GameMapper.#getNextPiece(player.getNextPieceId()),
+                piecesDropped: player.getPiecesDropped(),
+                linesCleared: player.getLinesCleared(),
                 // tetrimino: BoardMapper.getTetriminoCoords(),
                 // ghost: BoardMapper.getGhostCoords(),
                 // tetriminoType: player
