@@ -1,3 +1,5 @@
+import e from "express";
+
 export class BoardStats {
     #piecesDropped = 0;
     #linesCleared = 0;
@@ -33,10 +35,12 @@ export class BoardStats {
     }
 
     getPPS() {
-        if (this.#startTime === null) {
-            throw new Error("getPPS() called but startTime was never set.");
-        }
+        // if (this.#startTime === null) {
+        //     return (0);
+        // }
 
-        return Math.floor((Date.now - this.#startTime) / 1000);
+        const elapsedTime = Math.floor((Date.now() - this.#startTime) / 1000);
+
+        return (this.#piecesDropped / elapsedTime).toFixed(2);
     }
 }

@@ -93,7 +93,12 @@ function Board({ player, isLocalPlayer }) {
                     templateColumns="repeat(10, 1fr)"
                     templateRows="repeat(22, 1fr)"
                     aspectRatio="10/22"
-                    width="200px"
+                    width={{
+                        base: "160px",
+                        md: "220px",
+                        lg: "270px",
+                        xl: "300px",
+                    }}
                 >
                     {allBlocks.map((block) => (
                         <Block

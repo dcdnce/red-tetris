@@ -112,8 +112,8 @@ class Player {
         this._board.boardStats.startTimer();
     }
 
-    getPiecesDropped() {
-        return this._board.boardStats.getPiecesDropped();
+    getPPS() {
+        return this._board.boardStats.getPPS();
     }
 
     getLinesCleared() {

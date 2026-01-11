@@ -1,7 +1,19 @@
 import { useBreakpointValue } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 export function useIsMobile() {
-    const isMobile = useBreakpointValue({ base: true, md: false });
+    const isSmallWidth = useBreakpointValue({ base: true, md: false });
+    const [isSmallHeight, setIsSmallHeight] = useState(false);
 
-    return isMobile;
+    useEffect(() => {
+        const checkHeight = () => {
+            setIsSmallHeight(window.innerHeight < 700);
+        };
+
+        checkHeight();
+        window.addEventListener("resize", checkHeight);
+        return () => window.removeEventListener("resize", checkHeight);
+    }, []);
+
+    return isSmallWidth || isSmallHeight;
 }
