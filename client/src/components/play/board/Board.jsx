@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { VStack, Grid, Flex, Box } from "@chakra-ui/react";
-import { Block } from "./Block";
-import { Keys } from "./Keys";
-import { BoardHeader } from "./BoardHeader";
-import { BoardSidebar } from "./BoardSidebar";
+import { Block } from "./block/Block";
+import { Keys } from "./layout/Keys";
+import { BoardHeader } from "./layout/BoardHeader";
+import { BoardSidebar } from "./layout/BoardSidebar";
+import { motion } from "framer-motion";
+
+const MotionVStack = motion.create(VStack);
 
 function Board({ player, isLocalPlayer }) {
+    const [isShaking, setIsShaking] = useState(false);
     const board = player.board;
     const boardFull = player.boardFull;
     const allBlocks = [];
@@ -14,38 +18,17 @@ function Board({ player, isLocalPlayer }) {
         return null;
     }
 
-    // Board for opponent
-    if (isLocalPlayer == false) {
-        let colHi = Array(10).fill(23);
+    buildAllBlocks(isLocalPlayer, board, boardFull, allBlocks);
 
-        // Craft spectrum (this is so so stupid and useless)
-        for (let x = 0; x < 10; x++) {
-            for (let y = 0; y < 22; y++) {
-                if (board[y][x] != 0) {
-                    colHi[x] = y;
-                    break;
-                }
-            }
-        }
-
-        // Build blocks array
-        for (let x = 0; x < 10; x++) {
-            for (let y = 0; y < 22; y++) {
-                let currentBlock = y >= colHi[x] ? 8 : 0;
-                allBlocks.push({ row: y, col: x, id: currentBlock });
-            }
-        }
-    }
-
-    // Board for local player
-    if (isLocalPlayer) {
-        // Build blocks array
-        for (let i = 0; i < 22; i++) {
-            for (let j = 0; j < 10; j++) {
-                allBlocks.push({ row: i, col: j, id: boardFull[i][j] });
-            }
-        }
-    }
+    const shakeAnimation = {
+        shake: {
+            x: [0, -5, 5, -5, 5, -3, 3, 0],
+            transition: { duration: 0.3, ease: "easeInOut" },
+        },
+        idle: {
+            x: 0,
+        },
+    };
 
     // Opponent
     if (!isLocalPlayer) {
@@ -83,9 +66,16 @@ function Board({ player, isLocalPlayer }) {
             <BoardSidebar player={player} />
 
             {/* Fixed-width game column */}
-            <VStack
+            <MotionVStack
                 align="stretch"
                 flexShrink={0} // prevents it from shrinking when NextPiece is present
+                variants={shakeAnimation}
+                animate={isShaking ? "shake" : "idle"}
+                onAnimationComplete={() => {
+                    if (isShaking) {
+                        setIsShaking(false);
+                    }
+                }}
             >
                 <BoardHeader player={player} isLocalPlayer={isLocalPlayer} />
 
@@ -117,9 +107,44 @@ function Board({ player, isLocalPlayer }) {
                 >
                     <Keys />
                 </Flex>
-            </VStack>
+            </MotionVStack>
         </Flex>
     );
 }
 
 export default Board;
+
+const buildAllBlocks = (isLocalPlayer, board, boardFull, allBlocks) => {
+    // Board for opponent
+    if (isLocalPlayer == false) {
+        let colHi = Array(10).fill(23);
+
+        // Craft spectrum (this is so so stupid and useless)
+        for (let x = 0; x < 10; x++) {
+            for (let y = 0; y < 22; y++) {
+                if (board[y][x] != 0) {
+                    colHi[x] = y;
+                    break;
+                }
+            }
+        }
+
+        // Build blocks array
+        for (let x = 0; x < 10; x++) {
+            for (let y = 0; y < 22; y++) {
+                let currentBlock = y >= colHi[x] ? 8 : 0;
+                allBlocks.push({ row: y, col: x, id: currentBlock });
+            }
+        }
+    }
+
+    // Board for local player
+    if (isLocalPlayer) {
+        // Build blocks array
+        for (let i = 0; i < 22; i++) {
+            for (let j = 0; j < 10; j++) {
+                allBlocks.push({ row: i, col: j, id: boardFull[i][j] });
+            }
+        }
+    }
+};

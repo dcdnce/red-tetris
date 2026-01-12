@@ -1,9 +1,12 @@
 import React from "react";
-import roomLaunchGameService from "../../../services/roomLaunchGameService";
+import roomLaunchGameService from "../../../../services/roomLaunchGameService";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectIsRoomLeader, selectRoomState } from "../../../store/gameSlice";
-import { kStartedState } from "../../../services/constants";
+import {
+    selectIsRoomLeader,
+    selectRoomState,
+} from "../../../../store/gameSlice";
+import { kStartedState } from "../../../../services/constants";
 import { Box, Button } from "@chakra-ui/react";
 
 function RoomLeaderDashboard() {

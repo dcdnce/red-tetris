@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-const MotionText = motion(Text);
+const MotionText = motion.create(Text);
 
 export function useValueDelta(value) {
     const prev = useRef(value);

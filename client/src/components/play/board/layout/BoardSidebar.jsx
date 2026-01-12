@@ -1,6 +1,6 @@
-import { Block } from "./Block.jsx";
+import { Block } from "../block/Block.jsx";
 import { Box, Grid, VStack, HStack, Text, useToken } from "@chakra-ui/react";
-import { AnimatedNumber, useValueDelta } from "./BoardEffects.jsx";
+import { AnimatedNumber, useValueDelta } from "../BoardEffects.jsx";
 
 function NextPiece({ nextPiece }) {
     if (nextPiece === null || nextPiece === undefined) {
@@ -26,7 +26,10 @@ function NextPiece({ nextPiece }) {
             p={1}
             pl={4}
             pt={3}
-            width={24}
+            width={{
+                md: "40",
+                lg: "24",
+            }}
         >
             {nextPiece &&
                 allBlocks.map((block) => (
@@ -58,7 +61,10 @@ function Stats({ piecesPerSecond, linesCleared }) {
         <Box
             bg="whiteAlpha.400"
             borderRadius="3"
-            width={24}
+            width={{
+                md: "40",
+                lg: "24",
+            }}
             p={1}
             cursor="default"
         >

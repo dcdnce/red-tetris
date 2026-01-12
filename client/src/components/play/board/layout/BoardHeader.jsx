@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Badge, Flex, HStack, Tooltip } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectIsRoomLeader } from "../../../store/gameSlice";
+import { selectIsRoomLeader } from "../../../../store/gameSlice";
 import RoomLeaderDashboard from "./RoomLeaderDashboard";
 
 export function BoardHeader({ player, isLocalPlayer }) {
