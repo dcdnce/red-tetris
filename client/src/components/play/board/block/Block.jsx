@@ -14,7 +14,7 @@ const blockColors = {
     9: "beige",
 };
 
-export function Block({ row, col, id, player, variant }) {
+function BlockComponent({ row, col, id, player, variant }) {
     let bgColor = blockColors[id];
 
     // Variant
@@ -49,3 +49,5 @@ export function Block({ row, col, id, player, variant }) {
         </Box>
     );
 }
+
+export const Block = React.memo(BlockComponent);

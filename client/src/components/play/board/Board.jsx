@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { VStack, Grid, Flex } from "@chakra-ui/react";
 import { Block } from "./block/Block";
 import { Keys } from "./layout/Keys";
@@ -6,20 +6,19 @@ import { BoardHeader } from "./layout/BoardHeader";
 import { BoardSidebar } from "./layout/BoardSidebar";
 import { motion } from "framer-motion";
 import { shakeAnimation, useShake } from "./BoardEffects";
+import { useAllBlocks } from "../../../hooks/play/useAllBlocks";
 
 const MotionVStack = motion.create(VStack);
 
 function Board({ player, isLocalPlayer }) {
     const { isShaking, onAnimationComplete } = useShake(player.username);
-    const board = player.board;
-    const boardFull = player.boardFull;
-    const allBlocks = [];
 
     if (!player) {
         return null;
     }
 
-    buildAllBlocks(isLocalPlayer, board, boardFull, allBlocks);
+    //[US-57] useMemo - re renders only if one of the following changes
+    const allBlocks = useAllBlocks(isLocalPlayer, player);
 
     // Opponent
     if (!isLocalPlayer) {
