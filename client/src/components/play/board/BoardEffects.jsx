@@ -1,6 +1,8 @@
 import { Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { selectLastHardDrop } from "../../../store/uiSlice";
 const MotionText = motion.create(Text);
 
 export function useValueDelta(value) {
@@ -30,3 +32,32 @@ export function AnimatedNumber({ value, color = "black", duration = 0.15 }) {
         </MotionText>
     );
 }
+
+export function useShake(playerUsername) {
+    const [isShaking, setIsShaking] = useState(false);
+    const lastHardDrop = useSelector(selectLastHardDrop);
+
+    useEffect(() => {
+        if (lastHardDrop && lastHardDrop.username === playerUsername) {
+            setIsShaking(true);
+        }
+    }, [lastHardDrop, playerUsername]);
+
+    const onAnimationComplete = useCallback(() => {
+        if (isShaking) {
+            setIsShaking(false);
+        }
+    }, [isShaking]);
+
+    return { isShaking, onAnimationComplete };
+}
+
+export const shakeAnimation = {
+    shake: {
+        y: [0, -5, 1, -5, 1, -3, 0],
+        transition: { duration: 0.3, ease: "easeInOut" },
+    },
+    idle: {
+        y: 0,
+    },
+};

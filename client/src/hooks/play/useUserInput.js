@@ -1,6 +1,8 @@
 import { useEffect, useCallback, useRef } from "react"; // Importer useRef et useCallback
 import { socket } from "../../socket.js";
 import { kStartedState } from "../../services/constants.js";
+import { useDispatch } from "react-redux";
+import { hardDropEffect } from "../../store/uiSlice.js";
 
 const isTetrisInput = (key) => {
     return (
@@ -16,6 +18,7 @@ const isTetrisInput = (key) => {
 
 export function useUserInput(roomName, username, roomState) {
     const roomStateRef = useRef(roomState);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         // RoomState ref
@@ -25,6 +28,10 @@ export function useUserInput(roomName, username, roomState) {
     const emitUserInput = useCallback(
         (event) => {
             const key = event.key;
+
+            if (key === " ") {
+                dispatch(hardDropEffect({ username }));
+            }
 
             if (isTetrisInput(key) && roomStateRef.current === kStartedState) {
                 const token =
