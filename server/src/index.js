@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { initializeSocketIO } from "./socket-events/initialize_socketio.js";
 import Logger from "./services/logger.js";
+import { initializeDatabase } from "./config/database.js";
 
 /* --- Configuration initiale --- */
 const PORT = process.env.SERVER_PORT || 3001; // Récupère le port depuis les variables d'environnement ou utilise 3001 par défaut
@@ -21,6 +22,9 @@ const ROOT_DIR = path.resolve(__dirname, "..");
 /* --- Initialisation du serveur --- */
 const appExpress = express();
 const httpServer = createServer(appExpress);
+
+/* --- Initialise db --- */
+await initializeDatabase();
 
 /* --- Middlewares Express --- */
 // Sert les fichiers statiques generes par le build de Vite
