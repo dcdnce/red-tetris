@@ -25,12 +25,14 @@ class Board {
         this._tetrimino = null;
         this._remainingEPLInputs = MAXIMUM_EPL_INPUTS;
         this._clearedLinesNumber = 0;
+        this._tetriminoSpawnY = null; // Track spawn Y for drop scoring
     }
 
     handleTetriminoSpawn(id) {
         if (this._tetrimino != null) return;
 
         this._tetrimino = new Tetrimino(id);
+        this._tetriminoSpawnY = this._tetrimino.getY(); // Save spawn position
 
         if (BoardRules.isBlockedOut(this)) {
             Logger.error(true, "Spawn is partially locked, BLOCK OUT.");
@@ -129,6 +131,8 @@ class Board {
 
             case "ArrowDown":
                 testedTetrimino.moveDown();
+                // Soft drop gives 1 point per cell
+                this.boardStats.addScoreForSoftDrop(1);
                 break;
 
             case " ":
@@ -183,6 +187,16 @@ class Board {
             throw new Error("lockTetrimino called without valid tetrimino");
         }
 
+        // Calculate hard drop score if it was a hard drop
+        if (
+            this._tetrimino.lastMove === kHardDrop &&
+            this._tetriminoSpawnY !== null
+        ) {
+            const dropDistance =
+                this._tetrimino.getY() - this._tetriminoSpawnY;
+            this.boardStats.addScoreForHardDrop(dropDistance);
+        }
+
         const absoluteBlocksPosition =
             this._tetrimino.getAbsoluteBlocksPositionArray();
 
@@ -205,9 +219,12 @@ class Board {
         }
 
         this._tetrimino = null;
+        this._tetriminoSpawnY = null; // Reset spawn Y
         this.lockDelay.end();
         this._clearedLinesNumber = this.clearLines();
         this.boardStats.addToLinesCleared(this._clearedLinesNumber);
+        // Calculate score for cleared lines (includes combo)
+        this.boardStats.addScoreForLines(this._clearedLinesNumber);
         this.boardStats.incrementPiecesDropped();
         // Logger.success(true, null, "Applied lock");
     }
@@ -247,7 +264,9 @@ class Board {
             for (let i = 0; i < BOARD_HEIGHT - 1; i++) {
                 innerBoard[i] = innerBoard[i + 1];
             }
-            innerBoard[BOARD_HEIGHT - 1] = Array(10).fill(kIndestructibleBlock); // Add indestructible line
+            innerBoard[BOARD_HEIGHT - 1] = Array(10).fill(
+                kIndestructibleBlock
+            ); // Add indestructible line
 
             // Check eventual top out
             if (!BoardRules.isLineEmpty(voidedLine)) {

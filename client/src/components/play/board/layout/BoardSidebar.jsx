@@ -46,16 +46,26 @@ function NextPiece({ nextPiece }) {
     );
 }
 
-function Stats({ piecesPerSecond, linesCleared }) {
+function Stats({ piecesPerSecond, linesCleared, score }) {
     const [green, purple, red] = useToken("colors", [
         "green.600",
         "purple.400",
         "red.600",
     ]);
+
     const lcDelta = useValueDelta(linesCleared);
     const lcColor = lcDelta >= 3 ? purple : lcDelta >= 1 ? green : "black";
     const psDelta = useValueDelta(piecesPerSecond);
     const psColor = psDelta < 0 ? red : "black";
+    const scoreDelta = useValueDelta(score);
+    const scoreColor =
+        scoreDelta >= 800
+            ? purple
+            : scoreDelta >= 500
+              ? red
+              : scoreDelta > 0
+                ? green
+                : "black";
 
     return (
         <Box
@@ -74,7 +84,12 @@ function Stats({ piecesPerSecond, linesCleared }) {
                 </Text>
                 <AnimatedNumber value={piecesPerSecond} color={psColor} />
             </HStack>
-
+            <HStack justify="space-between">
+                <Text fontSize="10" opacity={0.6}>
+                    Score
+                </Text>
+                <AnimatedNumber value={score} color={scoreColor} />
+            </HStack>
             <HStack justify="space-between">
                 <Text fontSize="10" opacity={0.6}>
                     lines cleared
@@ -92,6 +107,7 @@ function Stats({ piecesPerSecond, linesCleared }) {
 export function BoardSidebar({ player }) {
     const nextPiece = player.nextPiece;
     const piecesPerSecond = player.piecesPerSecond;
+    const score = player.score;
     const linesCleared = player.linesCleared;
 
     return (
@@ -102,6 +118,7 @@ export function BoardSidebar({ player }) {
                 <Stats
                     piecesPerSecond={piecesPerSecond}
                     linesCleared={linesCleared}
+                    score={score}
                 />
             </VStack>
         </Box>

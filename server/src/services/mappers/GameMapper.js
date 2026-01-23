@@ -27,13 +27,19 @@ export class GameMapper {
     static getPlayerList(gameObject) {
         const playerList = [];
         for (const [username, player] of gameObject.players) {
+            const boardObject = player.getBoardObject();
+            const boardStats = boardObject.boardStats;
+            
             playerList.push({
                 username: username,
-                board: player.getBoardObject().getBoard(),
-                boardFull: BoardMapper.getFullBoard(player.getBoardObject()),
+                board: boardObject.getBoard(),
+                boardFull: BoardMapper.getFullBoard(boardObject),
                 nextPiece: GameMapper.#getNextPiece(player.getNextPieceId()),
                 piecesPerSecond: player.getPPS(),
                 linesCleared: player.getLinesCleared(),
+                score: boardStats.getScore(),
+                level: boardStats.getLevel(),
+                combo: boardStats.getCombo(),
                 // tetrimino: BoardMapper.getTetriminoCoords(),
                 // ghost: BoardMapper.getGhostCoords(),
                 // tetriminoType: player
@@ -43,9 +49,7 @@ export class GameMapper {
                 isConnected: player.isConnected,
                 didLost: player.didLost,
                 isLeader: player.token === gameObject.leaderToken,
-                remainingEPLInputs: player
-                    .getBoardObject()
-                    .getRemainingEPLInputs(),
+                remainingEPLInputs: boardObject.getRemainingEPLInputs(),
             });
         }
         return playerList;
