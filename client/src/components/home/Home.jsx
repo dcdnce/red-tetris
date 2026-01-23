@@ -2,11 +2,17 @@ import { Flex, VStack } from "@chakra-ui/react";
 import Register from "./Register";
 import Header from "../ui/Header.jsx";
 import JoinButton from "./JoinButton";
+import { TopTen } from "./TopTen.jsx";
 
 function Home() {
     return (
         <>
-            <Flex justifyContent={"center"} alignItems={"center"} minH={"80vh"}>
+            <Flex
+                justifyContent={"center"}
+                alignItems={"center"}
+                minH={"80vh"}
+            >
+                <TopTen />
                 <VStack>
                     <Header isHome={true} />
                     <VStack

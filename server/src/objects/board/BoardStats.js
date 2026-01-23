@@ -53,10 +53,10 @@ export class BoardStats {
      * @param {number} linesCount - Number of lines cleared (1-4)
      */
     addScoreForLines(linesCount) {
-        // if (linesCount === 0) {
-        //     this.#combo = -1; // Reset combo
-        //     return;
-        // }
+        if (linesCount === 0) {
+            this.#combo = -1; // Reset combo
+            return;
+        }
 
         const numberOfLinesBindWithScore = [
             0, // 0 lines

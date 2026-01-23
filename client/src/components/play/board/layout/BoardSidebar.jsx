@@ -68,39 +68,34 @@ function Stats({ piecesPerSecond, linesCleared, score }) {
                 : "black";
 
     return (
-        <Box
-            bg="whiteAlpha.400"
-            borderRadius="3"
-            width={{
-                md: "40",
-                lg: "24",
-            }}
-            p={1}
-            cursor="default"
-        >
-            <HStack justify="space-between">
-                <Text fontSize="10" opacity={0.6}>
-                    p/s
-                </Text>
-                <AnimatedNumber value={piecesPerSecond} color={psColor} />
-            </HStack>
-            <HStack justify="space-between">
-                <Text fontSize="10" opacity={0.6}>
-                    Score
-                </Text>
-                <AnimatedNumber value={score} color={scoreColor} />
-            </HStack>
-            <HStack justify="space-between">
-                <Text fontSize="10" opacity={0.6}>
-                    lines cleared
-                </Text>
-                <AnimatedNumber
-                    value={linesCleared}
-                    color={lcColor}
-                    duration={0.3}
-                />
-            </HStack>
-        </Box>
+        <VStack spacing={2}>
+            <Box layerStyle="transparent">
+                <HStack justify="space-between">
+                    <Text fontSize="10" opacity={0.6}>
+                        p/s
+                    </Text>
+                    <AnimatedNumber value={piecesPerSecond} color={psColor} />
+                </HStack>
+                <HStack justify="space-between">
+                    <Text fontSize="10" opacity={0.6}>
+                        lines cleared
+                    </Text>
+                    <AnimatedNumber
+                        value={linesCleared}
+                        color={lcColor}
+                        duration={0.3}
+                    />
+                </HStack>
+            </Box>
+            <Box layerStyle="transparent">
+                <VStack justify="space-between">
+                    <Text fontSize="20" opacity={0.6} color={"yellow.50"}>
+                        Score
+                    </Text>
+                    <AnimatedNumber value={score} color={scoreColor} />
+                </VStack>
+            </Box>
+        </VStack>
     );
 }
 

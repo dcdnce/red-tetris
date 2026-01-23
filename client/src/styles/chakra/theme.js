@@ -2,6 +2,7 @@
 import { extendTheme } from "@chakra-ui/react";
 import colors from "./themes/colors";
 import { components } from "./themes";
+import { layerStyles } from "./layerStyles";
 
 export const backgroundImage = new URL(
     "https://www.transparenttextures.com/patterns/60-lines.png"
@@ -10,6 +11,7 @@ export const backgroundImage = new URL(
 const theme = extendTheme({
     colors,
     components,
+    layerStyles,
     styles: {
         global: {
             "html, body": {
