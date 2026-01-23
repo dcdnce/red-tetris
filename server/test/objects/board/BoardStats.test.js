@@ -6,9 +6,6 @@ const SCORE_SINGLE = 100;
 const SCORE_DOUBLE = 300;
 const SCORE_TRIPLE = 500;
 const SCORE_TETRIS = 800;
-const SCORE_SOFT_DROP = 1;
-const SCORE_HARD_DROP = 2;
-const SCORE_COMBO_BASE = 50;
 
 describe("BoardStats", () => {
     let stats;
