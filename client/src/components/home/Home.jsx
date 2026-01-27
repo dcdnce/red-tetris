@@ -1,5 +1,4 @@
 import { Flex, VStack } from "@chakra-ui/react";
-import Register from "./Register";
 import Header from "../ui/Header.jsx";
 import JoinButton from "./JoinButton";
 import { TopTen } from "./Leaderboard.jsx";
@@ -13,7 +12,6 @@ function Home() {
                 minH={"80vh"}
                 gap="2rem"
             >
-
                 <VStack>
                     <Header isHome={true} />
                     <VStack
@@ -23,7 +21,6 @@ function Home() {
                         backgroundColor={"white"}
                         boxShadow="0 4px 8px rgba(0,0,0,0.2)"
                     >
-                        <Register />
                         <JoinButton />
                     </VStack>
                 </VStack>
