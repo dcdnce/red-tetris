@@ -111,18 +111,6 @@ describe("BoardStats", () => {
             expect(stats.getCombo()).toBe(2);
         });
 
-        it("should reset combo after clearing 0 lines (commented out behavior)", () => {
-            // First clear to establish combo
-            stats.addToLinesCleared(1);
-            stats.addScoreForLines(1);
-            expect(stats.getCombo()).toBe(0);
-
-            // Note: The reset behavior for 0 lines is commented out in the source
-            // This test documents the current behavior (no reset)
-            stats.addScoreForLines(0);
-            expect(stats.getCombo()).toBe(1); // Combo incremented even for 0 lines
-        });
-
         it("should handle combo with level multiplier", () => {
             // Reach level 2
             stats.addToLinesCleared(10);

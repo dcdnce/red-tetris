@@ -4,7 +4,6 @@ import GameMapSingleton from "../services/gameMapSingleton.js";
 import RoomState, { kPendingState } from "./roomstate.js";
 import GameLogicHandler from "./gamelogichandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
-import { ScoreRepository } from "../repositories/ScoreRepository.js";
 
 const GAME_TICK_RATE_MS = 1000;
 export const PIECE_SEQUENCE_LENGTH = 1000;
@@ -64,17 +63,6 @@ class Game {
 
     endAndDelete() {
         clearInterval(this.loopIntervalId);
-        this.players.forEach(async (player, username) => {
-            const score = player.getBoardObject().boardStats.getScore();
-            const linesCleared = player
-                .getBoardObject()
-                .boardStats.getLinesCleared();
-            try {
-                await ScoreRepository.saveScore(username, score, linesCleared);
-            } catch (error) {
-                Logger.error(`Failed to save score for ${username}:`, error);
-            }
-        });
         this.loopIntervalId = null;
         this.gameLogicHandler = null;
         this.setFinished();

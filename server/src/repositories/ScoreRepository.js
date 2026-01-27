@@ -2,6 +2,19 @@ import { AppDataSource } from "../config/database.js";
 import { Score } from "../entities/score.entities.js";
 import Logger from "../services/logger.js";
 
+export async function getAndSaveScoreForPlayer(player, username) {
+    const score = player.getBoardObject().boardStats.getScore();
+    const linesCleared = player
+        .getBoardObject()
+        .boardStats.getLinesCleared();
+
+    try {
+        await ScoreRepository.saveScore(username, score, linesCleared);
+    } catch (error) {
+        Logger.error(`Failed to save score for ${username}:`, error);
+    }
+}
+
 export class ScoreRepository {
     static async saveScore(username, score, linesCleared) {
         try {
