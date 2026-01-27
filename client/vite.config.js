@@ -26,6 +26,7 @@ export default defineConfig({
                 changeOrigin: true,
             },
         },
+        // allowedHosts: true
     },
 
     // Configuration du build pour la production
