@@ -2,6 +2,7 @@ import { Flex, VStack } from "@chakra-ui/react";
 import Header from "../ui/Header.jsx";
 import JoinButton from "./JoinButton";
 import { TopTen } from "./Leaderboard.jsx";
+import { Rules } from "./Rules.jsx";
 
 function Home() {
     return (
@@ -26,6 +27,9 @@ function Home() {
                 </VStack>
                 <VStack alignContent={"top"}>
                     <TopTen />
+                </VStack>
+                <VStack alignContent={"top"}>
+                    <Rules />
                 </VStack>
             </Flex>
         </>
