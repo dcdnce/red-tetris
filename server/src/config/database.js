@@ -8,12 +8,14 @@ const __dirname = path.dirname(__filename);
 
 export const AppDataSource = new DataSource({
     type: "sqlite",
-    database: path.join(__dirname, "../../..", process.env.DB_PATH || "tetris.db"),
+    database: path.join(
+        __dirname,
+        "../../..",
+        process.env.DB_PATH || "tetris.db"
+    ),
     synchronize: true, // Crée automatiquement les tables (dev seulement!)
     logging: process.env.DEBUG === "true",
-    entities: [
-        path.join(__dirname, "../entities/*.js")
-    ],
+    entities: [path.join(__dirname, "../entities/*.js")],
 });
 
 export async function initializeDatabase() {

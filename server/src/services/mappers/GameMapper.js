@@ -29,7 +29,7 @@ export class GameMapper {
         for (const [username, player] of gameObject.players) {
             const boardObject = player.getBoardObject();
             const boardStats = boardObject.boardStats;
-            
+
             playerList.push({
                 username: username,
                 board: boardObject.getBoard(),

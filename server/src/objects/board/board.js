@@ -192,8 +192,7 @@ class Board {
             this._tetrimino.lastMove === kHardDrop &&
             this._tetriminoSpawnY !== null
         ) {
-            const dropDistance =
-                this._tetrimino.getY() - this._tetriminoSpawnY;
+            const dropDistance = this._tetrimino.getY() - this._tetriminoSpawnY;
             this.boardStats.addScoreForHardDrop(dropDistance);
         }
 
@@ -264,9 +263,7 @@ class Board {
             for (let i = 0; i < BOARD_HEIGHT - 1; i++) {
                 innerBoard[i] = innerBoard[i + 1];
             }
-            innerBoard[BOARD_HEIGHT - 1] = Array(10).fill(
-                kIndestructibleBlock
-            ); // Add indestructible line
+            innerBoard[BOARD_HEIGHT - 1] = Array(10).fill(kIndestructibleBlock); // Add indestructible line
 
             // Check eventual top out
             if (!BoardRules.isLineEmpty(voidedLine)) {

@@ -7,7 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import { store } from "./store/store";
 import App from "./App";
 import theme from "./styles/chakra/theme";
-// Importez un CSS global si nécessaire, ex: import './styles/main.css';
 
 const rootElement = document.getElementById("root");
 

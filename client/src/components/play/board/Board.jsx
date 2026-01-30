@@ -99,38 +99,3 @@ function Board({ player, isLocalPlayer }) {
 }
 
 export default Board;
-
-const buildAllBlocks = (isLocalPlayer, board, boardFull, allBlocks) => {
-    // Board for opponent
-    if (isLocalPlayer == false) {
-        let colHi = Array(10).fill(23);
-
-        // Craft spectrum (this is so so stupid and useless)
-        for (let x = 0; x < 10; x++) {
-            for (let y = 0; y < 22; y++) {
-                if (board[y][x] != 0) {
-                    colHi[x] = y;
-                    break;
-                }
-            }
-        }
-
-        // Build blocks array
-        for (let x = 0; x < 10; x++) {
-            for (let y = 0; y < 22; y++) {
-                let currentBlock = y >= colHi[x] ? 8 : 0;
-                allBlocks.push({ row: y, col: x, id: currentBlock });
-            }
-        }
-    }
-
-    // Board for local player
-    if (isLocalPlayer) {
-        // Build blocks array
-        for (let i = 0; i < 22; i++) {
-            for (let j = 0; j < 10; j++) {
-                allBlocks.push({ row: i, col: j, id: boardFull[i][j] });
-            }
-        }
-    }
-};

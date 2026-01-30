@@ -68,9 +68,7 @@ export function Rules() {
                             color="green.400"
                             mt={1}
                         />
-                        <Text fontSize="md">
-                            The last player standing wins
-                        </Text>
+                        <Text fontSize="md">The last player standing wins</Text>
                     </ListItem>
                 </List>
             </VStack>

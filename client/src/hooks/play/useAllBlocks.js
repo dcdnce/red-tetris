@@ -3,10 +3,13 @@ import { useMemo } from "react";
 //[US-57] useMemo - re renders only if one of the following changes
 export function useAllBlocks(isLocalPlayer, player) {
     const allBlocks = useMemo(() => {
-        
         const newAllBlocks = [];
 
-        if (!player || (!isLocalPlayer && !player.board) || (isLocalPlayer && !player.boardFull)) {
+        if (
+            !player ||
+            (!isLocalPlayer && !player.board) ||
+            (isLocalPlayer && !player.boardFull)
+        ) {
             return [];
         }
 
@@ -29,7 +32,8 @@ export function useAllBlocks(isLocalPlayer, player) {
                     newAllBlocks.push({ row: y, col: x, id: currentBlock });
                 }
             }
-        } else { // Player logic
+        } else {
+            // Player logic
             const boardFull = player.boardFull;
             for (let i = 0; i < 22; i++) {
                 for (let j = 0; j < 10; j++) {

@@ -14,6 +14,7 @@ import { useUserInput } from "../../hooks/play/useUserInput.js";
 import Header from "../ui/Header.jsx";
 import { Error } from "../ui/Error.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
+import { useOpponentConnectionToast } from "../../hooks/play/usePlayToast.js";
 
 function Play() {
     const { roomName, username } = useParams();
@@ -27,6 +28,7 @@ function Play() {
     useRoomSocketHandlers();
     useRoomJoin(roomName, username);
     useUserInput(roomName, username, roomState);
+    useOpponentConnectionToast(opponents);
 
     if (roomState === "error") {
         return (

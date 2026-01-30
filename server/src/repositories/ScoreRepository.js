@@ -4,9 +4,7 @@ import Logger from "../services/logger.js";
 
 export async function getAndSaveScoreForPlayer(player, username) {
     const score = player.getBoardObject().boardStats.getScore();
-    const linesCleared = player
-        .getBoardObject()
-        .boardStats.getLinesCleared();
+    const linesCleared = player.getBoardObject().boardStats.getLinesCleared();
 
     try {
         await ScoreRepository.saveScore(username, score, linesCleared);
