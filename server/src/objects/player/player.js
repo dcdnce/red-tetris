@@ -90,6 +90,7 @@ class Player {
 
     setLost() {
         this.didLost = true;
+        this.timeLost = Date.now();
 
         Logger.info(
             true,

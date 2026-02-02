@@ -14,8 +14,9 @@ class GameLogicHandler {
      */
     tick() {
         this.handleGraceTicks();
+        this.handleWinConditions();
 
-        if (!this.players.size || this.allPlayersLost()) {
+        if (!this.players.size || this.didAllPlayersLost()) {
             this.onGameEndCallback();
             return;
         }
@@ -27,10 +28,30 @@ class GameLogicHandler {
     }
 
     // LOBBY RELATED METHODS
-    allPlayersLost() {
+    didAllPlayersLost() {
         return Array.from(this.players.values()).every(
             (player) => player.didLost
         );
+    }
+
+    countAlivePlayers() {
+        return Array.from(this.players.values()).filter(
+            player => !player.didLost
+        ).length;
+    }
+
+    handleWinConditions() {
+        if (this.players.size <= 1) return ; // Do nothing if singleplayer
+
+        if (this.countAlivePlayers() === 1) {
+            console.log("ONE LAST STANDING");
+        }
+
+        // IF MULTIPLAYER
+        // check if there is one last standing
+            // if yes 
+                // => winner message ?
+                // end game (set lost ?)
     }
 
     handleGraceTicks() {
