@@ -34,6 +34,7 @@ function Header({ isHome }) {
             fontWeight={"900"}
             backgroundColor={currentColor}
             px="2rem"
+            w="100%"
             py={currentPy}
             onClick={navigateHome}
         >

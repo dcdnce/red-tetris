@@ -45,6 +45,7 @@ export function TopTen() {
                             gap={2}
                             width="100%"
                             paddingX="2rem"
+                            py={"0.13rem"}
                         >
                             <Text fontSize="md" textAlign="left">
                                 <strong>#{idx + 1}</strong>

@@ -1,4 +1,4 @@
-import { Flex, VStack } from "@chakra-ui/react";
+import { Flex, VStack, HStack } from "@chakra-ui/react";
 import Header from "../ui/Header.jsx";
 import JoinButton from "./JoinButton";
 import { TopTen } from "./Leaderboard.jsx";
@@ -10,26 +10,28 @@ function Home() {
             <Flex
                 justifyContent={"center"}
                 alignItems={"center"}
-                minH={"80vh"}
+                minH={"100vh"}
                 gap="2rem"
             >
                 <VStack>
                     <Header isHome={true} />
-                    <VStack
-                        border={"solid 2px white"}
-                        borderRadius={"5px"}
-                        padding={"2rem"}
-                        backgroundColor={"white"}
-                        boxShadow="0 4px 8px rgba(0,0,0,0.2)"
-                    >
-                        <JoinButton />
-                    </VStack>
-                </VStack>
-                <VStack alignContent={"top"}>
-                    <TopTen />
-                </VStack>
-                <VStack alignContent={"top"}>
-                    <Rules />
+                    <HStack>
+                        <VStack>
+                            <VStack
+                                border={"solid 2px white"}
+                                borderRadius={"5px"}
+                                padding={"2rem"}
+                                backgroundColor={"white"}
+                                boxShadow="0 4px 8px rgba(0,0,0,0.2)"
+                                alignContent={"top"}
+                                minW="100%"
+                            >
+                                <JoinButton />
+                            </VStack>
+                            <Rules />
+                        </VStack>
+                        <TopTen />
+                    </HStack>
                 </VStack>
             </Flex>
         </>
