@@ -1,6 +1,6 @@
 import { kTetriminosTypes } from "../../constants/tetriminos_constants.js";
 import { BOARD_HEIGHT, BOARD_WIDTH } from "../../constants/board_constants.js";
-import { BoardRules } from "./boardrules.js";
+import { BoardRules } from "./BoardRules.js";
 
 export const kRotateRight = "rotateright";
 export const kRotateLeft = "rotateleft";

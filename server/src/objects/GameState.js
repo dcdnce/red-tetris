@@ -2,7 +2,7 @@ export const kPendingState = "pending";
 export const kStartedState = "started";
 export const kFinishedState = "finished";
 
-export default class RoomState {
+export default class GameState {
     constructor() {
         this.state = kPendingState;
     }

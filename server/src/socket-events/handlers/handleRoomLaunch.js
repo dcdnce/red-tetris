@@ -3,7 +3,7 @@ import Logger from "../../services/logger.js";
 import emitRoomLaunchFail from "../emitters/emit_room_launch_fail.js";
 import Token from "../../services/token.js";
 import emitRoomLaunchSuccess from "../emitters/emit_room_launch_success.js";
-import { kStartedState } from "../../objects/roomstate.js";
+import { kStartedState } from "../../objects/GameState.js";
 
 export default function handleRoomLaunch(socket) {
     const canLaunchGame = (game, player) => {

@@ -1,7 +1,7 @@
 import Logger from "../../services/logger.js";
 import { TetriminoOutOfBoundsException } from "../../services/exceptions.js";
-import { LockDelay } from "./lockdelay.js";
-import { BoardRules } from "./boardrules.js";
+import { LockDelay } from "./LockDelay.js";
+import { BoardRules } from "./BoardRules.js";
 import { kHardDrop, Tetrimino } from "./tetrimino.js";
 import { BoardStats } from "./BoardStats.js";
 import {

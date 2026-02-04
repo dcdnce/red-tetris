@@ -1,25 +1,25 @@
 import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 import Logger from "../services/logger.js";
 import GameMapSingleton from "../services/gameMapSingleton.js";
-import RoomState, { kPendingState } from "./roomstate.js";
-import GameLogicHandler from "./gamelogichandler.js";
+import GameState, { kPendingState } from "./GameState.js";
+import GameLogicHandler from "./GameLogicHandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
+import { GameRules } from "./GameRules.js";
 
 const GAME_TICK_RATE_MS = 1000;
 export const PIECE_SEQUENCE_LENGTH = 1000;
 
 /**
- * Class handling game room responsabilities.
+ * Class handling game room/lobby responsabilities.
  * Contains room info, can start game and game tick handler, etc.
  */
-// TODO - Rename to something like "Lobby" or "Room"
 class Game {
     constructor(roomName) {
         Logger.info(false, null, `Creating game room: ${roomName}`);
         this.roomName = roomName;
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
-        this.state = new RoomState();
+        this.state = new GameState();
         this.winnerUsername = null;
         this.gameLogicHandler = null;
         this.loopIntervalId = null;
@@ -38,7 +38,7 @@ class Game {
             );
         }
 
-        this.generatePiecesSequence();
+        this.piecesSequence = GameRules.generatePiecesSequence();
 
         this.setStarted();
         this.startBoardStats();
@@ -85,33 +85,6 @@ class Game {
 
         if (inputIsValid) {
             emitUpdateGameData(this);
-        }
-    }
-
-    // Todo - Move this somewhere else
-    generatePiecesSequence() {
-        if (this.piecesSequence !== null) {
-            throw new Error(
-                "generatePiecesSequence called on a already generated pieces sequence."
-            );
-        }
-
-        const baseBag = [1, 2, 3, 4, 5, 6, 7];
-        this.piecesSequence = [];
-
-        while (this.piecesSequence.length < PIECE_SEQUENCE_LENGTH) {
-            let shuffledBag = [...baseBag];
-
-            // Shuffle
-            for (let i = shuffledBag.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                [shuffledBag[i], shuffledBag[j]] = [
-                    shuffledBag[j],
-                    shuffledBag[i],
-                ];
-            }
-
-            this.piecesSequence.push(...shuffledBag);
         }
     }
 

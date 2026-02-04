@@ -1,6 +1,6 @@
 import GameMapSingleton from "../../services/gameMapSingleton.js";
 import Logger from "../../services/logger.js";
-import { kStartedState } from "../../objects/roomstate.js";
+import { kStartedState } from "../../objects/GameState.js";
 import emitUpdateGameData from "../emitters/emit_update_game_data.js";
 import { getAndSaveScoreForPlayer } from "../../repositories/ScoreRepository.js";
 

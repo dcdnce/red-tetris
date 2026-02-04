@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import GameLogicHandler from "../../src/objects/gamelogichandler.js"; // Ajustez le chemin
+import GameLogicHandler from "../../src/objects/GameLogicHandler.js"; // Ajustez le chemin
 import * as disconnectionManager from "../../src/socket-events/handlers/handleRoomExit.js"; // Pour mocker definitiveDisconnection
 import { TetriminoOutOfBoundsException } from "../../src/services/exceptions.js";
 

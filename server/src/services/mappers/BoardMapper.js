@@ -1,5 +1,5 @@
 import { kGhostBlock } from "../../constants/board_constants.js";
-import { BoardRules } from "../../objects/board/boardrules.js";
+import { BoardRules } from "../../objects/board/BoardRules.js";
 
 /**
  * Handles formatting of Board object data for emitting purpose.

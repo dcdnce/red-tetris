@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 // --- IMPORTER LES MODULES ---
 import handleRoomJoinRequest from "../../src/socket-events/handlers/handleRoomJoinRequest.js";
 import GameMapSingleton from "../../src/services/gameMapSingleton.js";
-import Game from "../../src/objects/game.js";
+import Game from "../../src/objects/Game.js";
 import * as emitJoinRoomFailModule from "../../src/socket-events/emitters/emit_join_room_fail.js";
 import * as emitJoinRoomSuccessModule from "../../src/socket-events/emitters/emit_join_room_success.js";
 import * as emitUpdateGameDataModule from "../../src/socket-events/emitters/emit_update_game_data.js";

@@ -5,7 +5,7 @@ import Board, { MAXIMUM_EPL_INPUTS } from "../../../src/objects/board/board.js";
 import { kTetriminosTypes } from "../../../src/constants/tetriminos_constants.js";
 import { TestBoardHelper } from "./TestBoardHelper.js";
 import { TetriminoOutOfBoundsException } from "../../../src/services/exceptions.js";
-import { BoardRules } from "../../../src/objects/board/boardrules.js";
+import { BoardRules } from "../../../src/objects/board/BoardRules.js";
 
 // Spies
 const isTetriminoInCollisionStateSpy = vi.spyOn(

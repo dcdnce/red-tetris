@@ -1,10 +1,10 @@
 import Player from "../../objects/player/player.js";
 import GameMapSingleton from "../../services/gameMapSingleton.js";
-import Game from "../../objects/game.js";
+import Game from "../../objects/Game.js";
 import Logger from "../../services/logger.js";
 import emitJoinRoomFail from "../emitters/emit_join_room_fail.js";
 import emitJoinRoomSuccess from "../emitters/emit_join_room_success.js";
-import { kStartedState } from "../../objects/roomstate.js";
+import { kStartedState } from "../../objects/GameState.js";
 import Token from "../../services/token.js";
 import emitUpdateGameData from "../emitters/emit_update_game_data.js";
 

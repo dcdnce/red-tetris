@@ -1,7 +1,7 @@
 import Logger from "../../services/logger.js";
 import Token from "../../services/token.js";
 import GameMapSingleton from "../../services/gameMapSingleton.js";
-import { kStartedState } from "../../objects/roomstate.js";
+import { kStartedState } from "../../objects/GameState.js";
 
 export default function handleUserInput(socket) {
     socket.on("user_input", (params) => {
