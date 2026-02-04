@@ -27,7 +27,7 @@ export default function handleUserInput(socket) {
             if (
                 !game ||
                 !player ||
-                player.didLost ||
+                player.isOutOfPlay ||
                 game.getState() !== kStartedState
             ) {
                 return;

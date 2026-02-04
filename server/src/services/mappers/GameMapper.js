@@ -47,7 +47,7 @@ export class GameMapper {
                 //     .getTetrimino()
                 //     ?.getType(), // TODO delete it's a debug
                 isConnected: player.isConnected,
-                didLost: player.didLost,
+                isOutOfPlay: player.isOutOfPlay,
                 isLeader: player.token === gameObject.leaderToken,
                 remainingEPLInputs: boardObject.getRemainingEPLInputs(),
             });

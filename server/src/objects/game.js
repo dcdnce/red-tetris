@@ -12,6 +12,7 @@ export const PIECE_SEQUENCE_LENGTH = 1000;
  * Class handling game room responsabilities.
  * Contains room info, can start game and game tick handler, etc.
  */
+// TODO - Rename to something like "Lobby" or "Room"
 class Game {
     constructor(roomName) {
         Logger.info(false, null, `Creating game room: ${roomName}`);
@@ -19,6 +20,7 @@ class Game {
         this.leaderToken = null;
         this.players = new Map(); // <username, Player>
         this.state = new RoomState();
+        this.winnerUsername = null;
         this.gameLogicHandler = null;
         this.loopIntervalId = null;
         this.piecesSequence = null;
@@ -55,6 +57,7 @@ class Game {
             // );
 
             this.gameLogicHandler.tick();
+            this.handleWinConditions();
             emitUpdateGameData(this);
         }, GAME_TICK_RATE_MS);
 
@@ -85,6 +88,7 @@ class Game {
         }
     }
 
+    // Todo - Move this somewhere else
     generatePiecesSequence() {
         if (this.piecesSequence !== null) {
             throw new Error(
@@ -136,6 +140,34 @@ class Game {
 
     getState() {
         return this.state.getState();
+    }
+
+    countInPlayPlayers() {
+        return Array.from(this.players.values()).filter(
+            (player) => !player.isOutOfPlay
+        ).length;
+    }
+
+    getLastInPlayPlayer() {
+        if (this.countInPlayPlayers() !== 1) return null;
+
+        for (const player of this.players.values()) {
+            if (!player.isOutOfPlay) {
+                return player;
+            }
+        }
+
+        return null;
+    }
+
+    handleWinConditions() {
+        if (this.players.size <= 1) return; // Do nothing if singleplayer
+
+        if (this.countInPlayPlayers() !== 1) return;
+
+        let lastInPlayPlayer = this.getLastInPlayPlayer();
+        lastInPlayPlayer.setOutOfPlay("just won.");
+        this.winnerUsername = lastInPlayPlayer.username;
     }
 }
 

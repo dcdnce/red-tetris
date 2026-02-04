@@ -7,7 +7,9 @@ import {
 
 const initialState = {
     rooms: {
-        // roomName: null,
+        // roomName:
+        // roomState:
+        // winnerUsername:
         // players: [
         //     {
         //         username: null,
@@ -16,7 +18,7 @@ const initialState = {
         //         nextPiece: null, [array]
         //          TODO add BoardStats data
         //         isConnected: null,
-        //         didLost: null,
+        //         isOutOfPlay: null,
         //         isLeader: null,
         //         remainingEPLInputs: null,
         //     },
@@ -46,6 +48,8 @@ const gameSlice = createSlice({
             const roomName = action.payload.roomName;
             state.rooms[roomName].roomState = action.payload.roomState;
             state.rooms[roomName].players = action.payload.players;
+            state.rooms[roomName].winnerUsername =
+                action.payload.winnerUsername;
             console.log(action.payload.players);
         },
         joinRoomFailed: (state, action) => {
@@ -88,3 +92,5 @@ export const selectIsRoomLeader = (roomName, username) => (state) => {
     );
     return leader?.username === username;
 };
+export const selectWinnerUsername = (roomName) => (state) =>
+    state.roomsHandler.rooms[roomName]?.winnerUsername || null;

@@ -9,7 +9,7 @@ class Player {
         this.username = username;
         this.socket = null;
         this.isConnected = false;
-        this.didLost = false;
+        this.isOutOfPlay = false;
         this.currentGame = game;
         this.currentGame.players.set(username, this);
         this.token = Token.sign(username, game.roomName);
@@ -35,7 +35,7 @@ class Player {
     }
 
     handleTetriminoSpawn() {
-        if (this.didLost) return;
+        if (this.isOutOfPlay) return;
         if (this._board.isTetriminoNull() === false) return;
 
         const tetriminoId =
@@ -48,7 +48,7 @@ class Player {
     }
 
     handleFallOrLock() {
-        if (this.didLost) return;
+        if (this.isOutOfPlay) return;
 
         this._board.handleFallOrLock(false);
     }
@@ -88,14 +88,13 @@ class Player {
         this._graceTicks = null;
     }
 
-    setLost() {
-        this.didLost = true;
-        this.timeLost = Date.now();
+    setOutOfPlay(reason = "") {
+        this.isOutOfPlay = true;
 
         Logger.info(
             true,
             this.currentGame.roomName,
-            `${this.username} just lost.`
+            `${this.username} was set out of play. Reason : ${reason}`
         );
     }
 

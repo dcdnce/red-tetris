@@ -19,7 +19,7 @@ function BlockComponent({ row, col, id, player, variant }) {
 
     // Variant
     if (variant === "Board" && id) {
-        if (player?.didLost) {
+        if (player?.isOutOfPlay) {
             bgColor = "red.600";
         }
         if (row < 2) {

@@ -25,9 +25,7 @@ async function seed() {
             const score = Math.floor(Math.random() * 20000) + 100; // random score
             const linesCleared = Math.floor(Math.random() * 500);
 
-            promises.push(
-                ScoreRepository.saveScore(user, score, linesCleared)
-            );
+            promises.push(ScoreRepository.saveScore(user, score, linesCleared));
         }
 
         const results = await Promise.all(promises);

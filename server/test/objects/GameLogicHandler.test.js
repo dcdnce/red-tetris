@@ -6,7 +6,7 @@ import { TetriminoOutOfBoundsException } from "../../src/services/exceptions.js"
 const createMockPlayer = (username, overrides = {}) => {
     return {
         username: username,
-        didLost: false,
+        isOutOfPlay: false,
         isConnected: true,
         decrementGraceTicks: vi.fn(),
         handleTetriminoSpawn: vi.fn(),
@@ -17,8 +17,8 @@ const createMockPlayer = (username, overrides = {}) => {
             resetClearedLinesNumber: vi.fn(),
         })),
         addIndestructibleLines: vi.fn(),
-        setLost: vi.fn(function () {
-            this.didLost = true;
+        setOutOfPlay: vi.fn(function () {
+            this.isOutOfPlay = true;
         }),
         ...overrides,
     };
@@ -76,7 +76,7 @@ describe("GameLogicHandler", () => {
         });
 
         it("should call onGameEndCallback if all players have lost", () => {
-            mockPlayers.forEach((p) => (p.didLost = true));
+            mockPlayers.forEach((p) => (p.isOutOfPlay = true));
 
             gameLogicHandler.tick();
 
@@ -109,7 +109,7 @@ describe("GameLogicHandler", () => {
 
         it("should not call game logic methods for a player who has already lost", () => {
             const playerSacha = mockPlayers.get("Sacha");
-            playerSacha.didLost = true;
+            playerSacha.isOutOfPlay = true;
 
             gameLogicHandler.tick();
 
@@ -140,7 +140,7 @@ describe("GameLogicHandler", () => {
             ).toHaveBeenCalledTimes(1);
         });
 
-        it("should call setLost if addIndestructibleLines throws an exception", () => {
+        it("should call setOutOfPlay if addIndestructibleLines throws an exception", () => {
             const playerSacha = mockPlayers.get("Sacha");
             const playerPaul = mockPlayers.get("Paul");
 
@@ -155,8 +155,8 @@ describe("GameLogicHandler", () => {
 
             gameLogicHandler.handleNewIndestructibleLines();
 
-            expect(playerPaul.setLost).toHaveBeenCalledTimes(1);
-            expect(playerSacha.setLost).not.toHaveBeenCalled();
+            expect(playerPaul.setOutOfPlay).toHaveBeenCalledTimes(1);
+            expect(playerSacha.setOutOfPlay).not.toHaveBeenCalled();
         });
     });
 });

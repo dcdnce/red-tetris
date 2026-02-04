@@ -11,6 +11,7 @@ export default function emitUpdateGameData(game) {
         message: `Update game data for room ${game.roomName}`,
         roomName: game.roomName,
         roomState: game.getState(),
+        winnerUsername: game.winnerUsername,
         players: GameMapper.getPlayerList(game),
     });
 }

@@ -14,9 +14,8 @@ class GameLogicHandler {
      */
     tick() {
         this.handleGraceTicks();
-        this.handleWinConditions();
 
-        if (!this.players.size || this.didAllPlayersLost()) {
+        if (!this.players.size || this.areAllPlayersOutOfPlay()) {
             this.onGameEndCallback();
             return;
         }
@@ -28,35 +27,15 @@ class GameLogicHandler {
     }
 
     // LOBBY RELATED METHODS
-    didAllPlayersLost() {
+    areAllPlayersOutOfPlay() {
         return Array.from(this.players.values()).every(
-            (player) => player.didLost
+            (player) => player.isOutOfPlay
         );
-    }
-
-    countAlivePlayers() {
-        return Array.from(this.players.values()).filter(
-            player => !player.didLost
-        ).length;
-    }
-
-    handleWinConditions() {
-        if (this.players.size <= 1) return ; // Do nothing if singleplayer
-
-        if (this.countAlivePlayers() === 1) {
-            console.log("ONE LAST STANDING");
-        }
-
-        // IF MULTIPLAYER
-        // check if there is one last standing
-            // if yes 
-                // => winner message ?
-                // end game (set lost ?)
     }
 
     handleGraceTicks() {
         this.players.forEach((player) => {
-            if (player.didLost) return;
+            if (player.isOutOfPlay) return;
 
             if (!player.isConnected) {
                 const ticksRemaining = player.decrementGraceTicks();
@@ -77,14 +56,14 @@ class GameLogicHandler {
      */
     handleTetriminoSpawn() {
         this.players.forEach((player) => {
-            if (player.didLost) return;
+            if (player.isOutOfPlay) return;
 
             try {
                 player.handleTetriminoSpawn();
             } catch (error) {
                 // Block out
                 if (error instanceof TetriminoOutOfBoundsException) {
-                    player.setLost();
+                    player.setOutOfPlay();
                 } else {
                     throw error;
                 }
@@ -94,14 +73,14 @@ class GameLogicHandler {
 
     handleFallOrLock() {
         this.players.forEach((player) => {
-            if (player.didLost) return;
+            if (player.isOutOfPlay) return;
 
             try {
                 player.handleFallOrLock();
             } catch (error) {
                 // Lock out
                 if (error instanceof TetriminoOutOfBoundsException) {
-                    player.setLost();
+                    player.setOutOfPlay();
                 } else {
                     throw error;
                 }
@@ -111,14 +90,14 @@ class GameLogicHandler {
 
     handleEPLLockDelay() {
         this.players.forEach((player) => {
-            if (player.didLost) return;
+            if (player.isOutOfPlay) return;
 
             try {
                 player.handleEPLLockDelay();
             } catch (error) {
                 // Lock out
                 if (error instanceof TetriminoOutOfBoundsException) {
-                    player.setLost();
+                    player.setOutOfPlay();
                 } else {
                     throw error;
                 }
@@ -131,7 +110,7 @@ class GameLogicHandler {
 
         // Searching for number of lines
         this.players.forEach((player) => {
-            if (player.didLost) return; // TODO just delete the player from the list if he lost ?
+            if (player.isOutOfPlay) return; // TODO just delete the player from the list if he lost ?
 
             linesClearedFrom[player.username] = player
                 .getBoardObject()
@@ -141,7 +120,7 @@ class GameLogicHandler {
 
         // Adding the lines
         this.players.forEach((player) => {
-            if (player.didLost) return;
+            if (player.isOutOfPlay) return;
 
             let totalLinesToAdd = 0;
             for (const [key, value] of Object.entries(linesClearedFrom)) {
@@ -155,7 +134,7 @@ class GameLogicHandler {
             } catch (error) {
                 // Top out
                 if (error instanceof TetriminoOutOfBoundsException) {
-                    player.setLost();
+                    player.setOutOfPlay();
                 } else {
                     throw error;
                 }
