@@ -50,4 +50,15 @@ function BlockComponent({ row, col, id, player, variant }) {
     );
 }
 
-export const Block = React.memo(BlockComponent);
+// Custom comparison function for React.memo to prevent unnecessary re-renders
+const arePropsEqual = (prevProps, nextProps) => {
+    return (
+        prevProps.row === nextProps.row &&
+        prevProps.col === nextProps.col &&
+        prevProps.id === nextProps.id &&
+        prevProps.variant === nextProps.variant &&
+        prevProps.player?.didLost === nextProps.player?.didLost
+    );
+};
+
+export const Block = React.memo(BlockComponent, arePropsEqual);

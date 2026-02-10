@@ -3,8 +3,6 @@ import { useMemo } from "react";
 //[US-57] useMemo - re renders only if one of the following changes
 export function useAllBlocks(isLocalPlayer, player) {
     const allBlocks = useMemo(() => {
-        const newAllBlocks = [];
-
         if (
             !player ||
             (!isLocalPlayer && !player.board) ||
@@ -13,12 +11,17 @@ export function useAllBlocks(isLocalPlayer, player) {
             return [];
         }
 
+        // Pre-allocate array with exact size to avoid resizing
+        const blocks = new Array(220);
+
         // Opponent logic
         if (!isLocalPlayer) {
             const board = player.board;
-            let colHi = Array(10).fill(23);
+            const colHi = new Array(10);
 
+            // Find highest block in each column
             for (let x = 0; x < 10; x++) {
+                colHi[x] = 22;
                 for (let y = 0; y < 22; y++) {
                     if (board[y][x] !== 0) {
                         colHi[x] = y;
@@ -26,24 +29,37 @@ export function useAllBlocks(isLocalPlayer, player) {
                     }
                 }
             }
-            for (let x = 0; x < 10; x++) {
-                for (let y = 0; y < 22; y++) {
-                    let currentBlock = y >= colHi[x] ? 8 : 0;
-                    newAllBlocks.push({ row: y, col: x, id: currentBlock });
+
+            // Build blocks array with direct index assignment
+            let idx = 0;
+            for (let y = 0; y < 22; y++) {
+                for (let x = 0; x < 10; x++) {
+                    blocks[idx] = {
+                        row: y,
+                        col: x,
+                        id: y >= colHi[x] ? 8 : 0,
+                    };
+                    idx++;
                 }
             }
         } else {
-            // Player logic
+            // Player logic - direct index assignment
             const boardFull = player.boardFull;
+            let idx = 0;
             for (let i = 0; i < 22; i++) {
                 for (let j = 0; j < 10; j++) {
-                    newAllBlocks.push({ row: i, col: j, id: boardFull[i][j] });
+                    blocks[idx] = {
+                        row: i,
+                        col: j,
+                        id: boardFull[i][j],
+                    };
+                    idx++;
                 }
             }
         }
 
-        return newAllBlocks;
-    }, [isLocalPlayer, player?.board, player?.boardFull, player?.username]);
+        return blocks;
+    }, [isLocalPlayer, player]);
 
     return allBlocks;
 }

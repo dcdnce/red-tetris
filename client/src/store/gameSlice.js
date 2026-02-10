@@ -1,9 +1,17 @@
-import { createSlice, isPending } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import {
     kErrorState,
     kPendingState,
     kStartedState,
 } from "../services/constants";
+
+// Memoization cache for parameterized selectors
+const selectorCache = {
+    roomState: new Map(),
+    roomError: new Map(),
+    players: new Map(),
+    isRoomLeader: new Map(),
+};
 
 const initialState = {
     rooms: {
@@ -50,7 +58,7 @@ const gameSlice = createSlice({
             state.rooms[roomName].players = action.payload.players;
             state.rooms[roomName].winnerUsername =
                 action.payload.winnerUsername;
-            console.log(action.payload.players);
+            // console.log(action.payload.players);
         },
         joinRoomFailed: (state, action) => {
             const roomName = action.payload.roomName;
@@ -78,19 +86,63 @@ export const {
 
 export default gameSlice.reducer;
 
-// Selectors
-//    - Ready to use lambda function to access Redux store
-export const selectRoomState = (roomName) => (state) =>
-    state.roomsHandler.rooms[roomName]?.roomState || null;
-export const selectRoomError = (roomName) => (state) =>
-    state.roomsHandler.rooms[roomName]?.error || null;
-export const selectPlayers = (roomName) => (state) =>
-    state.roomsHandler.rooms[roomName]?.players || null;
-export const selectIsRoomLeader = (roomName, username) => (state) => {
-    const leader = state.roomsHandler.rooms[roomName]?.players.find(
-        (player) => player.isLeader
-    );
-    return leader?.username === username;
+// Base selectors
+const selectRooms = (state) => state.roomsHandler.rooms;
+
+// Memoized parameterized selectors
+export const selectRoomState = (roomName) => {
+    if (!selectorCache.roomState.has(roomName)) {
+        selectorCache.roomState.set(
+            roomName,
+            createSelector(
+                [selectRooms],
+                (rooms) => rooms[roomName]?.roomState || null
+            )
+        );
+    }
+    return selectorCache.roomState.get(roomName);
+};
+
+export const selectRoomError = (roomName) => {
+    if (!selectorCache.roomError.has(roomName)) {
+        selectorCache.roomError.set(
+            roomName,
+            createSelector(
+                [selectRooms],
+                (rooms) => rooms[roomName]?.error || null
+            )
+        );
+    }
+    return selectorCache.roomError.get(roomName);
+};
+
+export const selectPlayers = (roomName) => {
+    if (!selectorCache.players.has(roomName)) {
+        selectorCache.players.set(
+            roomName,
+            createSelector(
+                [selectRooms],
+                (rooms) => rooms[roomName]?.players || null
+            )
+        );
+    }
+    return selectorCache.players.get(roomName);
+};
+
+export const selectIsRoomLeader = (roomName, username) => {
+    const cacheKey = `${roomName}:${username}`;
+    if (!selectorCache.isRoomLeader.has(cacheKey)) {
+        selectorCache.isRoomLeader.set(
+            cacheKey,
+            createSelector([selectRooms], (rooms) => {
+                const leader = rooms[roomName]?.players?.find(
+                    (player) => player.isLeader
+                );
+                return leader?.username === username;
+            })
+        );
+    }
+    return selectorCache.isRoomLeader.get(cacheKey);
 };
 export const selectWinnerUsername = (roomName) => (state) =>
     state.roomsHandler.rooms[roomName]?.winnerUsername || null;

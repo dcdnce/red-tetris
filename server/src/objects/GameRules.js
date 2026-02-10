@@ -1,4 +1,4 @@
-import { PIECE_SEQUENCE_LENGTH } from "./Game";
+import { PIECE_SEQUENCE_LENGTH } from "./Game.js";
 
 export class GameRules {
     static generatePiecesSequence() {

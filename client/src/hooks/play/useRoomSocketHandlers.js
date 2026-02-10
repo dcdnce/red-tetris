@@ -1,5 +1,5 @@
 // hooks/useRoomSocketHandlers.js
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { socket } from "../../socket";
 import {
@@ -11,59 +11,49 @@ import {
 
 export function useRoomSocketHandlers() {
     const dispatch = useDispatch();
-    // const initialJoinSentRef = useRef(false);
+    const dispatchRef = useRef(dispatch);
+    
+    // Keep dispatch ref up to date
+    useEffect(() => {
+        dispatchRef.current = dispatch;
+    }, [dispatch]);
 
-    // [US-54] useCallback is a React Hook that lets you cache a function definition between re-renders.
-    const handleJoinSuccess = useCallback(
-        (data) => {
+    useEffect(() => {
+        // Define handlers that use the ref
+        const handleJoinSuccess = (data) => {
             if (data.token) {
                 localStorage.setItem(
                     `${data.username}${data.roomName}`,
                     data.token
                 );
             }
-            dispatch(joinRoomSuccess(data));
+            dispatchRef.current(joinRoomSuccess(data));
+        };
 
-            // if (!initialJoinSentRef.current) {
-            //     socket.emit("room_join", { roomName, username, token });
-            //     initialJoinSentRef.current = true;
-            // } // TODO verify this thing is really necessary or not
-        },
-        [dispatch]
-    );
+        const handleJoinFailed = (data) => {
+            dispatchRef.current(joinRoomFailed(data));
+        };
 
-    const handleJoinFailed = useCallback(
-        (data) => {
-            dispatch(joinRoomFailed(data));
-        },
-        [dispatch]
-    );
+        const handleUpdateGameData = (data) => {
+            dispatchRef.current(updateGameData(data));
+        };
 
-    const handleUpdateGameData = useCallback(
-        (data) => {
-            dispatch(updateGameData(data));
-        },
-        [dispatch]
-    );
+        const handleRoomLaunchFailed = (data) => {
+            // TODO: launch a toast
+        };
 
-    const handleRoomLaunchFailed = useCallback((data) => {
-        console.log(data.error); // TODO launch a toast
-    }, []);
+        const handleRoomLaunchSuccess = (data) => {
+            dispatchRef.current(roomLaunchSuccess(data));
+        };
 
-    const handleRoomLaunchSuccess = useCallback(
-        (data) => {
-            dispatch(roomLaunchSuccess(data));
-        },
-        [dispatch]
-    );
-
-    useEffect(() => {
+        // Subscribe once
         socket.on("join_room_success", handleJoinSuccess);
         socket.on("join_room_failed", handleJoinFailed);
         socket.on("update_game_data", handleUpdateGameData);
         socket.on("room_launch_failed", handleRoomLaunchFailed);
         socket.on("room_launch_success", handleRoomLaunchSuccess);
 
+        // Cleanup on unmount only
         return () => {
             socket.off("join_room_success", handleJoinSuccess);
             socket.off("join_room_failed", handleJoinFailed);
@@ -71,11 +61,5 @@ export function useRoomSocketHandlers() {
             socket.off("room_launch_failed", handleRoomLaunchFailed);
             socket.off("room_launch_success", handleRoomLaunchSuccess);
         };
-    }, [
-        handleJoinSuccess,
-        handleJoinFailed,
-        handleUpdateGameData,
-        handleRoomLaunchFailed,
-        handleRoomLaunchSuccess,
-    ]);
+    }, []); // Empty deps - subscribe once, cleanup on unmount
 }
