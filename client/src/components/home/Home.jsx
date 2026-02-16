@@ -14,7 +14,9 @@ function Home() {
                 gap="2rem"
             >
                 <VStack>
-                    <Header isHome={true} />
+                    <HStack minW="100%" h="120%" minH={"100%"}>
+                        <Header isHome={true} />
+                    </HStack>
                     <HStack>
                         <VStack>
                             <VStack

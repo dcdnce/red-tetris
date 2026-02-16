@@ -23,9 +23,9 @@ function Header({ isHome }) {
         ? colors[getRandomInt(colors.length)]
         : "gray.100";
 
-    const currentFontSize = isHome ? "4rem" : "2rem";
+    const currentFontSize = isHome ? "6rem" : "2rem";
 
-    const currentPy = isHome ? "3rem" : "2rem";
+    const currentPy = isHome ? "2.5rem" : "1.5rem";
 
     return (
         <Button
@@ -34,11 +34,12 @@ function Header({ isHome }) {
             fontWeight={"900"}
             backgroundColor={currentColor}
             px="2rem"
-            w="100%"
+            w={isHome ? "100%" : "auto"}
+            height="100%"
             py={currentPy}
             onClick={navigateHome}
         >
-            red tetris
+            .redtetris
         </Button>
     );
 }
