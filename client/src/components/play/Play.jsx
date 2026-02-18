@@ -16,26 +16,22 @@ import Header from "../ui/Header.jsx";
 import { Error } from "../ui/Error.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useOpponentConnectionToast } from "../../hooks/play/usePlayToast.js";
+import { useWinnerToast } from "../../hooks/play/useWinnerToast.js";
 
 function Play() {
     const { roomName, username } = useParams();
     const roomState = useSelector(selectRoomState(roomName));
-    const winnerUsername = useSelector(selectWinnerUsername(roomName));
     const errorMessage = useSelector(selectRoomError(roomName));
     const players = useSelector(selectPlayers(roomName));
     const localPlayer = players?.find((p) => p.username === username);
     const opponents = players?.filter((p) => p.username !== username);
     const isMobile = useIsMobile();
-    // TEMP
-    if (winnerUsername) {
-        console.log(`Winner : ${winnerUsername}`);
-        // TODO -> showToast() + hook
-    }
 
     useRoomSocketHandlers();
     useRoomJoin(roomName, username);
     useUserInput(roomName, username, roomState);
     useOpponentConnectionToast(opponents);
+    useWinnerToast(roomName);
 
     if (roomState === "error") {
         return (
