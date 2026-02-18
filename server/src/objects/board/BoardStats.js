@@ -108,7 +108,7 @@ export class BoardStats {
      * Classic formula: level = 1 + (linesCleared / 10)
      */
     updateLevel() {
-        this.#level = 1 + Math.floor(this.#linesCleared / 10);
+        this.#level = Math.min(1 + Math.floor(this.#linesCleared / 10), 15); // Max level is 15
     }
 
     /**

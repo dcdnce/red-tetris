@@ -46,7 +46,7 @@ function NextPiece({ nextPiece }) {
     );
 }
 
-function Stats({ piecesPerSecond, linesCleared, score }) {
+function Stats({ piecesPerSecond, linesCleared, score, level }) {
     const [green, purple, red] = useToken("colors", [
         "green.600",
         "purple.400",
@@ -95,6 +95,14 @@ function Stats({ piecesPerSecond, linesCleared, score }) {
                     <AnimatedNumber value={score} color={scoreColor} />
                 </VStack>
             </Box>
+            <Box layerStyle="transparent">
+                <VStack justify="space-between">
+                    <Text fontSize="20" opacity={0.6} color={"yellow.50"}>
+                        Level
+                    </Text>
+                    <AnimatedNumber value={level} />
+                </VStack>
+            </Box>
         </VStack>
     );
 }
@@ -103,6 +111,7 @@ export function BoardSidebar({ player }) {
     const nextPiece = player.nextPiece;
     const piecesPerSecond = player.piecesPerSecond;
     const score = player.score;
+    const level = player.level;
     const linesCleared = player.linesCleared;
 
     return (
@@ -114,6 +123,7 @@ export function BoardSidebar({ player }) {
                     piecesPerSecond={piecesPerSecond}
                     linesCleared={linesCleared}
                     score={score}
+                    level={level}
                 />
             </VStack>
         </Box>
