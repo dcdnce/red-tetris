@@ -10,21 +10,7 @@ const initialState = {
         // roomName:
         // roomState:
         // winnerUsername:
-        // players: [
-        //     {
-        //         username: null,
-        //         board: null, [array]
-        //         boardFull: null, [array]
-        //         nextPiece: null, [array]
-        //          TODO add BoardStats data
-        //         isConnected: null,
-        //         isOutOfPlay: null,
-        //         isLeader: null,
-        //         remainingEPLInputs: null,
-        //     },
-        // ],
-        // roomState: kPendingState,
-        // error: null,
+        // players: [{}] (see GameMapper.js),
     },
 };
 

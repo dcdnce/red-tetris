@@ -39,7 +39,6 @@ export function useRoomSocketHandlers() {
         };
 
         const handleRoomLaunchFailed = (data) => {
-            // TODO: launch a toast
         };
 
         const handleRoomLaunchSuccess = (data) => {

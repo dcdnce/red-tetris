@@ -110,7 +110,7 @@ class GameLogicHandler {
 
         // Searching for number of lines
         this.players.forEach((player) => {
-            if (player.isOutOfPlay) return; // TODO just delete the player from the list if he lost ?
+            if (player.isOutOfPlay) return;
 
             linesClearedFrom[player.username] = player
                 .getBoardObject()

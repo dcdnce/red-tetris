@@ -6,6 +6,7 @@ import { kHardDrop, Tetrimino } from "./tetrimino.js";
 import { BoardStats } from "./BoardStats.js";
 import {
     BOARD_HEIGHT,
+    BOARD_WIDTH,
     kEmptyBlock,
     kIndestructibleBlock,
 } from "../../constants/board_constants.js";
@@ -233,7 +234,6 @@ class Board {
         let linesToClear = [];
 
         for (let i = 2; i < BOARD_HEIGHT; i++) {
-            // TODO maybe we can clear above the skyline ?
             if (BoardRules.isLineFullAndDestructible(innerBoard[i])) {
                 linesToClear.push(i);
             }
@@ -305,32 +305,10 @@ class Board {
     }
 }
 
-// TODO create this object dynamically with BOARD_WIDTH and BOARD_HEIGHT
 function createEmptyBoard() {
-    return [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
-    ];
+    return Array.from({ length: BOARD_HEIGHT }, () =>
+        Array(BOARD_WIDTH).fill(0)
+    );
 }
 
 export default Board;
