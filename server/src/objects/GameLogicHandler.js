@@ -1,11 +1,14 @@
+import { levelToSpeed } from "../constants/game_constants.js";
 import { TetriminoOutOfBoundsException } from "../services/exceptions.js";
 import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 
 class GameLogicHandler {
-    constructor(roomName, players, onGameEndCallback) {
+    constructor(roomName, players, onGameEndCallback, onLevelChangeCallback) {
         this.roomName = roomName;
         this.players = players;
         this.onGameEndCallback = onGameEndCallback; // Callback to notify Game that it's over
+        this.onLevelChangeCallback = onLevelChangeCallback; // Callback to change game speed
+        this.currentIntervalTime = null;
     }
 
     /**
@@ -24,6 +27,7 @@ class GameLogicHandler {
         this.handleFallOrLock(false);
         this.handleTetriminoSpawn();
         this.handleNewIndestructibleLines();
+        this.handleLevelChange();
     }
 
     // LOBBY RELATED METHODS
@@ -140,6 +144,24 @@ class GameLogicHandler {
                 }
             }
         });
+    }
+
+    handleLevelChange() {
+        if (this.players.size > 1) return; // Do nothing if multiplayer
+
+        this.players.forEach((player) => {
+            const currentLevel = player.getBoardObject().boardStats.getLevel();
+
+            // Check if current speed matches with current level
+            if (this.currentIntervalTime !== levelToSpeed[currentLevel]) {
+                this.onLevelChangeCallback(currentLevel);
+            }
+        });
+    }
+
+    // SETTERS & GETTERS
+    updateCurrentIntervalTime(intervalTime) {
+        this.currentIntervalTime = intervalTime;
     }
 }
 

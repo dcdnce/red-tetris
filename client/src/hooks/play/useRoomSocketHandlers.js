@@ -12,7 +12,7 @@ import {
 export function useRoomSocketHandlers() {
     const dispatch = useDispatch();
     const dispatchRef = useRef(dispatch);
-    
+
     // Keep dispatch ref up to date
     useEffect(() => {
         dispatchRef.current = dispatch;
@@ -38,8 +38,7 @@ export function useRoomSocketHandlers() {
             dispatchRef.current(updateGameData(data));
         };
 
-        const handleRoomLaunchFailed = (data) => {
-        };
+        const handleRoomLaunchFailed = (data) => {};
 
         const handleRoomLaunchSuccess = (data) => {
             dispatchRef.current(roomLaunchSuccess(data));

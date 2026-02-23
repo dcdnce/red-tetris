@@ -8,13 +8,9 @@ export function useWinnerToast(roomName) {
 
     useEffect(() => {
         if (winnerUsername) {
-            showToast(
-                "",
-                `${winnerUsername} won.`,
-                "success",
-                { duration: 10000 }
-            );
+            showToast("", `${winnerUsername} won.`, "success", {
+                duration: 10000,
+            });
         }
-
     }, [winnerUsername]);
 }

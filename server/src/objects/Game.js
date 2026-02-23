@@ -5,8 +5,9 @@ import GameState, { kPendingState } from "./GameState.js";
 import GameLogicHandler from "./GameLogicHandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
 import { GameRules } from "./GameRules.js";
+import { levelToSpeed } from "../constants/game_constants.js";
 
-const GAME_TICK_RATE_MS = 1000;
+const DEFAULT_GAME_TICK_RATE_MS = levelToSpeed[1];
 export const PIECE_SEQUENCE_LENGTH = 1000;
 
 /**
@@ -46,22 +47,32 @@ class Game {
         this.gameLogicHandler = new GameLogicHandler(
             this.roomName,
             this.players, // this is a reference
-            () => endAndDeleteGameCallback(this)
+            () => endAndDeleteGameCallback(this),
+            (newLevel) => this.setNewGameInterval(newLevel)
         );
+
+        this.setNewGameInterval();
+
+        Logger.info(true, this.roomName, "Room loop started");
+    }
+
+    setNewGameInterval(newLevel = 1) {
+        clearInterval(this.loopIntervalId); // Clear the old one (if any)
+        const newSpeed = levelToSpeed[newLevel];
+
+        this.gameLogicHandler.updateCurrentIntervalTime(newSpeed);
 
         this.loopIntervalId = setInterval(() => {
             // Logger.info(
             //     true,
             //     this.roomName,
-            //     `GameLogicHandler.tick() called every ${GAME_TICK_RATE_MS}ms`
+            //     `GameLogicHandler.tick() called every ${newSpeed} ms`
             // );
 
             this.gameLogicHandler.tick();
             this.handleWinConditions();
             emitUpdateGameData(this);
-        }, GAME_TICK_RATE_MS);
-
-        Logger.info(true, this.roomName, "Room loop started");
+        }, newSpeed);
     }
 
     endAndDelete() {
