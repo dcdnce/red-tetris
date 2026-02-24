@@ -7,7 +7,6 @@ import {
     selectRoomState,
     selectRoomError,
     selectPlayers,
-    selectWinnerUsername,
 } from "../../store/gameSlice";
 import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js";
 import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
@@ -17,6 +16,7 @@ import { Error } from "../ui/Error.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useOpponentConnectionToast } from "../../hooks/play/usePlayToast.js";
 import { useWinnerToast } from "../../hooks/play/useWinnerToast.js";
+import { useEndToast } from "../../hooks/play/useEndToast.js";
 
 function Play() {
     const { roomName, username } = useParams();
@@ -32,6 +32,7 @@ function Play() {
     useUserInput(roomName, username, roomState);
     useOpponentConnectionToast(opponents);
     useWinnerToast(roomName);
+    useEndToast(roomName);
 
     if (roomState === "error") {
         return (

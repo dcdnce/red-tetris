@@ -81,6 +81,8 @@ class Game {
         this.gameLogicHandler = null;
         this.setFinished();
 
+        emitUpdateGameData(this);
+
         // [US-47] Ensures all players are disconnected if game ends
         this.players.forEach((player) => {
             definitiveDisconnection(player);
