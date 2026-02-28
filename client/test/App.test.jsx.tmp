@@ -1,0 +1,41 @@
+import { vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { ChakraProvider } from '@chakra-ui/react';
+import App from '../src/App';
+import gameReducer from '../src/store/gameSlice';
+
+const store = configureStore({
+  reducer: { roomsHandler: gameReducer },
+  preloadedState: {
+    roomsHandler: {
+      rooms: {
+        room1: {
+          roomName: 'room1',
+          roomState: 'started',
+          players: [{ username: 'player1' }],
+          winnerUsername: null,
+          error: null,
+        },
+      },
+    },
+  },
+});
+
+// it('renders Play component ', () => {
+//   // unfinished
+//   render(
+//     <ChakraProvider>
+//       <Provider store={store}>
+//         <MemoryRouter initialEntries={['/room1/player1']}>
+//           <App />
+//         </MemoryRouter>
+//       </Provider>
+//     </ChakraProvider>
+//   );
+
+//   expect(screen.getByRole('button', { name: /\.redtetris/i })).toBeInTheDocument();
+//   expect(screen.getByText(/player1/i)).toBeInTheDocument();
+// });

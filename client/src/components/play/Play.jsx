@@ -11,7 +11,7 @@ import {
 import { useRoomSocketHandlers } from "../../hooks/play/useRoomSocketHandlers.js";
 import { useRoomJoin } from "../../hooks/play/useRoomJoin.js";
 import { useUserInput } from "../../hooks/play/useUserInput.js";
-import Header from "../ui/Header.jsx";
+import Header from "../home/Header.jsx";
 import { Error } from "../ui/Error.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useOpponentConnectionToast } from "../../hooks/play/usePlayToast.js";

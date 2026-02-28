@@ -1,5 +1,5 @@
 import { Flex, VStack, HStack } from "@chakra-ui/react";
-import Header from "../ui/Header.jsx";
+import Header from "./Header.jsx";
 import JoinButton from "./JoinButton";
 import { TopTen } from "./Leaderboard.jsx";
 import { Rules } from "./Rules.jsx";
