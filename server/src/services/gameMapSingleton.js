@@ -11,37 +11,6 @@ class GameMapSingleton {
         );
     }
 
-    getAllRoom() {
-        const allRooms = [];
-        for (const [roomName, gameInstance] of this.container) {
-            allRooms.push({
-                roomName: roomName,
-                playerCount: gameInstance.players
-                    ? gameInstance.players.size
-                    : 0,
-                players: GameMapper.getPlayerList(gameInstance),
-            });
-        }
-        return allRooms;
-    }
-
-    getRoomBySearch(searchValue) {
-        const filteredRooms = [];
-        if (!searchValue) return this.getAllRoom();
-        for (const [roomName, gameInstance] of this.container) {
-            if (roomName.includes(searchValue)) {
-                filteredRooms.push({
-                    roomName: roomName,
-                    playerCount: gameInstance.players
-                        ? gameInstance.players.size
-                        : 0,
-                    players: GameMapper.getPlayerList(gameInstance),
-                });
-            }
-        }
-        return filteredRooms;
-    }
-
     get(key) {
         return this.container.get(key);
     }

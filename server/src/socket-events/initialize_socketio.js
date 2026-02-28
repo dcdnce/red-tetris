@@ -2,8 +2,6 @@ import { Server as SocketIOServer } from "socket.io";
 import handleDisconnect from "./disconnect.js";
 import handleTetris from "./handleTetris.js";
 import handleScore from "./handlers/handleScore.js";
-import getAllRoom from "./emitters/emit_all_room.js";
-import getRoomBySearch from "./emitters/emit_get_room_by_search.js";
 import Logger from "../services/logger.js";
 import { SocketManager } from "../services/socketManager.js";
 
@@ -24,8 +22,6 @@ export function initializeSocketIO(server) {
 
         handleDisconnect(socket);
         handleTetris(socket);
-        getAllRoom(socket);
-        getRoomBySearch(socket);
         handleScore(socket);
     });
 
