@@ -12,7 +12,7 @@ export default defineConfig({
     ],
     setupFiles: [
       './vitest.setup.js',            // backend + global
-      // './client/test/setupClientTests.js',
+      './client/test/setupClientTests.js',
     ],
     coverage: {
       provider: 'v8',
@@ -28,6 +28,8 @@ export default defineConfig({
         '**/coverage/**',
         '**/*.test.{js,jsx}',
         'client/src/main.jsx',
+        'client/src/styles/**',
+        'server/src/index.js'
       ],
       thresholds: {
         statements: 70,
