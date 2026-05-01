@@ -58,7 +58,7 @@ export class BoardRules {
         const absoluteBlocksPosition =
             tetrimino.getAbsoluteBlocksPositionArray();
 
-        // y > 22
+        // y > 20
         readyToLock |= tetrimino.isVerticallyOutOfBoundsBottom();
 
         // Touch locked piece

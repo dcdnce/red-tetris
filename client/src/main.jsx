@@ -12,7 +12,7 @@ const rootElement = document.getElementById("root");
 
 if (rootElement) {
     ReactDOM.createRoot(rootElement).render(
-        <React.StrictMode>
+        // <React.StrictMode>
             <ChakraProvider theme={theme}>
                 <BrowserRouter>
                     <Provider store={store}>
@@ -20,7 +20,7 @@ if (rootElement) {
                     </Provider>
                 </BrowserRouter>
             </ChakraProvider>
-        </React.StrictMode>
+        // </React.StrictMode>
     );
 } else {
     console.error("Failed to find root element");

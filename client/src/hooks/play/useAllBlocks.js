@@ -12,7 +12,7 @@ export function useAllBlocks(isLocalPlayer, player) {
         }
 
         // Pre-allocate array with exact size to avoid resizing
-        const blocks = new Array(220);
+        const blocks = new Array(200);
 
         // Opponent logic
         if (!isLocalPlayer) {
@@ -21,8 +21,8 @@ export function useAllBlocks(isLocalPlayer, player) {
 
             // Find highest block in each column
             for (let x = 0; x < 10; x++) {
-                colHi[x] = 22;
-                for (let y = 0; y < 22; y++) {
+                colHi[x] = 20;
+                for (let y = 0; y < 20; y++) {
                     if (board[y][x] !== 0) {
                         colHi[x] = y;
                         break;
@@ -32,7 +32,7 @@ export function useAllBlocks(isLocalPlayer, player) {
 
             // Build blocks array with direct index assignment
             let idx = 0;
-            for (let y = 0; y < 22; y++) {
+            for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 10; x++) {
                     blocks[idx] = {
                         row: y,
@@ -46,7 +46,7 @@ export function useAllBlocks(isLocalPlayer, player) {
             // Player logic - direct index assignment
             const boardFull = player.boardFull;
             let idx = 0;
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < 20; i++) {
                 for (let j = 0; j < 10; j++) {
                     blocks[idx] = {
                         row: i,

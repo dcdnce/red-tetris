@@ -36,8 +36,8 @@ const gameSlice = createSlice({
             state.rooms[roomName].players = action.payload.players;
             state.rooms[roomName].winnerUsername =
                 action.payload.winnerUsername;
-            console.log(action.payload.roomState);
-            console.log(action.payload.players);
+            // console.log(action.payload.roomState);
+            // console.log(action.payload.players);
         },
         joinRoomFailed: (state, action) => {
             const roomName = action.payload.roomName;

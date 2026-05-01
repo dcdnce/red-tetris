@@ -32,8 +32,8 @@ function Board({ player, isLocalPlayer }) {
 
                 <Grid
                     templateColumns="repeat(10, 1fr)"
-                    templateRows="repeat(22, 1fr)"
-                    aspectRatio="10/22"
+                    templateRows="repeat(20, 1fr)"
+                    aspectRatio="10/20"
                 >
                     {allBlocks.map((block) => (
                         <Block
@@ -67,8 +67,8 @@ function Board({ player, isLocalPlayer }) {
 
                 <Grid
                     templateColumns="repeat(10, 1fr)"
-                    templateRows="repeat(22, 1fr)"
-                    aspectRatio="10/22"
+                    templateRows="repeat(20, 1fr)"
+                    aspectRatio="10/20"
                     width={{
                         base: "160px",
                         md: "220px",
