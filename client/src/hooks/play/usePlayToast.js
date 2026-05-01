@@ -16,6 +16,8 @@ export function useOpponentConnectionToast(opponents = []) {
                 showToast("", `${username} is disconnected 🔴`, "info", {
                     duration: 3000,
                 });
+
+                prevConnectionsRef.current.delete(username);
             }
         });
 
