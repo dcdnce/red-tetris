@@ -1,21 +1,15 @@
-import { socket } from "../../socket";
-import { useEffect, useState } from "react";
-import { Box, VStack, Text, Flex, Spinner, Grid } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, VStack, Text, Spinner, Grid } from "@chakra-ui/react";
+import { useGetBestScore } from "../../hooks/useGetBestScore";
 
 export function TopTen() {
     const [scores, setScores] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        socket.emit("get_best_score", {}, (response) => {
-            if (response.success) {
-                setScores(response.scores);
-            } else {
-                console.error("Error fetching scores:", response.error);
-            }
-            setLoading(false);
-        });
-    }, []);
+    useGetBestScore((scores) => {
+        setScores(scores);
+        setLoading(false);
+    });
 
     return (
         <Box
