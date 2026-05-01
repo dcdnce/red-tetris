@@ -112,6 +112,13 @@ class Player {
         this._board.boardStats.startTimer();
     }
 
+    resetForNewRound() {
+        this.isOutOfPlay = false;
+        this._board = new Board();
+        this._graceTicks = this.isConnected ? null : GRACE_TICK_AMOUNT;
+        this._piecesSequenceIndex = 0;
+    }
+
     getPPS() {
         return this._board.boardStats.getPPS();
     }

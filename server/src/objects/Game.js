@@ -1,7 +1,6 @@
-import { definitiveDisconnection } from "../socket-events/handlers/handleRoomExit.js";
 import Logger from "../services/logger.js";
 import GameMapSingleton from "../services/gameMapSingleton.js";
-import GameState, { kPendingState } from "./GameState.js";
+import GameState, { kFinishedState, kPendingState } from "./GameState.js";
 import GameLogicHandler from "./GameLogicHandler.js";
 import emitUpdateGameData from "../socket-events/emitters/emit_update_game_data.js";
 import { GameRules } from "./GameRules.js";
@@ -56,6 +55,22 @@ class Game {
         Logger.info(true, this.roomName, "Room loop started");
     }
 
+    restartGame() {
+        if (this.getState() !== kFinishedState) {
+            throw new Error("Cannot replay game: room is not in finished state.");
+        }
+        if (this.gameLogicHandler !== null) {
+            throw new Error("Cannot replay game: game loop is already running.");
+        }
+
+        this.players.forEach((player) => {
+            player.resetForNewRound();
+        });
+        this.winnerUsername = null;
+        this.setPending();
+        this.startGame();
+    }
+
     setNewGameInterval(newLevel = 1) {
         clearInterval(this.loopIntervalId); // Clear the old one (if any)
         const newSpeed = levelToSpeed[newLevel];
@@ -75,19 +90,16 @@ class Game {
         }, newSpeed);
     }
 
-    endAndDelete() {
+    endRound() {
         clearInterval(this.loopIntervalId);
         this.loopIntervalId = null;
         this.gameLogicHandler = null;
         this.setFinished();
-
         emitUpdateGameData(this);
+    }
 
-        // [US-47] Ensures all players are disconnected if game ends
-        this.players.forEach((player) => {
-            definitiveDisconnection(player);
-        });
-
+    endAndDelete() {
+        this.endRound();
         if (GameMapSingleton.delete(this.roomName) === true) {
             Logger.info(false, null, `Deleting game room ${this.roomName}`);
         }
@@ -158,7 +170,7 @@ class Game {
 }
 
 function endAndDeleteGameCallback(game) {
-    game.endAndDelete();
+    game.endRound();
 }
 
 export default Game;

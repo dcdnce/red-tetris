@@ -3,22 +3,32 @@ import roomLaunchGameService from "../../../../services/roomLaunchGameService";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
+    selectWinnerUsername,
     selectIsRoomLeader,
     selectRoomState,
 } from "../../../../store/gameSlice";
-import { kStartedState } from "../../../../services/constants";
-import { Box, Button } from "@chakra-ui/react";
+import {
+    kFinishedState,
+    kPendingState,
+} from "../../../../services/constants";
+import { Button } from "@chakra-ui/react";
 
 function RoomLeaderDashboard() {
     const { roomName, username } = useParams();
     const roomState = useSelector(selectRoomState(roomName));
     const isRoomLeader = useSelector(selectIsRoomLeader(roomName, username));
+    const winnerUsername = useSelector(selectWinnerUsername(roomName));
 
     const handleClick = () => {
         roomLaunchGameService(roomName, username);
     };
 
-    if (roomState == kStartedState || isRoomLeader == false) {
+    const canStartGame =
+        roomState === kPendingState && isRoomLeader === true;
+    const canReplayGame =
+        roomState === kFinishedState && winnerUsername === username;
+
+    if (!canStartGame && !canReplayGame) {
         return null;
     }
 
@@ -32,7 +42,7 @@ function RoomLeaderDashboard() {
             h={"23px"}
             fontSize={"x-small"}
         >
-            Start ▶️
+            {canReplayGame ? "Restart ↻" : "Start ▶️"}
         </Button>
     );
 }
