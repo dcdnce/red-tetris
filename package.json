@@ -7,10 +7,7 @@
     "scripts": {
         "dev:server": "nodemon server/src/index.js",
         "dev:client": "vite client --config client/vite.config.js --host",
-        "dev": "concurrently --kill-others-on-fail \"npm:dev:server\" \"npm:dev:client\"",
-        "build:client": "vite build --config client/vite.config.js",
-        "build": "npm run build:client",
-        "start": "NODE_ENV=production node server/index.js",
+        "app": "concurrently --kill-others-on-fail \"npm:dev:server\" \"npm:dev:client\"",
         "test": "vitest run",
         "test:watch": "vitest",
         "test:cov": "vitest run --coverage",
