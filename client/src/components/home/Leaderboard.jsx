@@ -6,10 +6,19 @@ export function TopTen() {
     const [scores, setScores] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const MAX_ENTRIES = 10;
+
     useGetBestScore((scores) => {
         setScores(scores);
         setLoading(false);
     });
+
+    const paddedScores = loading
+        ? []
+        : [
+              ...scores,
+              ...Array(Math.max(0, MAX_ENTRIES - scores.length)).fill(null),
+          ];
 
     return (
         <Box
@@ -32,9 +41,9 @@ export function TopTen() {
                 {loading ? (
                     <Spinner></Spinner>
                 ) : (
-                    scores.map((s, idx) => (
+                    paddedScores.map((s, idx) => (
                         <Grid
-                            key={s.id}
+                            key={s ? s.id : `empty-${idx}`}
                             templateColumns="3rem 1fr"
                             gap={2}
                             width="100%"
@@ -46,7 +55,7 @@ export function TopTen() {
                                 <strong>#{idx + 1}</strong>
                             </Text>
                             <Text fontSize="md" isTruncated>
-                                {s.score} pts - {s.username}
+                                {s ? `${s.score} pts - ${s.username}` : "-"}
                             </Text>
                         </Grid>
                     ))
