@@ -1,5 +1,5 @@
 import React from "react";
-import roomLaunchGameService from "../../../../services/roomLaunchGameService";
+import useRoomLaunchGame from "../../../../hooks/play/useRoomLaunchGame";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -17,7 +17,7 @@ function RoomLeaderDashboard() {
     const roomState = useSelector(selectRoomState(roomName));
     const isRoomLeader = useSelector(selectIsRoomLeader(roomName, username));
     const handleClick = () => {
-        roomLaunchGameService(roomName, username);
+        useRoomLaunchGame(roomName, username);
     };
 
     const canStartGame = roomState === kPendingState && isRoomLeader;

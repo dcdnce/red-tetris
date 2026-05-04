@@ -1,4 +1,4 @@
-import { socket } from "../socket";
+import { socket } from "../../socket";
 
 export default function useRoomLaunchGame(roomName, username) {
     const token = localStorage.getItem(`${username}${roomName}`) || null;
