@@ -21,6 +21,7 @@ class Game {
         this.players = new Map(); // <username, Player>
         this.state = new GameState();
         this.winnerUsername = null;
+        this.startedAsMultiplayer = false;
         this.gameLogicHandler = null;
         this.loopIntervalId = null;
         this.piecesSequence = null;
@@ -39,6 +40,7 @@ class Game {
         }
 
         this.piecesSequence = GameRules.generatePiecesSequence();
+        this.startedAsMultiplayer = this.players.size > 1;
 
         this.setStarted();
         this.startBoardStats();
@@ -159,13 +161,14 @@ class Game {
     }
 
     handleWinConditions() {
-        if (this.players.size <= 1) return; // Do nothing if singleplayer
-
+        if (!this.startedAsMultiplayer) return;
+        if (this.players.size === 0) return;
         if (this.countInPlayPlayers() !== 1) return;
 
         let lastInPlayPlayer = this.getLastInPlayPlayer();
         lastInPlayPlayer.setOutOfPlay("just won.");
         this.winnerUsername = lastInPlayPlayer.username;
+        this.leaderToken = lastInPlayPlayer.token;
     }
 }
 

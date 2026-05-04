@@ -3,7 +3,6 @@ import roomLaunchGameService from "../../../../services/roomLaunchGameService";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
-    selectWinnerUsername,
     selectIsRoomLeader,
     selectRoomState,
 } from "../../../../store/gameSlice";
@@ -17,16 +16,12 @@ function RoomLeaderDashboard() {
     const { roomName, username } = useParams();
     const roomState = useSelector(selectRoomState(roomName));
     const isRoomLeader = useSelector(selectIsRoomLeader(roomName, username));
-    const winnerUsername = useSelector(selectWinnerUsername(roomName));
-
     const handleClick = () => {
         roomLaunchGameService(roomName, username);
     };
 
-    const canStartGame =
-        roomState === kPendingState && isRoomLeader === true;
-    const canReplayGame =
-        roomState === kFinishedState && winnerUsername === username;
+    const canStartGame = roomState === kPendingState && isRoomLeader;
+    const canReplayGame = roomState === kFinishedState && isRoomLeader;
 
     if (!canStartGame && !canReplayGame) {
         return null;

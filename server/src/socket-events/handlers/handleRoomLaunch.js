@@ -18,37 +18,15 @@ export default function handleRoomLaunch(socket) {
             );
         }
 
-        if (state === kPendingState) {
-            if (game.leaderToken !== player.token) {
-                throw new Error(
-                    `Cannot launch game: '${player.username}' isn't room leader.`
-                );
-            }
-            return;
+        if (state !== kPendingState && state !== kFinishedState) {
+            throw new Error(`Cannot launch game from state '${state}'.`);
         }
 
-        if (state === kFinishedState) {
-            if (game.winnerUsername !== player.username) {
-                throw new Error(
-                    `Cannot replay game: '${player.username}' is not the winner.`
-                );
-            }
-
-            const bothPlayersConnected =
-                game.players.size === 2 &&
-                Array.from(game.players.values()).every(
-                    (roomPlayer) => roomPlayer.isConnected
-                );
-
-            if (!bothPlayersConnected) {
-                throw new Error(
-                    "Cannot replay game: the other player is not connected."
-                );
-            }
-            return;
+        if (game.leaderToken !== player.token) {
+            throw new Error(
+                `Cannot launch game: '${player.username}' isn't room leader.`
+            );
         }
-
-        throw new Error(`Cannot launch game from state '${state}'.`);
     };
 
     socket.on("room_launch", (params) => {
