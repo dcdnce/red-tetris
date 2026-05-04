@@ -111,6 +111,7 @@ function playerIsReconnecting(game, username, token, socket) {
                     `Player '${username}' is taking over session. Old socket (${oldSocket.id}) will be disconnected.`
                 );
 
+                oldSocket.player = null; // Prevent disconnecting event from triggering cleanup
                 oldSocket.leave(game.roomName);
                 oldSocket.disconnect(true);
                 return true;
